@@ -1,5 +1,12 @@
 [
   {
+    "id": "24kitchenbg",
+    "name": "24kitchenbg",
+    "country": "Regional",
+    "category": "Dokumentarni",
+    "image": "logos/24kitchenbg.png"
+  },
+  {
     "id": "srbija--4s-televizija",
     "name": "4s Televizija",
     "country": "Srbija",
@@ -77,6 +84,13 @@
     "image": "logos/sport-ex-yu--adriatic-sport-3.png"
   },
   {
+    "id": "agrotvbg",
+    "name": "Agrotvbg",
+    "country": "Srbija",
+    "category": "General",
+    "image": "logos/agrotvbg.png"
+  },
+  {
     "id": "slovenija--aktual-tv",
     "name": "Aktual Tv",
     "country": "Slovenija",
@@ -103,6 +117,13 @@
     "country": "BiH",
     "category": "General",
     "image": "logos/bih--amari-tv.png"
+  },
+  {
+    "id": "animalplanetar",
+    "name": "Animalplanetar",
+    "country": "Regional",
+    "category": "Dokumentarni",
+    "image": "logos/animalplanetar.png"
   },
   {
     "id": "sport-ex-yu--arena-premium-4",
@@ -147,11 +168,67 @@
     "image": "logos/sport-ex-yu--arena-sport-4-balkan.png"
   },
   {
+    "id": "arenaesportrs",
+    "name": "Arenaesportrs",
+    "country": "BiH",
+    "category": "General",
+    "image": "logos/arenaesportrs.png"
+  },
+  {
+    "id": "atvavrupatr",
+    "name": "Atvavrupatr",
+    "country": "Turska",
+    "category": "General",
+    "image": "logos/atvavrupatr.png"
+  },
+  {
+    "id": "auroratvhr",
+    "name": "Auroratvhr",
+    "country": "Srbija",
+    "category": "General",
+    "image": "logos/auroratvhr.png"
+  },
+  {
+    "id": "ausmtvau",
+    "name": "Ausmtvau",
+    "country": "SAD",
+    "category": "General",
+    "image": "logos/ausmtvau.png"
+  },
+  {
+    "id": "axnblackcz",
+    "name": "Axnblackcz",
+    "country": "Češka/Slovačka",
+    "category": "General",
+    "image": "logos/axnblackcz.png"
+  },
+  {
+    "id": "axnwhitecz",
+    "name": "Axnwhitecz",
+    "country": "Češka/Slovačka",
+    "category": "General",
+    "image": "logos/axnwhitecz.png"
+  },
+  {
     "id": "srbija--b1-beograd-tv",
     "name": "B1 Beograd Tv",
     "country": "Srbija",
     "category": "General",
     "image": "logos/srbija--b1-beograd-tv.png"
+  },
+  {
+    "id": "babytvar",
+    "name": "Babytvar",
+    "country": "Regional",
+    "category": "Dječji",
+    "image": "logos/babytvar.png"
+  },
+  {
+    "id": "badentvde",
+    "name": "Badentvde",
+    "country": "Njemačka",
+    "category": "General",
+    "image": "logos/badentvde.png"
   },
   {
     "id": "srbija--balkan-novi-sad-tv",
@@ -182,6 +259,34 @@
     "image": "logos/filmski--balkan-sky-drama.png"
   },
   {
+    "id": "balkantriprs",
+    "name": "Balkantriprs",
+    "country": "Regional",
+    "category": "Dokumentarni",
+    "image": "logos/balkantriprs.png"
+  },
+  {
+    "id": "barrandovkrimicz",
+    "name": "Barrandovkrimicz",
+    "country": "Češka/Slovačka",
+    "category": "General",
+    "image": "logos/barrandovkrimicz.png"
+  },
+  {
+    "id": "barrandovtvcz",
+    "name": "Barrandovtvcz",
+    "country": "Češka/Slovačka",
+    "category": "General",
+    "image": "logos/barrandovtvcz.png"
+  },
+  {
+    "id": "bbcearthau",
+    "name": "Bbcearthau",
+    "country": "Regional",
+    "category": "Dokumentarni",
+    "image": "logos/bbcearthau.png"
+  },
+  {
     "id": "dokumentarni--bee-tv-pcela-tv",
     "name": "Bee Tv Pcela Tv",
     "country": "Regional",
@@ -203,6 +308,13 @@
     "image": "logos/sport-world--bein-sports-max-3.png"
   },
   {
+    "id": "beinsportsus",
+    "name": "Beinsportsus",
+    "country": "International",
+    "category": "Sport",
+    "image": "logos/beinsportsus.png"
+  },
+  {
     "id": "slovenija--beltinci-tv",
     "name": "Beltinci Tv",
     "country": "Slovenija",
@@ -215,6 +327,13 @@
     "country": "Regional",
     "category": "Glazbeni",
     "image": "logos/muzicki--best-tv.png"
+  },
+  {
+    "id": "beyaztvtr",
+    "name": "Beyaztvtr",
+    "country": "Turska",
+    "category": "General",
+    "image": "logos/beyaztvtr.png"
   },
   {
     "id": "sport-world--blue-sport-1",
@@ -257,6 +376,13 @@
     "country": "Regional",
     "category": "Dječji",
     "image": "logos/djecji--booba-kids.png"
+  },
+  {
+    "id": "boomerangar",
+    "name": "Boomerangar",
+    "country": "Regional",
+    "category": "Dječji",
+    "image": "logos/boomerangar.png"
   },
   {
     "id": "djecji--bravo-kids",
@@ -315,6 +441,27 @@
     "image": "logos/sport-world--canal-live-8.png"
   },
   {
+    "id": "cancaonovatvbr",
+    "name": "Cancaonovatvbr",
+    "country": "Hrvatska",
+    "category": "General",
+    "image": "logos/cancaonovatvbr.png"
+  },
+  {
+    "id": "cartoonitobr",
+    "name": "Cartoonitobr",
+    "country": "Regional",
+    "category": "Dječji",
+    "image": "logos/cartoonitobr.png"
+  },
+  {
+    "id": "cartoonnetworkar",
+    "name": "Cartoonnetworkar",
+    "country": "Regional",
+    "category": "Dječji",
+    "image": "logos/cartoonnetworkar.png"
+  },
+  {
     "id": "djecji--cinematic-kids",
     "name": "Cinematic Kids",
     "country": "Regional",
@@ -329,11 +476,53 @@
     "image": "logos/djecji--cinematic-kids-2.png"
   },
   {
+    "id": "cinemax2hr",
+    "name": "Cinemax2hr",
+    "country": "Crna Gora",
+    "category": "General",
+    "image": "logos/cinemax2hr.png"
+  },
+  {
+    "id": "cinemaxar",
+    "name": "Cinemaxar",
+    "country": "Crna Gora",
+    "category": "General",
+    "image": "logos/cinemaxar.png"
+  },
+  {
+    "id": "cinestartv1hr",
+    "name": "Cinestartv1hr",
+    "country": "Srbija",
+    "category": "General",
+    "image": "logos/cinestartv1hr.png"
+  },
+  {
+    "id": "cinestartv2hr",
+    "name": "Cinestartv2hr",
+    "country": "Turska",
+    "category": "General",
+    "image": "logos/cinestartv2hr.png"
+  },
+  {
+    "id": "citytvbg",
+    "name": "Citytvbg",
+    "country": "BiH",
+    "category": "General",
+    "image": "logos/citytvbg.png"
+  },
+  {
     "id": "muzicki--cmc-music",
     "name": "Cmc Music",
     "country": "Regional",
     "category": "Glazbeni",
     "image": "logos/muzicki--cmc-music.png"
+  },
+  {
+    "id": "comedycentralfamilyhu",
+    "name": "Comedycentralfamilyhu",
+    "country": "Kosovo/Albanija",
+    "category": "General",
+    "image": "logos/comedycentralfamilyhu.png"
   },
   {
     "id": "muzicki--connect-tv",
@@ -357,11 +546,32 @@
     "image": "logos/muzicki--crotv.png"
   },
   {
+    "id": "csfilmsk",
+    "name": "Csfilmsk",
+    "country": "Češka/Slovačka",
+    "category": "General",
+    "image": "logos/csfilmsk.png"
+  },
+  {
+    "id": "ctvdramachannelca",
+    "name": "Ctvdramachannelca",
+    "country": "Regional",
+    "category": "Dokumentarni",
+    "image": "logos/ctvdramachannelca.png"
+  },
+  {
     "id": "muzicki--dance-tv",
     "name": "Dance Tv",
     "country": "Regional",
     "category": "Glazbeni",
     "image": "logos/muzicki--dance-tv.png"
+  },
+  {
+    "id": "davincihk",
+    "name": "Davincihk",
+    "country": "Regional",
+    "category": "Dokumentarni",
+    "image": "logos/davincihk.png"
   },
   {
     "id": "sport-world--dazn-1-it",
@@ -427,11 +637,67 @@
     "image": "logos/sport-world--de-magenta-sport-1-live-events.png"
   },
   {
+    "id": "dexytvrs",
+    "name": "Dexytvrs",
+    "country": "Regional",
+    "category": "Dječji",
+    "image": "logos/dexytvrs.png"
+  },
+  {
+    "id": "diadoratvhr",
+    "name": "Diadoratvhr",
+    "country": "Hrvatska",
+    "category": "General",
+    "image": "logos/diadoratvhr.png"
+  },
+  {
+    "id": "discoverychannelar",
+    "name": "Discoverychannelar",
+    "country": "Češka/Slovačka",
+    "category": "General",
+    "image": "logos/discoverychannelar.png"
+  },
+  {
+    "id": "discoverychannelau",
+    "name": "Discoverychannelau",
+    "country": "Regional",
+    "category": "Dokumentarni",
+    "image": "logos/discoverychannelau.png"
+  },
+  {
+    "id": "disneychannelar",
+    "name": "Disneychannelar",
+    "country": "Regional",
+    "category": "Dječji",
+    "image": "logos/disneychannelar.png"
+  },
+  {
+    "id": "disneychannelau",
+    "name": "Disneychannelau",
+    "country": "Austrija",
+    "category": "General",
+    "image": "logos/disneychannelau.png"
+  },
+  {
+    "id": "divahr",
+    "name": "Divahr",
+    "country": "Crna Gora",
+    "category": "General",
+    "image": "logos/divahr.png"
+  },
+  {
     "id": "bih--doboj-tv",
     "name": "Doboj Tv",
     "country": "BiH",
     "category": "General",
     "image": "logos/bih--doboj-tv.png"
+  },
+  {
+    "id": "docuboxhdint",
+    "name": "Docuboxhdint",
+    "country": "Regional",
+    "category": "Dokumentarni",
+    "image": "logos/docuboxhdint.png"
   },
   {
     "id": "dokumentarni--dokumentarna-tv",
@@ -441,11 +707,60 @@
     "image": "logos/dokumentarni--dokumentarna-tv.png"
   },
   {
+    "id": "dokutvhr",
+    "name": "Dokutvhr",
+    "country": "Regional",
+    "category": "Dokumentarni",
+    "image": "logos/dokutvhr.png"
+  },
+  {
+    "id": "doxtvrs",
+    "name": "Doxtvrs",
+    "country": "Regional",
+    "category": "Dokumentarni",
+    "image": "logos/doxtvrs.png"
+  },
+  {
+    "id": "ducktvrs",
+    "name": "Ducktvrs",
+    "country": "Regional",
+    "category": "Dječji",
+    "image": "logos/ducktvrs.png"
+  },
+  {
+    "id": "dvojkask",
+    "name": "Dvojkask",
+    "country": "Češka/Slovačka",
+    "category": "General",
+    "image": "logos/dvojkask.png"
+  },
+  {
+    "id": "dwde",
+    "name": "Dwde",
+    "country": "Njemačka",
+    "category": "General",
+    "image": "logos/dwde.png"
+  },
+  {
+    "id": "eentertainmentau",
+    "name": "Eentertainmentau",
+    "country": "Regional",
+    "category": "Dokumentarni",
+    "image": "logos/eentertainmentau.png"
+  },
+  {
     "id": "muzicki--eg-melody",
     "name": "Eg Melody",
     "country": "Regional",
     "category": "Glazbeni",
     "image": "logos/muzicki--eg-melody.png"
+  },
+  {
+    "id": "elevensports1frbe",
+    "name": "Elevensports1frbe",
+    "country": "Srbija",
+    "category": "General",
+    "image": "logos/elevensports1frbe.png"
   },
   {
     "id": "pink-media--elita-live-1",
@@ -490,6 +805,34 @@
     "image": "logos/sport-world--espn-1-2.png"
   },
   {
+    "id": "eurodtr",
+    "name": "Eurodtr",
+    "country": "Turska",
+    "category": "General",
+    "image": "logos/eurodtr.png"
+  },
+  {
+    "id": "eurostartr",
+    "name": "Eurostartr",
+    "country": "Turska",
+    "category": "General",
+    "image": "logos/eurostartr.png"
+  },
+  {
+    "id": "extremesportschannelint",
+    "name": "Extremesportschannelint",
+    "country": "International",
+    "category": "Sport",
+    "image": "logos/extremesportschannelint.png"
+  },
+  {
+    "id": "facetvnz",
+    "name": "Facetvnz",
+    "country": "BiH",
+    "category": "General",
+    "image": "logos/facetvnz.png"
+  },
+  {
     "id": "makedonija--folk-plus",
     "name": "Folk Plus",
     "country": "Makedonija",
@@ -516,6 +859,34 @@
     "country": "Regional",
     "category": "Dokumentarni",
     "image": "logos/dokumentarni--food-channel.png"
+  },
+  {
+    "id": "foodchannelil",
+    "name": "Foodchannelil",
+    "country": "Regional",
+    "category": "Dokumentarni",
+    "image": "logos/foodchannelil.png"
+  },
+  {
+    "id": "foodnetworkar",
+    "name": "Foodnetworkar",
+    "country": "Regional",
+    "category": "Dokumentarni",
+    "image": "logos/foodnetworkar.png"
+  },
+  {
+    "id": "foxsports2ar",
+    "name": "Foxsports2ar",
+    "country": "Srbija",
+    "category": "General",
+    "image": "logos/foxsports2ar.png"
+  },
+  {
+    "id": "foxsports3ar",
+    "name": "Foxsports3ar",
+    "country": "Srbija",
+    "category": "General",
+    "image": "logos/foxsports3ar.png"
   },
   {
     "id": "sport-world--fussball-tv-1",
@@ -567,11 +938,53 @@
     "image": "logos/muzicki--grand-nostalgija.png"
   },
   {
+    "id": "halktvtr",
+    "name": "Halktvtr",
+    "country": "Kosovo/Albanija",
+    "category": "General",
+    "image": "logos/halktvtr.png"
+  },
+  {
+    "id": "happyreality1rs",
+    "name": "Happyreality1rs",
+    "country": "Srbija",
+    "category": "General",
+    "image": "logos/happyreality1rs.png"
+  },
+  {
+    "id": "happyreality2rs",
+    "name": "Happyreality2rs",
+    "country": "Srbija",
+    "category": "General",
+    "image": "logos/happyreality2rs.png"
+  },
+  {
+    "id": "happytvrs",
+    "name": "Happytvrs",
+    "country": "Srbija",
+    "category": "General",
+    "image": "logos/happytvrs.png"
+  },
+  {
     "id": "slovenija--harmonik-tv",
     "name": "Harmonik Tv",
     "country": "Slovenija",
     "category": "General",
     "image": "logos/slovenija--harmonik-tv.png"
+  },
+  {
+    "id": "hayatfolkrs",
+    "name": "Hayatfolkrs",
+    "country": "BiH",
+    "category": "General",
+    "image": "logos/hayatfolkrs.png"
+  },
+  {
+    "id": "hayatovcirs",
+    "name": "Hayatovcirs",
+    "country": "Regional",
+    "category": "Dječji",
+    "image": "logos/hayatovcirs.png"
   },
   {
     "id": "filmski--hbo-anime",
@@ -588,6 +1001,34 @@
     "image": "logos/djecji--hbo-kids.png"
   },
   {
+    "id": "hbo2ar",
+    "name": "Hbo2ar",
+    "country": "Češka/Slovačka",
+    "category": "General",
+    "image": "logos/hbo2ar.png"
+  },
+  {
+    "id": "hbo3hr",
+    "name": "Hbo3hr",
+    "country": "Češka/Slovačka",
+    "category": "General",
+    "image": "logos/hbo3hr.png"
+  },
+  {
+    "id": "heimatkanalde",
+    "name": "Heimatkanalde",
+    "country": "Turska",
+    "category": "General",
+    "image": "logos/heimatkanalde.png"
+  },
+  {
+    "id": "hgtvar",
+    "name": "Hgtvar",
+    "country": "Regional",
+    "category": "Dokumentarni",
+    "image": "logos/hgtvar.png"
+  },
+  {
     "id": "muzicki--hi-fi-music",
     "name": "Hi Fi Music",
     "country": "Regional",
@@ -602,11 +1043,32 @@
     "image": "logos/muzicki--hifi-etno.png"
   },
   {
+    "id": "historychannel2ar",
+    "name": "Historychannel2ar",
+    "country": "Češka/Slovačka",
+    "category": "General",
+    "image": "logos/historychannel2ar.png"
+  },
+  {
+    "id": "historychannelar",
+    "name": "Historychannelar",
+    "country": "Regional",
+    "category": "Dokumentarni",
+    "image": "logos/historychannelar.png"
+  },
+  {
     "id": "muzicki--hits-melody",
     "name": "Hits Melody",
     "country": "Regional",
     "category": "Glazbeni",
     "image": "logos/muzicki--hits-melody.png"
+  },
+  {
+    "id": "hogardehgtvus",
+    "name": "Hogardehgtvus",
+    "country": "Njemačka",
+    "category": "General",
+    "image": "logos/hogardehgtvus.png"
   },
   {
     "id": "filmski--horror-tv",
@@ -623,11 +1085,53 @@
     "image": "logos/dokumentarni--hrt-docu.png"
   },
   {
+    "id": "hrt1hr",
+    "name": "Hrt1hr",
+    "country": "Hrvatska",
+    "category": "General",
+    "image": "logos/hrt1hr.png"
+  },
+  {
+    "id": "hrt2hr",
+    "name": "Hrt2hr",
+    "country": "Hrvatska",
+    "category": "General",
+    "image": "logos/hrt2hr.png"
+  },
+  {
+    "id": "hrt3hr",
+    "name": "Hrt3hr",
+    "country": "Hrvatska",
+    "category": "General",
+    "image": "logos/hrt3hr.png"
+  },
+  {
+    "id": "hrt4hr",
+    "name": "Hrt4hr",
+    "country": "Hrvatska",
+    "category": "General",
+    "image": "logos/hrt4hr.png"
+  },
+  {
     "id": "filmski--hype-cinema",
     "name": "Hype Cinema",
     "country": "Regional",
     "category": "Filmski",
     "image": "logos/filmski--hype-cinema.png"
+  },
+  {
+    "id": "hypetvrs",
+    "name": "Hypetvrs",
+    "country": "Srbija",
+    "category": "General",
+    "image": "logos/hypetvrs.png"
+  },
+  {
+    "id": "idinvestigationdiscoveryar",
+    "name": "Idinvestigationdiscoveryar",
+    "country": "Crna Gora",
+    "category": "General",
+    "image": "logos/idinvestigationdiscoveryar.png"
   },
   {
     "id": "djecji--idj-kids",
@@ -665,11 +1169,74 @@
     "image": "logos/srbija--info-24-plus-tv.png"
   },
   {
+    "id": "insajdertvrs",
+    "name": "Insajdertvrs",
+    "country": "Srbija",
+    "category": "General",
+    "image": "logos/insajdertvrs.png"
+  },
+  {
     "id": "makedonija--intv",
     "name": "Intv",
     "country": "Makedonija",
     "category": "General",
     "image": "logos/makedonija--intv.png"
+  },
+  {
+    "id": "investigationdiscoveryidint",
+    "name": "Investigationdiscoveryidint",
+    "country": "Regional",
+    "category": "Dokumentarni",
+    "image": "logos/investigationdiscoveryidint.png"
+  },
+  {
+    "id": "jednotkask",
+    "name": "Jednotkask",
+    "country": "Češka/Slovačka",
+    "category": "General",
+    "image": "logos/jednotkask.png"
+  },
+  {
+    "id": "jimjamint",
+    "name": "Jimjamint",
+    "country": "Regional",
+    "category": "Dječji",
+    "image": "logos/jimjamint.png"
+  },
+  {
+    "id": "joj24sk",
+    "name": "Joj24sk",
+    "country": "Češka/Slovačka",
+    "category": "General",
+    "image": "logos/joj24sk.png"
+  },
+  {
+    "id": "jojcinemacz",
+    "name": "Jojcinemacz",
+    "country": "Češka/Slovačka",
+    "category": "General",
+    "image": "logos/jojcinemacz.png"
+  },
+  {
+    "id": "jojfamilycz",
+    "name": "Jojfamilycz",
+    "country": "Češka/Slovačka",
+    "category": "General",
+    "image": "logos/jojfamilycz.png"
+  },
+  {
+    "id": "jojkosk",
+    "name": "Jojkosk",
+    "country": "Češka/Slovačka",
+    "category": "General",
+    "image": "logos/jojkosk.png"
+  },
+  {
+    "id": "jojplussk",
+    "name": "Jojplussk",
+    "country": "Češka/Slovačka",
+    "category": "General",
+    "image": "logos/jojplussk.png"
   },
   {
     "id": "muzicki--kafansko-vece",
@@ -679,11 +1246,67 @@
     "image": "logos/muzicki--kafansko-vece.png"
   },
   {
+    "id": "kanal7avrupatr",
+    "name": "Kanal7avrupatr",
+    "country": "Turska",
+    "category": "General",
+    "image": "logos/kanal7avrupatr.png"
+  },
+  {
+    "id": "kanal7lt",
+    "name": "Kanal7lt",
+    "country": "Turska",
+    "category": "General",
+    "image": "logos/kanal7lt.png"
+  },
+  {
+    "id": "kanalrihr",
+    "name": "Kanalrihr",
+    "country": "Hrvatska",
+    "category": "General",
+    "image": "logos/kanalrihr.png"
+  },
+  {
     "id": "muzicki--karolina-tv",
     "name": "Karolina Tv",
     "country": "Regional",
     "category": "Glazbeni",
     "image": "logos/muzicki--karolina-tv.png"
+  },
+  {
+    "id": "kazbukars",
+    "name": "Kazbukars",
+    "country": "Regional",
+    "category": "Dječji",
+    "image": "logos/kazbukars.png"
+  },
+  {
+    "id": "kcn1kopernikusrs",
+    "name": "Kcn1kopernikusrs",
+    "country": "Srbija",
+    "category": "General",
+    "image": "logos/kcn1kopernikusrs.png"
+  },
+  {
+    "id": "kcn2musicrs",
+    "name": "Kcn2musicrs",
+    "country": "Srbija",
+    "category": "General",
+    "image": "logos/kcn2musicrs.png"
+  },
+  {
+    "id": "kcn3svetplusrs",
+    "name": "Kcn3svetplusrs",
+    "country": "Srbija",
+    "category": "General",
+    "image": "logos/kcn3svetplusrs.png"
+  },
+  {
+    "id": "kitchentvrs",
+    "name": "Kitchentvrs",
+    "country": "Regional",
+    "category": "Dokumentarni",
+    "image": "logos/kitchentvrs.png"
   },
   {
     "id": "slovenija--kolut-tv",
@@ -721,11 +1344,53 @@
     "image": "logos/makedonija--kumanovo.png"
   },
   {
+    "id": "kurirtvrs",
+    "name": "Kurirtvrs",
+    "country": "Srbija",
+    "category": "General",
+    "image": "logos/kurirtvrs.png"
+  },
+  {
+    "id": "lalatvcz",
+    "name": "Lalatvcz",
+    "country": "Češka/Slovačka",
+    "category": "General",
+    "image": "logos/lalatvcz.png"
+  },
+  {
+    "id": "laudatotvhr",
+    "name": "Laudatotvhr",
+    "country": "Hrvatska",
+    "category": "General",
+    "image": "logos/laudatotvhr.png"
+  },
+  {
+    "id": "libertastvhr",
+    "name": "Libertastvhr",
+    "country": "Hrvatska",
+    "category": "General",
+    "image": "logos/libertastvhr.png"
+  },
+  {
     "id": "muzicki--lola-tv",
     "name": "Lola Tv",
     "country": "Regional",
     "category": "Glazbeni",
     "image": "logos/muzicki--lola-tv.png"
+  },
+  {
+    "id": "lovenature4kca",
+    "name": "Lovenature4kca",
+    "country": "Regional",
+    "category": "Dokumentarni",
+    "image": "logos/lovenature4kca.png"
+  },
+  {
+    "id": "loviribolovhr",
+    "name": "Loviribolovhr",
+    "country": "Regional",
+    "category": "Dokumentarni",
+    "image": "logos/loviribolovhr.png"
   },
   {
     "id": "sport-world--m-deportes",
@@ -791,6 +1456,13 @@
     "image": "logos/sport-world--magenta-fussball-6-during-games-only.png"
   },
   {
+    "id": "magentainfokanalat",
+    "name": "Magentainfokanalat",
+    "country": "BiH",
+    "category": "General",
+    "image": "logos/magentainfokanalat.png"
+  },
+  {
     "id": "slovenija--megafon-tv",
     "name": "Megafon Tv",
     "country": "Slovenija",
@@ -810,6 +1482,27 @@
     "country": "Regional",
     "category": "Glazbeni",
     "image": "logos/muzicki--merak-tv.png"
+  },
+  {
+    "id": "mgmplusdriveinus",
+    "name": "Mgmplusdriveinus",
+    "country": "Srbija",
+    "category": "General",
+    "image": "logos/mgmplusdriveinus.png"
+  },
+  {
+    "id": "minimaxcz",
+    "name": "Minimaxcz",
+    "country": "Regional",
+    "category": "Dječji",
+    "image": "logos/minimaxcz.png"
+  },
+  {
+    "id": "minitvhr",
+    "name": "Minitvhr",
+    "country": "Regional",
+    "category": "Dječji",
+    "image": "logos/minitvhr.png"
   },
   {
     "id": "filmski--movie-night-1",
@@ -910,11 +1603,25 @@
     "image": "logos/sport-world--my-sports-1.png"
   },
   {
+    "id": "myzentvnl",
+    "name": "Myzentvnl",
+    "country": "Regional",
+    "category": "Dokumentarni",
+    "image": "logos/myzentvnl.png"
+  },
+  {
     "id": "slovenija--n1-slovenija",
     "name": "N1 Slovenija",
     "country": "Slovenija",
     "category": "General",
     "image": "logos/slovenija--n1-slovenija.png"
+  },
+  {
+    "id": "n1hr",
+    "name": "N1hr",
+    "country": "International",
+    "category": "Informativni",
+    "image": "logos/n1hr.png"
   },
   {
     "id": "makedonija--nasa-tv-cool",
@@ -943,6 +1650,34 @@
     "country": "Makedonija",
     "category": "General",
     "image": "logos/makedonija--nasa-tv-rock.png"
+  },
+  {
+    "id": "natgeowildde",
+    "name": "Natgeowildde",
+    "country": "Regional",
+    "category": "Dokumentarni",
+    "image": "logos/natgeowildde.png"
+  },
+  {
+    "id": "nationalgeographicar",
+    "name": "Nationalgeographicar",
+    "country": "Regional",
+    "category": "Dokumentarni",
+    "image": "logos/nationalgeographicar.png"
+  },
+  {
+    "id": "nationalgeographicwildar",
+    "name": "Nationalgeographicwildar",
+    "country": "Crna Gora",
+    "category": "General",
+    "image": "logos/nationalgeographicwildar.png"
+  },
+  {
+    "id": "nauticalchannelint",
+    "name": "Nauticalchannelint",
+    "country": "Regional",
+    "category": "Dokumentarni",
+    "image": "logos/nauticalchannelint.png"
   },
   {
     "id": "filmski--netip-film-1",
@@ -1043,11 +1778,46 @@
     "image": "logos/filmski--netip-select-4.png"
   },
   {
+    "id": "nickelodeonar",
+    "name": "Nickelodeonar",
+    "country": "Regional",
+    "category": "Dječji",
+    "image": "logos/nickelodeonar.png"
+  },
+  {
+    "id": "nickjrar",
+    "name": "Nickjrar",
+    "country": "Regional",
+    "category": "Dječji",
+    "image": "logos/nickjrar.png"
+  },
+  {
+    "id": "nickspongebobuk",
+    "name": "Nickspongebobuk",
+    "country": "Regional",
+    "category": "Dječji",
+    "image": "logos/nickspongebobuk.png"
+  },
+  {
+    "id": "nicktoonsde",
+    "name": "Nicktoonsde",
+    "country": "Regional",
+    "category": "Dječji",
+    "image": "logos/nicktoonsde.png"
+  },
+  {
     "id": "srbija--nis-tv",
     "name": "Nis Tv",
     "country": "Srbija",
     "category": "General",
     "image": "logos/srbija--nis-tv.png"
+  },
+  {
+    "id": "nitvau",
+    "name": "Nitvau",
+    "country": "Srbija",
+    "category": "General",
+    "image": "logos/nitvau.png"
   },
   {
     "id": "dokumentarni--nov-at-documentary",
@@ -1085,6 +1855,41 @@
     "image": "logos/filmski--nova-plus.png"
   },
   {
+    "id": "novafamilyhr",
+    "name": "Novafamilyhr",
+    "country": "Hrvatska",
+    "category": "General",
+    "image": "logos/novafamilyhr.png"
+  },
+  {
+    "id": "novamaxhr",
+    "name": "Novamaxhr",
+    "country": "Crna Gora",
+    "category": "General",
+    "image": "logos/novamaxhr.png"
+  },
+  {
+    "id": "novaserieshr",
+    "name": "Novaserieshr",
+    "country": "Srbija",
+    "category": "General",
+    "image": "logos/novaserieshr.png"
+  },
+  {
+    "id": "novasportbg",
+    "name": "Novasportbg",
+    "country": "Srbija",
+    "category": "General",
+    "image": "logos/novasportbg.png"
+  },
+  {
+    "id": "novaworldhr",
+    "name": "Novaworldhr",
+    "country": "Hrvatska",
+    "category": "General",
+    "image": "logos/novaworldhr.png"
+  },
+  {
     "id": "muzicki--now-90s-and-00s",
     "name": "Now 90s And 00s",
     "country": "Regional",
@@ -1120,11 +1925,25 @@
     "image": "logos/slovenija--oron-tv.png"
   },
   {
+    "id": "parastvin",
+    "name": "Parastvin",
+    "country": "Srbija",
+    "category": "General",
+    "image": "logos/parastvin.png"
+  },
+  {
     "id": "slovenija--pe-tv",
     "name": "Pe Tv",
     "country": "Slovenija",
     "category": "General",
     "image": "logos/slovenija--pe-tv.png"
+  },
+  {
+    "id": "pingviniukaslt",
+    "name": "Pingviniukaslt",
+    "country": "Regional",
+    "category": "Dječji",
+    "image": "logos/pingviniukaslt.png"
   },
   {
     "id": "pink-media--pink-1",
@@ -1155,6 +1974,202 @@
     "image": "logos/slovenija--pink-s.png"
   },
   {
+    "id": "pinkactionrs",
+    "name": "Pinkactionrs",
+    "country": "Regional",
+    "category": "Pink Media",
+    "image": "logos/pinkactionrs.png"
+  },
+  {
+    "id": "pinkbhrs",
+    "name": "Pinkbhrs",
+    "country": "Regional",
+    "category": "Pink Media",
+    "image": "logos/pinkbhrs.png"
+  },
+  {
+    "id": "pinkclassicrs",
+    "name": "Pinkclassicrs",
+    "country": "Regional",
+    "category": "Pink Media",
+    "image": "logos/pinkclassicrs.png"
+  },
+  {
+    "id": "pinkcomedyrs",
+    "name": "Pinkcomedyrs",
+    "country": "Regional",
+    "category": "Pink Media",
+    "image": "logos/pinkcomedyrs.png"
+  },
+  {
+    "id": "pinkextrars",
+    "name": "Pinkextrars",
+    "country": "Regional",
+    "category": "Pink Media",
+    "image": "logos/pinkextrars.png"
+  },
+  {
+    "id": "pinkfamilyrs",
+    "name": "Pinkfamilyrs",
+    "country": "Regional",
+    "category": "Pink Media",
+    "image": "logos/pinkfamilyrs.png"
+  },
+  {
+    "id": "pinkfashionrs",
+    "name": "Pinkfashionrs",
+    "country": "Regional",
+    "category": "Pink Media",
+    "image": "logos/pinkfashionrs.png"
+  },
+  {
+    "id": "pinkfilmrs",
+    "name": "Pinkfilmrs",
+    "country": "Regional",
+    "category": "Pink Media",
+    "image": "logos/pinkfilmrs.png"
+  },
+  {
+    "id": "pinkhorrorrs",
+    "name": "Pinkhorrorrs",
+    "country": "Regional",
+    "category": "Pink Media",
+    "image": "logos/pinkhorrorrs.png"
+  },
+  {
+    "id": "pinkkoncertrs",
+    "name": "Pinkkoncertrs",
+    "country": "Regional",
+    "category": "Pink Media",
+    "image": "logos/pinkkoncertrs.png"
+  },
+  {
+    "id": "pinkkuvarrs",
+    "name": "Pinkkuvarrs",
+    "country": "Regional",
+    "category": "Pink Media",
+    "image": "logos/pinkkuvarrs.png"
+  },
+  {
+    "id": "pinkmoviesrs",
+    "name": "Pinkmoviesrs",
+    "country": "Regional",
+    "category": "Pink Media",
+    "image": "logos/pinkmoviesrs.png"
+  },
+  {
+    "id": "pinkmrs",
+    "name": "Pinkmrs",
+    "country": "Crna Gora",
+    "category": "General",
+    "image": "logos/pinkmrs.png"
+  },
+  {
+    "id": "pinkoclubro",
+    "name": "Pinkoclubro",
+    "country": "Crna Gora",
+    "category": "General",
+    "image": "logos/pinkoclubro.png"
+  },
+  {
+    "id": "pinkpediars",
+    "name": "Pinkpediars",
+    "country": "Regional",
+    "category": "Pink Media",
+    "image": "logos/pinkpediars.png"
+  },
+  {
+    "id": "pinkplusrs",
+    "name": "Pinkplusrs",
+    "country": "Regional",
+    "category": "Pink Media",
+    "image": "logos/pinkplusrs.png"
+  },
+  {
+    "id": "pinkpremiumrs",
+    "name": "Pinkpremiumrs",
+    "country": "Regional",
+    "category": "Pink Media",
+    "image": "logos/pinkpremiumrs.png"
+  },
+  {
+    "id": "pinkrealityrs",
+    "name": "Pinkrealityrs",
+    "country": "Regional",
+    "category": "Pink Media",
+    "image": "logos/pinkrealityrs.png"
+  },
+  {
+    "id": "pinkromancers",
+    "name": "Pinkromancers",
+    "country": "Regional",
+    "category": "Pink Media",
+    "image": "logos/pinkromancers.png"
+  },
+  {
+    "id": "pinkserijers",
+    "name": "Pinkserijers",
+    "country": "Regional",
+    "category": "Pink Media",
+    "image": "logos/pinkserijers.png"
+  },
+  {
+    "id": "pinkshowrs",
+    "name": "Pinkshowrs",
+    "country": "Regional",
+    "category": "Pink Media",
+    "image": "logos/pinkshowrs.png"
+  },
+  {
+    "id": "pinksoaprs",
+    "name": "Pinksoaprs",
+    "country": "Regional",
+    "category": "Pink Media",
+    "image": "logos/pinksoaprs.png"
+  },
+  {
+    "id": "pinkstylers",
+    "name": "Pinkstylers",
+    "country": "Regional",
+    "category": "Pink Media",
+    "image": "logos/pinkstylers.png"
+  },
+  {
+    "id": "pinksuperkidsrs",
+    "name": "Pinksuperkidsrs",
+    "country": "Regional",
+    "category": "Dječji",
+    "image": "logos/pinksuperkidsrs.png"
+  },
+  {
+    "id": "pinkthrillerrs",
+    "name": "Pinkthrillerrs",
+    "country": "Regional",
+    "category": "Pink Media",
+    "image": "logos/pinkthrillerrs.png"
+  },
+  {
+    "id": "pinkwesternrs",
+    "name": "Pinkwesternrs",
+    "country": "Regional",
+    "category": "Pink Media",
+    "image": "logos/pinkwesternrs.png"
+  },
+  {
+    "id": "pinkworldcinemars",
+    "name": "Pinkworldcinemars",
+    "country": "Regional",
+    "category": "Pink Media",
+    "image": "logos/pinkworldcinemars.png"
+  },
+  {
+    "id": "pinkzabavars",
+    "name": "Pinkzabavars",
+    "country": "Regional",
+    "category": "Pink Media",
+    "image": "logos/pinkzabavars.png"
+  },
+  {
     "id": "muzicki--playm",
     "name": "Playm",
     "country": "Regional",
@@ -1169,11 +2184,25 @@
     "image": "logos/crna-gora--podgorica-tv.png"
   },
   {
+    "id": "polsatpl",
+    "name": "Polsatpl",
+    "country": "Poljska",
+    "category": "General",
+    "image": "logos/polsatpl.png"
+  },
+  {
     "id": "muzicki--pop-melody",
     "name": "Pop Melody",
     "country": "Regional",
     "category": "Glazbeni",
     "image": "logos/muzicki--pop-melody.png"
+  },
+  {
+    "id": "protvinternationalro",
+    "name": "Protvinternationalro",
+    "country": "BiH",
+    "category": "General",
+    "image": "logos/protvinternationalro.png"
   },
   {
     "id": "prva-rs",
@@ -1183,6 +2212,48 @@
     "image": "logos/prva-rs.png"
   },
   {
+    "id": "prvafilesrs",
+    "name": "Prvafilesrs",
+    "country": "Srbija",
+    "category": "General",
+    "image": "logos/prvafilesrs.png"
+  },
+  {
+    "id": "prvakickrs",
+    "name": "Prvakickrs",
+    "country": "Srbija",
+    "category": "General",
+    "image": "logos/prvakickrs.png"
+  },
+  {
+    "id": "prvalifers",
+    "name": "Prvalifers",
+    "country": "Srbija",
+    "category": "General",
+    "image": "logos/prvalifers.png"
+  },
+  {
+    "id": "prvamaxrs",
+    "name": "Prvamaxrs",
+    "country": "Srbija",
+    "category": "General",
+    "image": "logos/prvamaxrs.png"
+  },
+  {
+    "id": "prvaplusrs",
+    "name": "Prvaplusrs",
+    "country": "Srbija",
+    "category": "General",
+    "image": "logos/prvaplusrs.png"
+  },
+  {
+    "id": "prvaworldrs",
+    "name": "Prvaworldrs",
+    "country": "Srbija",
+    "category": "General",
+    "image": "logos/prvaworldrs.png"
+  },
+  {
     "id": "sport-world--rally-tv",
     "name": "Rally Tv",
     "country": "International",
@@ -1190,11 +2261,137 @@
     "image": "logos/sport-world--rally-tv.png"
   },
   {
+    "id": "realtimeit",
+    "name": "Realtimeit",
+    "country": "Italija",
+    "category": "General",
+    "image": "logos/realtimeit.png"
+  },
+  {
+    "id": "republictvin",
+    "name": "Republictvin",
+    "country": "Srbija",
+    "category": "General",
+    "image": "logos/republictvin.png"
+  },
+  {
     "id": "filmski--rtl-play-premium",
     "name": "Rtl Play Premium",
     "country": "Regional",
     "category": "Filmski",
     "image": "logos/filmski--rtl-play-premium.png"
+  },
+  {
+    "id": "rtl2hr",
+    "name": "Rtl2hr",
+    "country": "Hrvatska",
+    "category": "General",
+    "image": "logos/rtl2hr.png"
+  },
+  {
+    "id": "rtladriahr",
+    "name": "Rtladriahr",
+    "country": "Hrvatska",
+    "category": "General",
+    "image": "logos/rtladriahr.png"
+  },
+  {
+    "id": "rtlcrimehr",
+    "name": "Rtlcrimehr",
+    "country": "Hrvatska",
+    "category": "General",
+    "image": "logos/rtlcrimehr.png"
+  },
+  {
+    "id": "rtlkockicahr",
+    "name": "Rtlkockicahr",
+    "country": "Regional",
+    "category": "Dječji",
+    "image": "logos/rtlkockicahr.png"
+  },
+  {
+    "id": "rtllivinghr",
+    "name": "Rtllivinghr",
+    "country": "Hrvatska",
+    "category": "General",
+    "image": "logos/rtllivinghr.png"
+  },
+  {
+    "id": "rtlpassionhr",
+    "name": "Rtlpassionhr",
+    "country": "Hrvatska",
+    "category": "General",
+    "image": "logos/rtlpassionhr.png"
+  },
+  {
+    "id": "rtrsplusrs",
+    "name": "Rtrsplusrs",
+    "country": "BiH",
+    "category": "General",
+    "image": "logos/rtrsplusrs.png"
+  },
+  {
+    "id": "rtsdramars",
+    "name": "Rtsdramars",
+    "country": "Srbija",
+    "category": "General",
+    "image": "logos/rtsdramars.png"
+  },
+  {
+    "id": "rtshfilmal",
+    "name": "Rtshfilmal",
+    "country": "Češka/Slovačka",
+    "category": "General",
+    "image": "logos/rtshfilmal.png"
+  },
+  {
+    "id": "rtsklasikars",
+    "name": "Rtsklasikars",
+    "country": "Srbija",
+    "category": "General",
+    "image": "logos/rtsklasikars.png"
+  },
+  {
+    "id": "rtskolors",
+    "name": "Rtskolors",
+    "country": "Srbija",
+    "category": "General",
+    "image": "logos/rtskolors.png"
+  },
+  {
+    "id": "rtsmuzikars",
+    "name": "Rtsmuzikars",
+    "country": "Srbija",
+    "category": "General",
+    "image": "logos/rtsmuzikars.png"
+  },
+  {
+    "id": "rtsnaukars",
+    "name": "Rtsnaukars",
+    "country": "Srbija",
+    "category": "General",
+    "image": "logos/rtsnaukars.png"
+  },
+  {
+    "id": "rtspoletaracrs",
+    "name": "Rtspoletaracrs",
+    "country": "Srbija",
+    "category": "General",
+    "image": "logos/rtspoletaracrs.png"
+  },
+  {
+    "id": "rtssvetrs",
+    "name": "Rtssvetrs",
+    "country": "Srbija",
+    "category": "General",
+    "image": "logos/rtssvetrs.png"
+  },
+  {
+    "id": "rtstrezorrs",
+    "name": "Rtstrezorrs",
+    "country": "Srbija",
+    "category": "General",
+    "image": "logos/rtstrezorrs.png"
   },
   {
     "id": "srbija--rtv-101",
@@ -1295,6 +2492,13 @@
     "image": "logos/bih--rtv-zivinice.png"
   },
   {
+    "id": "rtvpancevors",
+    "name": "Rtvpancevors",
+    "country": "Srbija",
+    "category": "General",
+    "image": "logos/rtvpancevors.png"
+  },
+  {
     "id": "srbija--sat-tv-pozarevac",
     "name": "Sat Tv Pozarevac",
     "country": "Srbija",
@@ -1309,11 +2513,32 @@
     "image": "logos/slovenija--savinjska-tv.png"
   },
   {
+    "id": "sbtvhr",
+    "name": "Sbtvhr",
+    "country": "Hrvatska",
+    "category": "General",
+    "image": "logos/sbtvhr.png"
+  },
+  {
     "id": "muzicki--sehara-tv",
     "name": "Sehara Tv",
     "country": "Regional",
     "category": "Glazbeni",
     "image": "logos/muzicki--sehara-tv.png"
+  },
+  {
+    "id": "seznamtvcz",
+    "name": "Seznamtvcz",
+    "country": "Češka/Slovačka",
+    "category": "General",
+    "image": "logos/seznamtvcz.png"
+  },
+  {
+    "id": "showtvpl",
+    "name": "Showtvpl",
+    "country": "Turska",
+    "category": "General",
+    "image": "logos/showtvpl.png"
   },
   {
     "id": "slovenija--sip-tv",
@@ -1379,6 +2604,27 @@
     "image": "logos/sport-world--sky-sport-256.png"
   },
   {
+    "id": "skyarteit",
+    "name": "Skyarteit",
+    "country": "Italija",
+    "category": "General",
+    "image": "logos/skyarteit.png"
+  },
+  {
+    "id": "skydocumentariesaltde",
+    "name": "Skydocumentariesaltde",
+    "country": "Italija",
+    "category": "General",
+    "image": "logos/skydocumentariesaltde.png"
+  },
+  {
+    "id": "skyhistory2iconuk",
+    "name": "Skyhistory2iconuk",
+    "country": "Regional",
+    "category": "Dokumentarni",
+    "image": "logos/skyhistory2iconuk.png"
+  },
+  {
     "id": "filmski--skyshowtime-1",
     "name": "Skyshowtime 1",
     "country": "Regional",
@@ -1393,6 +2639,13 @@
     "image": "logos/filmski--skyshowtime-2.png"
   },
   {
+    "id": "skysportaustria1at",
+    "name": "Skysportaustria1at",
+    "country": "International",
+    "category": "Sport",
+    "image": "logos/skysportaustria1at.png"
+  },
+  {
     "id": "sport-world--sport-italia-solo-calcio",
     "name": "Sport Italia Solo Calcio",
     "country": "International",
@@ -1405,6 +2658,13 @@
     "country": "Regional",
     "category": "Sport (Ex-Yu)",
     "image": "logos/sport-ex-yu--sport-klub-fight.png"
+  },
+  {
+    "id": "sportv2br",
+    "name": "Sportv2br",
+    "country": "Srbija",
+    "category": "General",
+    "image": "logos/sportv2br.png"
   },
   {
     "id": "srbija--srpska-tv",
@@ -1470,6 +2730,76 @@
     "image": "logos/makedonija--star-folk1.png"
   },
   {
+    "id": "staractionar",
+    "name": "Staractionar",
+    "country": "Crna Gora",
+    "category": "General",
+    "image": "logos/staractionar.png"
+  },
+  {
+    "id": "starcrimebg",
+    "name": "Starcrimebg",
+    "country": "Crna Gora",
+    "category": "General",
+    "image": "logos/starcrimebg.png"
+  },
+  {
+    "id": "starlifear",
+    "name": "Starlifear",
+    "country": "Crna Gora",
+    "category": "General",
+    "image": "logos/starlifear.png"
+  },
+  {
+    "id": "starmovieshdin",
+    "name": "Starmovieshdin",
+    "country": "Crna Gora",
+    "category": "General",
+    "image": "logos/starmovieshdin.png"
+  },
+  {
+    "id": "story4hu",
+    "name": "Story4hu",
+    "country": "Češka/Slovačka",
+    "category": "General",
+    "image": "logos/story4hu.png"
+  },
+  {
+    "id": "studiobrs",
+    "name": "Studiobrs",
+    "country": "Srbija",
+    "category": "General",
+    "image": "logos/studiobrs.png"
+  },
+  {
+    "id": "supersatrs",
+    "name": "Supersatrs",
+    "country": "Srbija",
+    "category": "General",
+    "image": "logos/supersatrs.png"
+  },
+  {
+    "id": "superstar2rs",
+    "name": "Superstar2rs",
+    "country": "Crna Gora",
+    "category": "General",
+    "image": "logos/superstar2rs.png"
+  },
+  {
+    "id": "superstartvrs",
+    "name": "Superstartvrs",
+    "country": "Crna Gora",
+    "category": "General",
+    "image": "logos/superstartvrs.png"
+  },
+  {
+    "id": "supertvgr",
+    "name": "Supertvgr",
+    "country": "BiH",
+    "category": "General",
+    "image": "logos/supertvgr.png"
+  },
+  {
     "id": "makedonija--t-prime-1",
     "name": "T Prime 1",
     "country": "Makedonija",
@@ -1491,11 +2821,39 @@
     "image": "logos/makedonija--t-prime-action.png"
   },
   {
+    "id": "tanjugtvrs",
+    "name": "Tanjugtvrs",
+    "country": "Srbija",
+    "category": "General",
+    "image": "logos/tanjugtvrs.png"
+  },
+  {
     "id": "slovenija--tele-m",
     "name": "Tele M",
     "country": "Slovenija",
     "category": "General",
     "image": "logos/slovenija--tele-m.png"
+  },
+  {
+    "id": "televizijadalmacijahr",
+    "name": "Televizijadalmacijahr",
+    "country": "Hrvatska",
+    "category": "General",
+    "image": "logos/televizijadalmacijahr.png"
+  },
+  {
+    "id": "thefishingandhuntingchannelhu",
+    "name": "Thefishingandhuntingchannelhu",
+    "country": "Regional",
+    "category": "Dokumentarni",
+    "image": "logos/thefishingandhuntingchannelhu.png"
+  },
+  {
+    "id": "tomandjerrychannelit",
+    "name": "Tomandjerrychannelit",
+    "country": "Regional",
+    "category": "Dječji",
+    "image": "logos/tomandjerrychannelit.png"
   },
   {
     "id": "filmski--total-cinema-1",
@@ -1524,6 +2882,13 @@
     "country": "Regional",
     "category": "Glazbeni",
     "image": "logos/muzicki--total-music-80s.png"
+  },
+  {
+    "id": "travelchannelint",
+    "name": "Travelchannelint",
+    "country": "Regional",
+    "category": "Dokumentarni",
+    "image": "logos/travelchannelint.png"
   },
   {
     "id": "sport-world--tring-sport-1",
@@ -1568,11 +2933,53 @@
     "image": "logos/sport-world--tring-sport-7.png"
   },
   {
+    "id": "trt1hdtr",
+    "name": "Trt1hdtr",
+    "country": "Turska",
+    "category": "General",
+    "image": "logos/trt1hdtr.png"
+  },
+  {
+    "id": "trt2tr",
+    "name": "Trt2tr",
+    "country": "Turska",
+    "category": "General",
+    "image": "logos/trt2tr.png"
+  },
+  {
+    "id": "trtarabitr",
+    "name": "Trtarabitr",
+    "country": "Turska",
+    "category": "General",
+    "image": "logos/trtarabitr.png"
+  },
+  {
+    "id": "trtavaztr",
+    "name": "Trtavaztr",
+    "country": "Turska",
+    "category": "General",
+    "image": "logos/trtavaztr.png"
+  },
+  {
+    "id": "trtturktr",
+    "name": "Trtturktr",
+    "country": "Turska",
+    "category": "General",
+    "image": "logos/trtturktr.png"
+  },
+  {
     "id": "slovenija--trzic-tv",
     "name": "Trzic Tv",
     "country": "Slovenija",
     "category": "General",
     "image": "logos/slovenija--trzic-tv.png"
+  },
+  {
+    "id": "turizamtvrs",
+    "name": "Turizamtvrs",
+    "country": "Srbija",
+    "category": "General",
+    "image": "logos/turizamtvrs.png"
   },
   {
     "id": "srbija--tv-dankos-plus",
@@ -1820,6 +3227,34 @@
     "image": "logos/slovenija--tv-zlati-zvoki.png"
   },
   {
+    "id": "tv85tr",
+    "name": "Tv85tr",
+    "country": "Turska",
+    "category": "General",
+    "image": "logos/tv85tr.png"
+  },
+  {
+    "id": "tv8inttr",
+    "name": "Tv8inttr",
+    "country": "Turska",
+    "category": "General",
+    "image": "logos/tv8inttr.png"
+  },
+  {
+    "id": "tvdugaplusrs",
+    "name": "Tvdugaplusrs",
+    "country": "Srbija",
+    "category": "General",
+    "image": "logos/tvdugaplusrs.png"
+  },
+  {
+    "id": "tvhramrs",
+    "name": "Tvhramrs",
+    "country": "International",
+    "category": "Religijski",
+    "image": "logos/tvhramrs.png"
+  },
+  {
     "id": "muzicki--uzivoteka",
     "name": "Uzivoteka",
     "country": "Regional",
@@ -1841,11 +3276,53 @@
     "image": "logos/muzicki--vh1-music.png"
   },
   {
+    "id": "viasatexplorehr",
+    "name": "Viasatexplorehr",
+    "country": "Regional",
+    "category": "Dokumentarni",
+    "image": "logos/viasatexplorehr.png"
+  },
+  {
+    "id": "viasathistoryhr",
+    "name": "Viasathistoryhr",
+    "country": "Austrija",
+    "category": "General",
+    "image": "logos/viasathistoryhr.png"
+  },
+  {
+    "id": "viasathistoryhu",
+    "name": "Viasathistoryhu",
+    "country": "Regional",
+    "category": "Dokumentarni",
+    "image": "logos/viasathistoryhu.png"
+  },
+  {
+    "id": "viasatnaturehr",
+    "name": "Viasatnaturehr",
+    "country": "Regional",
+    "category": "Dokumentarni",
+    "image": "logos/viasatnaturehr.png"
+  },
+  {
+    "id": "viasattruecrimepl",
+    "name": "Viasattruecrimepl",
+    "country": "Regional",
+    "category": "Dokumentarni",
+    "image": "logos/viasattruecrimepl.png"
+  },
+  {
     "id": "makedonija--vistinska-tv",
     "name": "Vistinska Tv",
     "country": "Makedonija",
     "category": "General",
     "image": "logos/makedonija--vistinska-tv.png"
+  },
+  {
+    "id": "weltde",
+    "name": "Weltde",
+    "country": "Njemačka",
+    "category": "General",
+    "image": "logos/weltde.png"
   },
   {
     "id": "crna-gora--wow-montenegro",
@@ -1867,5 +3344,12 @@
     "country": "International",
     "category": "Sport",
     "image": "logos/sport-world--ziggo-sport-golf.png"
+  },
+  {
+    "id": "zonadaznit",
+    "name": "Zonadaznit",
+    "country": "International",
+    "category": "Sport",
+    "image": "logos/zonadaznit.png"
   }
 ]
