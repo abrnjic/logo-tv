@@ -1,0 +1,92 @@
+Popis kanala za grupu: POLAND
+Ukupno kanala: 88
+=========================================
+
+- PL: 13  Ulica
+- PL: ALE Kino
+- PL: AMC
+- PL: AXN
+- PL: AXN Black
+- PL: AXN Spin
+- PL: Active Family
+- PL: Axn White
+- PL: BBC Brit
+- PL: BBC Earth
+- PL: BBC Lifestyle
+- PL: CI Polsat
+- PL: Canal+ Film
+- PL: Canal+ Kuchnia
+- PL: Canal+ Premium
+- PL: Canal+ Seriale
+- PL: Cartoon Network
+- PL: Cinemax
+- PL: Cinemax 2
+- PL: Discovery
+- PL: Discovery Life
+- PL: Discovery Science
+- PL: Disney Junior
+- PL: Disney XD
+- PL: Epic Drama
+- PL: Filmbox Action
+- PL: Filmbox Arthouse
+- PL: Filmbox Extra
+- PL: Filmbox Family
+- PL: Filmbox Premium
+- PL: Fx Comedy
+- PL: HBO
+- PL: HBO 2
+- PL: HBO 3
+- PL: HGTV
+- PL: History
+- PL: History 2
+- PL: Jim Jam
+- PL: Kino Polska
+- PL: Kino TV
+- PL: Nat GEO Wild
+- PL: Nat Geo People
+- PL: National Geographic
+- PL: Nick JR
+- PL: Nickelodeon
+- PL: Nicktoons
+- PL: Novela TV
+- PL: Nowa TV
+- PL: Nuta TV
+- PL: Paramount Network
+- PL: Polonia 1
+- PL: Polsat
+- PL: Polsat 2
+- PL: Polsat Cafe
+- PL: Polsat Doku
+- PL: Polsat Film
+- PL: Polsat Play
+- PL: Polsat Rodzina
+- PL: Power TV
+- PL: Puls 2
+- PL: Romance TV
+- PL: SciFi
+- PL: Stars TV
+- PL: Super Polsat
+- PL: TLC
+- PL: TTV
+- PL: TV Puls
+- PL: TV4
+- PL: TV6
+- PL: TVN
+- PL: TVN 24
+- PL: TVN 7
+- PL: TVN Fabula
+- PL: TVN Turbo
+- PL: TVP 1
+- PL: TVP 2
+- PL: TVP 3
+- PL: TVP ABC
+- PL: TVP Info
+- PL: TVP Kultura
+- PL: TVP Polonia
+- PL: TVP Seriale
+- PL: TVP World
+- PL: Viasat Explore
+- PL: Viasat History
+- PL: Viasat Nature
+- PL: Warner TV
+- PL: Zoom TV

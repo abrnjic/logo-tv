@@ -1,0 +1,20 @@
+Popis kanala za grupu: NEWS
+Ukupno kanala: 16
+=========================================
+
+- DE: DW English
+- FR: France 24
+- HR: Bloomberg Adria
+- N1 BiH
+- N1 HR
+- N1 SR
+- RU: Мир 24
+- SR: Euronews Srbija
+- SR: N1
+- SR: NewsMax Balkans
+- SR: RT Balkan
+- UK: DW English News
+- UK: Euronews
+- UK: Sky News
+- US: BBC News
+- US: CNN

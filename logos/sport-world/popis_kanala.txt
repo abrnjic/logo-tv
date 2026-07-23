@@ -1,0 +1,317 @@
+Popis kanala za grupu: SPORT WORLD
+Ukupno kanala: 313
+=========================================
+
+- " group-title="SPORT WORLD",DE: Sky Sport Top Event
+- *** DAZN SPORT ***
+- *** SPORT ARAB***
+- *** SPORT AUSTRIA***
+- *** SPORT ENGLAND***
+- *** SPORT ESPANA***
+- *** SPORT ITALIA***
+- *** SPORT OSTALI***
+- *** SPORT POLAND***
+- *** SPORT PORTUGAL***
+- *** SPORT RUMUNIJA***
+- *** SPORT RUSIJA***
+- *** SPORT TURSKA***
+- *** SPORT USA***
+- ***NETHERLANDS SPORT***
+- ***SPORT ALBANIA***
+- ***SPORT FRANCE***
+- AL: ART Sport 1
+- AL: ART Sport 3
+- AL: Art Sport 2
+- AL: Art Sport 4
+- AL: Art Sport 5
+- AL: Art Sport 6
+- AL: SS-1 ᴴᴰ
+- AL: SS-2
+- AL: SS-3 ᴴᴰ
+- AL: SS-4 ᴴᴰ
+- AL: SS-5 ᴴᴰ
+- AL: SS-6
+- AL: SS-7
+- AL: Tring Sport 1
+- AL: Tring Sport 2
+- AL: Tring Sport 3
+- AL: Tring Sport 4
+- AL: Tring Sport 5
+- AL: Tring Sport 7
+- AL: Tring Sport News
+- AR: Bein Sports 5
+- AR: beIN Sports 1
+- AR: beIN Sports 2
+- AR: beIN Sports 3
+- AR: beIN Sports 4
+- AR: beIN Sports 6
+- AT: Orf Sport+
+- AT: Sky Sport Austria 1
+- AT: Sky Sport Austria 2  [ Live Events ]
+- AT: Sky Sport Austria 3    (nur an Spieltagen)
+- AT: Sky Sport Austria 4  [ Live Events ]
+- AT: Sky Sport Austria 5   (nur an Spieltagen)
+- AT: Sky Sport Austria 6   (nur an Spieltagen)
+- AT: Sky Sport Austria 7   (nur an Spieltagen)
+- BG: Diema Sport
+- BG: Diema Sport 2
+- BG: Diema Sport 3
+- BG: MAX Sport 1
+- BG: MAX Sport 2
+- BG: MAX Sport 3
+- BG: MAX Sport 4
+- CH: Blue Sport 1
+- CH: Blue Sport 5
+- CH: My Sports 1
+- CH: My Sports 2
+- CH: My Sports 3
+- CH: My Sports 4
+- CH: My Sports 5
+- CZ: Arena Sport 1
+- CZ: Arena Sport 2
+- CZ: Nova Sport 1
+- CZ: Nova Sport 2
+- CZ: Sport 1
+- CZ: Sport 2
+- DAZN Billiard TV
+- DE | Magenta Sport 1 [ Live Events ]
+- DE | Sky Sport Premier League
+- DE: Auto Motor Sport TV
+- DE: Auto Motor und Sport
+- DE: Dazn 1
+- DE: Dazn 1 Live Event
+- DE: Dazn 10 Live Event
+- DE: Dazn 2
+- DE: Dazn 2 Live Event
+- DE: Dazn 3 Live Event
+- DE: Dazn 4 Live Event
+- DE: Dazn 5 Live Event
+- DE: Dazn 6 Live Event
+- DE: Dazn 7 Live Event
+- DE: Dazn 8 Live Event
+- DE: Dazn 9 Live Event
+- DE: Dazn NBA
+- DE: Dyn Sport 1
+- DE: Dyn Sport 10
+- DE: Dyn Sport 3
+- DE: Dyn Sport 4
+- DE: Dyn Sport 5
+- DE: Dyn Sport 6
+- DE: Dyn Sport 7
+- DE: Dyn Sport 8
+- DE: Dyn Sport 9
+- DE: Eurosport 1
+- DE: Eurosport 2
+- DE: Fussball TV 1
+- DE: Fussball TV 2
+- DE: Fussball TV 3
+- DE: Magenta Fussball 2  (During Games only)
+- DE: Magenta Fussball 3  (During Games only)
+- DE: Magenta Fussball 4  (During Games only)
+- DE: Magenta Fussball 5   (During Games only)
+- DE: Magenta Fussball 6  (During Games only)
+- DE: Magenta Info
+- DE: Motorvision
+- DE: SKY Sport Golf
+- DE: Sky Sport 1
+- DE: Sky Sport 10
+- DE: Sky Sport 2
+- DE: Sky Sport 3
+- DE: Sky Sport 4
+- DE: Sky Sport 5
+- DE: Sky Sport 6
+- DE: Sky Sport 7
+- DE: Sky Sport 8   (nur an Spieltagen)
+- DE: Sky Sport 9
+- DE: Sky Sport Bundesliga
+- DE: Sky Sport Bundesliga 1  (During Games only)
+- DE: Sky Sport Bundesliga 10  (During Games only)
+- DE: Sky Sport Bundesliga 2   (During Games only)
+- DE: Sky Sport Bundesliga 3    (During Games only)
+- DE: Sky Sport Bundesliga 4   (During Games only)
+- DE: Sky Sport Bundesliga 5   (During Games only)
+- DE: Sky Sport Bundesliga 6   (During Games only)
+- DE: Sky Sport Bundesliga 7   (During Games only)
+- DE: Sky Sport Bundesliga 8   (During Games only)
+- DE: Sky Sport Bundesliga 9  (During Games only)
+- DE: Sky Sport F1
+- DE: Sky Sport Mix
+- DE: Sky Sport News
+- DE: Sky Sport Tennis
+- DE: Sport 1
+- DE: Sportdigital Fussball
+- Dazn Combat
+- Dazn MLB Network
+- Dazn Unbeaten
+- ES : Dazn F1
+- ES: Barca TV
+- ES: Dazn 1
+- ES: Dazn 2
+- ES: Dazn LaLiga 1
+- ES: Eurosport 1
+- ES: Eurosport 2
+- ES: M+ Deportes
+- ES: M+ Deportes 2
+- ES: M+ Laliga 2
+- Extreme Sports
+- FR: Bein Sports 1
+- FR: Bein Sports 2
+- FR: Bein Sports Max 3
+- FR: Bein Sports Max 4
+- FR: Bein Sports Max 5
+- FR: Bein Sports Max 6
+- FR: Bein Sports Max 7
+- FR: Bein Sports Max 8
+- FR: Bein Sports Max 9
+- FR: Canal+ FOOT
+- FR: Canal+ Live 1
+- FR: Canal+ Live 3
+- FR: Canal+ Live 7
+- FR: Canal+ Live 8
+- FR: Canal+ Premier League
+- FR: Canal+ Sport
+- FR: RMC Sport 1
+- FR: RMC Sport 2
+- FR: RMC Sport 3
+- GR: Nova Sport Start
+- GR: Nova Sports 2
+- GR: Nova Sports 3
+- GR: Nova Sports 4
+- GR: Nova Sports 5
+- GR: Nova Sports 6
+- IT: Dazn 1 IT
+- IT: Dazn GOL Serie A
+- IT: Dazn Zona GOL
+- IT: Eurosport 1
+- IT: Eurosport 2
+- IT: Inter TV
+- IT: Milan TV
+- IT: Rai Sport
+- IT: Sky Calcio 1
+- IT: Sky Calcio 2
+- IT: Sky Calcio 3
+- IT: Sky Calcio 4
+- IT: Sky Calcio 5
+- IT: Sky Sport 24
+- IT: Sky Sport 251
+- IT: Sky Sport 252
+- IT: Sky Sport 253
+- IT: Sky Sport 254
+- IT: Sky Sport 255
+- IT: Sky Sport 256
+- IT: Sky Sport 257
+- IT: Sky Sport 258
+- IT: Sky Sport 259
+- IT: Sky Sport Arena
+- IT: Sky Sport Calcio
+- IT: Sky Sport F1
+- IT: Sky Sport Football
+- IT: Sky Sport Max
+- IT: Sky Sport MotoGP
+- IT: Sky Sport NBA
+- IT: Sky Sport Tennis
+- IT: Sky Sport Uno
+- IT: Sky Sport mix
+- IT: Sky Sports Golf
+- IT: Sky sport legend
+- IT: Sport Italia
+- IT: Sport Italia solo Calcio
+- IT: SuperTennis
+- NL: ESPN 1
+- NL: ESPN 2
+- NL: ESPN 3
+- NL: ESPN 4
+- NL: Eurosport 1
+- NL: Ziggo Sport
+- NL: Ziggo Sport 2
+- NL: Ziggo Sport 3
+- NL: Ziggo Sport 4
+- NL: Ziggo Sport 5
+- NL: Ziggo Sport 6
+- NL: Ziggo Sport Golf
+- NL: Ziggo Sport Select
+- PL: Canal+ Event 5
+- PL: Canal+ Extra 1 ᴿᴬᵂ
+- PL: Canal+ Extra 2 ᴿᴬᵂ
+- PL: Canal+ Extra 3 ᴿᴬᵂ
+- PL: Canal+ Sport 2
+- PL: Canal+ Sport 3
+- PL: Canal+ Sport 4
+- PL: Canal+ Sport 5
+- PL: Eleven Sports 1
+- PL: Eleven Sports 2
+- PL: Eleven Sports 3
+- PL: Eleven Sports 4
+- PL: Eurosport 1 ᴿᴬᵂ
+- PL: Eurosport 2 ᴿᴬᵂ
+- PL: Extreme Sports ᴿᴬᵂ
+- PL: Fightklub
+- PL: Polsat Sport
+- PL: Polsat Sport Fight
+- PL: Polsat Sport Premium 1
+- PL: Polsat Sport Premium 2
+- PL: Sport Klub
+- PL: TVP 1
+- PL: TVP 2
+- PL: TVP Sport ᴿᴬᵂ
+- PT: Benfica TV
+- PT: Sport TV 1
+- PT: Sport TV 2
+- PT: Sport TV 3
+- PT: Sport TV 4
+- PT: Sport TV 5
+- PT: Sport TV 6
+- RO: Digi Sport 1
+- RO: Digi Sport 2
+- Rally TV
+- SE: C More Live 4
+- SE: TV4 Fotboll
+- SE: TV4 Hockey
+- SE: TV4 Motor
+- SE: TV4 Sport Live 1
+- SE: TV4 Sport Live 2
+- SE: TV4 Sport Live 3
+- SE: TV4 Tennis
+- SE: Viasat Motor
+- SE: Viasat Sport Extra
+- SE: Viasat Sport Premium
+- TR: A SPOR
+- TR: Fenerbahce TV
+- TR: S-Sport 1
+- TR: S-Sport 2
+- TR: Spor Smart 1
+- TR: Spor Smart 2
+- TR: TRT Sport
+- TR: Trt Spor Yildiz
+- UK: Manchester United TV
+- UK: Premier Sports 1
+- UK: Premier Sports 2
+- UK: Sky Sport F1
+- UK: Sky Sports Cricket
+- UK: Sky Sports Footbal
+- UK: Sky Sports Golf
+- UK: Sky Sports MIX
+- UK: Sky Sports News
+- UK: Sky Sports Premier League
+- UK: Sky Sports Racing
+- UK: Sky Sports Tennis
+- UK: Sky Sports action
+- UK: Sky Sports main Event
+- UK: Sky Sports+
+- UK: TNT Sport 1
+- UK: TNT Sport 2
+- UK: TNT Sports 3
+- UK: TNT Sports 4
+- US: Bein Sports USA
+- US: ESPN 1
+- US: ESPN 2
+- US: FoxSports 1
+- US: Glory Kickboxing
+- US: NBA TV
+- US: NFL Network
+- US: NHL Network
+- US: TSN 1
+- US: TSN 2
+- US: TSN 3
+- US: TSN 4
+- Zona Dazn IT

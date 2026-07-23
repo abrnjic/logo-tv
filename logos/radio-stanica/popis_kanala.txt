@@ -1,0 +1,188 @@
+Popis kanala za grupu: RADIO STANICA
+Ukupno kanala: 184
+=========================================
+
+- Antena Radio Kruševac
+- BIH: BIG 2 Radio Banja Luka
+- BIH: BOBAR RADIO B3
+- BIH: Bn Radio
+- BIH: Drukčiji Radio Novi Travnik
+- BIH: EX-YU RADIO DUBICA
+- BIH: FEDERALNI RADIO SARAJEVO
+- BIH: GRAND RADIO CAZIN
+- BIH: Mega Radio Tuzla
+- BIH: NAŠ RADIO SARAJEVO
+- BIH: NES RADIO
+- BIH: RADIO ARENA MOSTAR
+- BIH: RADIO AS SARAJEVO
+- BIH: RADIO BIHAĆ - CAFFE
+- BIH: RADIO BIHAĆ - FOLK
+- BIH: RADIO BIHAĆ - LIVE
+- BIH: RADIO BIHAĆ FOLK
+- BIH: RADIO DŽUNGLA DOBOJ
+- BIH: RADIO HERCEGOVINA
+- BIH: RADIO HIT FM SARAJEVO
+- BIH: RADIO M CAFE SARAJEVO
+- BIH: RADIO M NARODNA SARAJEVO
+- BIH: RADIO MEGA TUZLA
+- BIH: RADIO PRIBAVA
+- BIH: RADIO SAN DJ HORKO SARAJEVO
+- BIH: RADIO SEDRENIK SARAJEVO
+- BIH: RADIO STARS 22 CAZIN
+- BIH: RADIO VJEČNA VATRA SARAJEVO
+- BIH: RADIO ŽEPA
+- BIH: RADIO ŽEPČE
+- BIH: Radio Kalman
+- BIH: Radio Livno
+- BIH: Radio Mir Međugorje
+- BIH: Radio Posušje
+- BIH: Radio SARAJEVO
+- BIH: Radio SLON
+- BIH: Radio Stjepkovica
+- BIH: Radio Tešanj
+- BIH: Radio Valentino
+- BIH: SAMO DOBAR RADIO
+- BIH: SEVDAH RADIO SARAJEVO
+- BIH: TREND RADIO VELIKA KLADUŠA
+- Euforija Radio
+- HR: Extra FM
+- HR: HRT - Radio Knin
+- HR: HRT Radio Osijek
+- HR: HRT Radio Pula
+- HR: HRT Radio Rijeka
+- HR: HRT Radio Sljeme
+- HR: HRT Radio Split
+- HR: HRT Radio Zadar
+- HR: HRT Voice of Croatia
+- HR: Happy FM
+- HR: Happy Fest
+- HR: Happy Klape
+- HR: Happy Legenda
+- HR: Happy Party
+- HR: Happy Tambura
+- HR: Hrvatski Radio Vukovar
+- HR: Hrvatski katolički radio
+- HR: Hrvatski radio 1
+- HR: Hrvatski radio 2
+- HR: Hrvatski radio 3
+- HR: KLFM RADIO
+- HR: Narodni Radio
+- HR: Narodni Radio - AAAAAAAA!
+- HR: Narodni Radio - LJUBAV JE U ZRAKU
+- HR: Narodni Radio - MA SAMO VESELO!
+- HR: Narodni Radio - TOTALNO OPUŠTENO
+- HR: Novi Radio Zadar
+- HR: Otvoreni Radio
+- HR: Radio 051
+- HR: Radio 101
+- HR: Radio 4 You
+- HR: Radio 808
+- HR: Radio Banovina
+- HR: Radio Brač
+- HR: Radio CRASH
+- HR: Radio Dalmacija
+- HR: Radio Dalmacija - FJAKA
+- HR: Radio Dalmacija - FUREŠTA
+- HR: Radio Dalmacija - OLIVER
+- HR: Radio Dalmacija - PartymiX
+- HR: Radio Dalmacija - ROKIJA
+- HR: Radio Dalmacija -HAJDUČKE
+- HR: Radio Dunav
+- HR: Radio Enter Zagreb
+- HR: Radio Gorski kotar
+- HR: Radio Kaj
+- HR: Radio Kastav
+- HR: Radio Korzo Rijeka
+- HR: Radio MAX
+- HR: Radio Megaton
+- HR: Radio Moslavina
+- HR: Radio Slavonija
+- HR: Radio Sljeme
+- HR: Radio Split
+- HR: Radio Stubica
+- HR: Radio Terezija
+- HR: Radio Zadar
+- HR: Radio antena Zagreb
+- HR: Radio otok Krk
+- HR: Radio ĆURAK
+- HR: TOP GOLD
+- HR: TOP POP
+- HR: TOP ROCK
+- HR: TOP Radio
+- HR: TOP YOU
+- HR: Top Radio
+- HR: ULTRA Radio
+- HR: Yammat FM 102.5
+- HR: bravo! balade
+- HR: bravo! kids radio
+- HR: bravo! pop
+- HR: bravo! rock
+- Hrvatski Radio Frankfurt
+- Kupreški Radio
+- Naxi Radio
+- Podravski Radio
+- RADIO Mile Kitić
+- RADIO TOP BALKAN
+- RADIO TOP EX YU
+- Radio CMC
+- Radio CMC Dalmatina
+- Radio CMC Jugoton
+- Radio Koprivnica
+- Radio Korzo
+- Radio MIG
+- Radio MiX BiH
+- Radio Odžak
+- Radio RUF
+- Radio S BIH
+- Radio S1 CG
+- Radio S3 CG
+- Radio Sehara
+- Radio Velkaton
+- SAMO SVIRAJ" tvg-logo="https://i.postimg.cc/bwkt20W8/729.png" group-title="RADIO STANICA",HR: Narodni Radio - NE PITAJ, SAMO SVIRAJ
+- SR: 2000-e Digitalni Radio
+- SR: 80-e Digitalni Radio
+- SR: ALEKSANDAR JUŽNI RADIO
+- SR: Cafe Digitalni Radio
+- SR: Cool Radio
+- SR: DISKOS
+- SR: Dance Digitalni Radio
+- SR: EX-YU Digitalni Radio
+- SR: Easy Digitalni Radio
+- SR: Folk Stars Digitalni Radio
+- SR: Folk radio Beograd
+- SR: Gold Digitalni Radio
+- SR: HIT FM
+- SR: Južni Digitalni Radio
+- SR: Latino Digitalni Radio
+- SR: MIX Digitalni Radio
+- SR: Narodni Digitalni Radio
+- SR: Naxi Digital Sport Vision 2
+- SR: OK Radio Beograd
+- SR: PINK RADIO BEOGRAD
+- SR: Pink Radio
+- SR: Pop Folk Digitalni Radio
+- SR: RADIO 31 PLUS UŽICE
+- SR: RADIO FUTOG KRAJINA
+- SR: RADIO LJUBAVNO SRCE
+- SR: RADIO LOLA BEOGRAD
+- SR: RADIO LOLA NIŠ
+- SR: RADIO LOLA NOVI SAD
+- SR: RADIO MAČKICA NARODNA MUZIKA
+- SR: RADIO OPSESIJA
+- SR: RADIO ŠLJIVOVICA KRALJEVO
+- SR: Radio AS FM
+- SR: Radio Hit music
+- SR: Radio Karolina
+- SR: Radio Luna
+- SR: Radio NOVOSTI
+- SR: Radio Nostalgija
+- SR: Radio Puls Grocka
+- SR: Radio S1
+- SR: Radio S2
+- SR: Radio S3
+- SR: Radio S4
+- SR: Radio Šumadinac
+- SR: Rock Digitalni Radio
+- SR: TDI Radio
+- SR: Trap & Rap Digitalni Radio
+- SR: Xtra Digitalni Radio
