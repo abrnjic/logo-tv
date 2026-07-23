@@ -11,7 +11,8 @@
     "optimize": "node tools/optimize-logos.js",
     "check": "node tools/optimize-logos.js --check",
     "manifest:check": "node tools/validate-manifest.js",
-    "manifest:sync": "node tools/sync-manifest.js"
+    "manifest:sync": "node tools/sync-manifest.js",
+    "build:catalog": "npm run optimize && npm run manifest:sync && npm run manifest:check"
   },
   "repository": {
     "type": "git",
