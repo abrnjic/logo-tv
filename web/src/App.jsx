@@ -10,6 +10,7 @@ function App() {
   const [theme, setTheme] = useState(() => window.localStorage.getItem('logo-tv-theme') || 'dark');
   
   const [searchTerm, setSearchTerm] = useState('');
+  const [isSearchFocused, setIsSearchFocused] = useState(false);
   const [selectedCountry, setSelectedCountry] = useState('All');
   const [selectedCategory, setSelectedCategory] = useState('All');
   
@@ -169,6 +170,8 @@ function App() {
                   placeholder="Pretraži kanale..." 
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
+                  onFocus={() => setIsSearchFocused(true)}
+                  onBlur={() => setTimeout(() => setIsSearchFocused(false), 200)}
                 />
                 {searchTerm && (
                   <button className="clear-search-btn" onClick={() => setSearchTerm('')} title="Obriši pretragu">
@@ -180,7 +183,7 @@ function App() {
                 )}
                 
                 {/* Auto-suggest */}
-                {searchTerm && filteredChannels.length > 0 && (
+                {isSearchFocused && searchTerm && filteredChannels.length > 0 && (
                   <div className="auto-suggest">
                     {filteredChannels.slice(0, 5).map(ch => (
                       <div key={ch.id} className="suggest-item" onClick={() => {
