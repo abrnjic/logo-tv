@@ -9,7 +9,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "optimize": "node tools/optimize-logos.js",
-    "check": "node tools/optimize-logos.js --check"
+    "check": "node tools/optimize-logos.js --check",
+    "manifest:check": "node tools/validate-manifest.js"
   },
   "repository": {
     "type": "git",

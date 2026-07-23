@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "description": "Standardizirani katalog TV kanala i pripadajućih logotipa.",
+  "channels": [
+    {
+      "id": "rs-prva-rs",
+      "name": "Prva RS",
+      "country": "RS",
+      "category": "general",
+      "aliases": [
+        "prva-rs",
+        "Prva RS"
+      ],
+      "tvgIds": [],
+      "logo": "logos/rs/prva-rs.png",
+      "source": "sources/rs/prva-rs.png",
+      "format": "png",
+      "width": 320,
+      "height": 180,
+      "transparent": true,
+      "active": true
+    }
+  ]
+}
