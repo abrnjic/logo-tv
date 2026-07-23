@@ -1,0 +1,29 @@
+{
+  "name": "logo-tv",
+  "version": "1.0.0",
+  "description": "Open collection and optimization toolkit for TV channel logos",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "optimize": "node tools/optimize-logos.js",
+    "check": "node tools/optimize-logos.js --check"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abrnjic/logo-tv.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/abrnjic/logo-tv/issues"
+  },
+  "homepage": "https://github.com/abrnjic/logo-tv#readme",
+  "dependencies": {
+    "sharp": "^0.35.3"
+  }
+}
