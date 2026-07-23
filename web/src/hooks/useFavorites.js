@@ -31,5 +31,5 @@ export function useFavorites() {
 
   const isFavorite = (channelId) => favorites.includes(channelId);
 
-  return { favorites, toggleFavorite, isFavorite };
+  return { favorites, toggleFavorite, isFavorite, setFavorites };
 }

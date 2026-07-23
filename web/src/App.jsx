@@ -20,7 +20,7 @@ function App() {
   const [copiedImg, setCopiedImg] = useState(false);
   
   const [visibleCount, setVisibleCount] = useState(100);
-  const { favorites, toggleFavorite, isFavorite } = useFavorites();
+  const { favorites, toggleFavorite, isFavorite, setFavorites } = useFavorites();
   
   const loaderRef = useRef(null);
 
@@ -330,8 +330,9 @@ function App() {
           <Favorites 
             favorites={favorites} 
             channelsData={channelsData} 
-            setSelectedLogo={setSelectedLogo}
-            toggleFavorite={toggleFavorite}
+            setSelectedLogo={setSelectedLogo} 
+            toggleFavorite={toggleFavorite} 
+            setFavorites={setFavorites}
           />
         )}
 
