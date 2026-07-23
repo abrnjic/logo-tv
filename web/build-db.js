@@ -17,16 +17,20 @@ if (!fs.existsSync(path.dirname(DB_PATH))) {
   fs.mkdirSync(path.dirname(DB_PATH), { recursive: true });
 }
 
-// Map prefixes to categories or countries
 const prefixMap = {
   'bih': { country: 'BiH', category: 'General' },
   'ba': { country: 'BiH', category: 'General' },
+  'bosna-i-hercegovina': { country: 'BiH', category: 'General' },
   'crna-gora': { country: 'Crna Gora', category: 'General' },
   'djecji': { country: 'Regional', category: 'Dječji' },
+  'djeji-kanali': { country: 'Regional', category: 'Dječji' },
   'dokumentarni': { country: 'Regional', category: 'Dokumentarni' },
+  'dokumentarni-kanali': { country: 'Regional', category: 'Dokumentarni' },
   'filmski': { country: 'Regional', category: 'Filmski' },
+  'filmski-kanali': { country: 'Regional', category: 'Filmski' },
   'makedonija': { country: 'Makedonija', category: 'General' },
   'muzicki': { country: 'Regional', category: 'Glazbeni' },
+  'muziki-kanali': { country: 'Regional', category: 'Glazbeni' },
   'pink-media': { country: 'Regional', category: 'Pink Media' },
   'slovenija': { country: 'Slovenija', category: 'General' },
   'si': { country: 'Slovenija', category: 'General' },
@@ -35,7 +39,28 @@ const prefixMap = {
   'srbija': { country: 'Srbija', category: 'General' },
   'rs': { country: 'Srbija', category: 'General' },
   'hr': { country: 'Hrvatska', category: 'General' },
+  'hrvatska': { country: 'Hrvatska', category: 'General' },
   'international': { country: 'International', category: 'General' },
+  '247-kanali': { country: 'International', category: '24/7' },
+  'adult': { country: 'International', category: 'Adult' },
+  'austrija': { country: 'Austrija', category: 'General' },
+  'czech-slovakia': { country: 'Češka/Slovačka', category: 'General' },
+  'england': { country: 'Engleska', category: 'General' },
+  'francuska': { country: 'Francuska', category: 'General' },
+  'germany': { country: 'Njemačka', category: 'General' },
+  'hungary': { country: 'Mađarska', category: 'General' },
+  'italija': { country: 'Italija', category: 'General' },
+  'kosovoalbania': { country: 'Kosovo/Albanija', category: 'General' },
+  'netherlands': { country: 'Nizozemska', category: 'General' },
+  'news': { country: 'International', category: 'Informativni' },
+  'poland': { country: 'Poljska', category: 'General' },
+  'radio-stanica': { country: 'Regional', category: 'Radio' },
+  'religion-channel': { country: 'International', category: 'Religijski' },
+  'skandinavija': { country: 'Skandinavija', category: 'General' },
+  'turska': { country: 'Turska', category: 'General' },
+  'ufc': { country: 'International', category: 'Sport' },
+  'usa': { country: 'SAD', category: 'General' },
+  'vicarska': { country: 'Švicarska', category: 'General' }
 };
 
 function formatName(slug) {
