@@ -99,9 +99,19 @@ async function run() {
         }
 
         try {
-            // Optimiziraj i kopiraj
-            // console.log(`Optimiziram i dodajem: ${parentFolderName}/${cName}.png`);
-            execSync(`sips -s format png -Z 320 "${file}" --out "${targetFile}"`, { stdio: 'ignore' });
+            // Provjeri dimenzije prije skaliranja
+            const outW = execSync(`sips -g pixelWidth "${file}" | grep pixelWidth | awk '{print $2}'`).toString().trim();
+            const outH = execSync(`sips -g pixelHeight "${file}" | grep pixelHeight | awk '{print $2}'`).toString().trim();
+            const maxDim = Math.max(parseInt(outW, 10), parseInt(outH, 10));
+
+            if (maxDim > 320) {
+                // Smanji ako je veće od 320
+                execSync(`sips -s format png -Z 320 "${file}" --out "${targetFile}"`, { stdio: 'ignore' });
+            } else {
+                // Samo kopiraj/konvertiraj ako je malo, nemoj rastezati!
+                execSync(`sips -s format png "${file}" --out "${targetFile}"`, { stdio: 'ignore' });
+            }
+
             existingLogosMap.set(cName, targetFile);
             addedCount++;
             if (addedCount % 100 === 0) {

@@ -120,26 +120,35 @@ async function run() {
             fs.mkdirSync(targetFolder, { recursive: true });
         }
 
-        // Ako datoteka ne postoji, preuzimamo je
-        if (!fs.existsSync(targetFile)) {
-            const tempFile = path.join(TEMP_DIR, `${ch.cleanName}_temp.png`);
-            
-            const success = await downloadImage(ch.logo, tempFile);
-            if (success) {
-                try {
+        const tempFile = path.join(TEMP_DIR, `${ch.cleanName}_temp.png`);
+        
+        const success = await downloadImage(ch.logo, tempFile);
+        if (success) {
+            try {
+                // Provjeri dimenzije prije skaliranja
+                const outW = execSync(`sips -g pixelWidth "${tempFile}" | grep pixelWidth | awk '{print $2}'`).toString().trim();
+                const outH = execSync(`sips -g pixelHeight "${tempFile}" | grep pixelHeight | awk '{print $2}'`).toString().trim();
+                const maxDim = Math.max(parseInt(outW, 10), parseInt(outH, 10));
+
+                if (maxDim > 320) {
+                    // Smanji ako je veće od 320
                     execSync(`sips -s format png -Z 320 "${tempFile}" --out "${targetFile}"`, { stdio: 'ignore' });
-                    successCount++;
-                    process.stdout.write('+');
-                } catch (e) {
-                    process.stdout.write('!');
-                } finally {
-                    if (fs.existsSync(tempFile)) fs.unlinkSync(tempFile);
+                } else {
+                    // Samo konvertiraj u png ako je malo, nemoj rastezati!
+                    execSync(`sips -s format png "${tempFile}" --out "${targetFile}"`, { stdio: 'ignore' });
                 }
-            } else {
-                process.stdout.write('x');
+                
+                successCount++;
+                process.stdout.write('+');
+            } catch (e) {
+                process.stdout.write('!');
+            } finally {
+                if (fs.existsSync(tempFile)) fs.unlinkSync(tempFile);
             }
-            await new Promise(r => setTimeout(r, 50));
+        } else {
+            process.stdout.write('x');
         }
+        await new Promise(r => setTimeout(r, 50));
     }
 
     if (fs.existsSync(TEMP_DIR)) fs.rmSync(TEMP_DIR, { recursive: true, force: true });

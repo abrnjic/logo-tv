@@ -7,6 +7,7 @@ function App() {
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [selectedLogo, setSelectedLogo] = useState(null);
   const [copied, setCopied] = useState(false);
+  const [visibleCount, setVisibleCount] = useState(100);
 
   // Extract unique countries and categories
   const countries = useMemo(() => {
@@ -19,14 +20,54 @@ function App() {
     return ['All', ...Array.from(c)].sort();
   }, []);
 
-  // Filter channels
+  // Reset visible count when search or filters change
+  useEffect(() => {
+    setVisibleCount(100);
+  }, [searchTerm, selectedCountry, selectedCategory]);
+
+  // Filter and Sort channels
   const filteredChannels = useMemo(() => {
-    return channelsData.filter(ch => {
-      const matchesSearch = ch.name.toLowerCase().includes(searchTerm.toLowerCase());
-      const matchesCountry = selectedCountry === 'All' || ch.country === selectedCountry;
-      const matchesCategory = selectedCategory === 'All' || ch.category === selectedCategory;
-      return matchesSearch && matchesCountry && matchesCategory;
+    const isGlobalSearch = searchTerm.trim().length > 0;
+    const searchString = searchTerm.toLowerCase();
+    const searchJoined = searchString.replace(/[-_.\s]/g, '');
+    const searchWords = searchString.replace(/[-_.]/g, ' ').split(/\s+/).filter(w => w.length > 0);
+
+    let results = channelsData.filter(ch => {
+      const matchesCountry = isGlobalSearch || selectedCountry === 'All' || ch.country === selectedCountry;
+      const matchesCategory = isGlobalSearch || selectedCategory === 'All' || ch.category === selectedCategory;
+      if (!matchesCountry || !matchesCategory) return false;
+
+      if (!isGlobalSearch) return true;
+
+      // Smart Matching
+      const cleanName = ch.name.toLowerCase().replace(/[-_.]/g, ' ');
+      const joinedName = ch.name.toLowerCase().replace(/[-_.\s]/g, '');
+
+      const matchesJoined = joinedName.includes(searchJoined);
+      const matchesWords = searchWords.every(word => cleanName.includes(word));
+
+      return matchesJoined || matchesWords;
     });
+
+    // Relevance Sorting
+    if (isGlobalSearch) {
+      results.sort((a, b) => {
+        const nameA = a.name.toLowerCase().replace(/[-_.\s]/g, '');
+        const nameB = b.name.toLowerCase().replace(/[-_.\s]/g, '');
+        
+        const exactA = nameA === searchJoined ? 1 : 0;
+        const exactB = nameB === searchJoined ? 1 : 0;
+        if (exactA !== exactB) return exactB - exactA;
+        
+        const startsA = nameA.startsWith(searchJoined) ? 1 : 0;
+        const startsB = nameB.startsWith(searchJoined) ? 1 : 0;
+        if (startsA !== startsB) return startsB - startsA;
+
+        return 0; 
+      });
+    }
+
+    return results;
   }, [searchTerm, selectedCountry, selectedCategory]);
 
   // Handle URL copy
@@ -101,26 +142,58 @@ function App() {
             <p>Pokušaj promijeniti pojam za pretragu ili filtere.</p>
           </div>
         ) : (
-          <div className="logos-grid">
-            {filteredChannels.map(channel => (
-              <div 
-                key={channel.id} 
-                className="logo-card"
-                onClick={() => setSelectedLogo(channel)}
-              >
-                <div className="image-container">
-                  <img src={channel.image} alt={channel.name} className="logo-img" loading="lazy" />
-                </div>
-                <div className="logo-info">
-                  <h3 className="logo-name">{channel.name}</h3>
-                  <div className="tags">
-                    <span className="tag">{channel.country}</span>
-                    <span className="tag">{channel.category}</span>
+          <>
+            <div className="logos-grid">
+              {filteredChannels.slice(0, visibleCount).map(channel => (
+                <div 
+                  key={channel.id} 
+                  className="logo-card"
+                  onClick={() => setSelectedLogo(channel)}
+                >
+                  <div className="image-container">
+                    <img src={channel.image} alt={channel.name} className="logo-img" loading="lazy" />
+                  </div>
+                  <div className="logo-info">
+                    <h3 className="logo-name">{channel.name}</h3>
+                    <div className="tags">
+                      <span className="tag">{channel.country}</span>
+                      <span className="tag">{channel.category}</span>
+                    </div>
                   </div>
                 </div>
+              ))}
+            </div>
+            
+            {visibleCount < filteredChannels.length && (
+              <div className="load-more-container" style={{ textAlign: 'center', marginTop: '3rem', marginBottom: '3rem' }}>
+                <button 
+                  onClick={() => setVisibleCount(prev => prev + 100)}
+                  style={{
+                    padding: '14px 28px',
+                    backgroundColor: '#1E1E1E',
+                    color: 'white',
+                    border: '1px solid #333',
+                    borderRadius: '12px',
+                    fontSize: '1rem',
+                    fontWeight: '600',
+                    cursor: 'pointer',
+                    boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
+                    transition: 'all 0.2s ease-in-out'
+                  }}
+                  onMouseOver={e => {
+                    e.target.style.backgroundColor = '#2D2D2D';
+                    e.target.style.transform = 'translateY(-2px)';
+                  }}
+                  onMouseOut={e => {
+                    e.target.style.backgroundColor = '#1E1E1E';
+                    e.target.style.transform = 'translateY(0)';
+                  }}
+                >
+                  Prikaži više ({filteredChannels.length - visibleCount} preostalo)
+                </button>
               </div>
-            ))}
-          </div>
+            )}
+          </>
         )}
       </div>
 
