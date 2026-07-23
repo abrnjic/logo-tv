@@ -1,13 +1,35 @@
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, useRef } from 'react';
 import channelsData from './data/channels.json';
+import { useFavorites } from './hooks/useFavorites';
+import Favorites from './components/Favorites';
+import M3UFixer from './components/M3UFixer';
+import './App.css'; // if any
 
 function App() {
+  const [activeTab, setActiveTab] = useState('search'); // 'search', 'favorites', 'fixer'
+  const [theme, setTheme] = useState(() => window.localStorage.getItem('logo-tv-theme') || 'dark');
+  
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCountry, setSelectedCountry] = useState('All');
   const [selectedCategory, setSelectedCategory] = useState('All');
+  
   const [selectedLogo, setSelectedLogo] = useState(null);
   const [copied, setCopied] = useState(false);
+  
   const [visibleCount, setVisibleCount] = useState(100);
+  const { favorites, toggleFavorite, isFavorite } = useFavorites();
+  
+  const loaderRef = useRef(null);
+
+  // Apply theme
+  useEffect(() => {
+    if (theme === 'light') {
+      document.body.classList.add('light-theme');
+    } else {
+      document.body.classList.remove('light-theme');
+    }
+    window.localStorage.setItem('logo-tv-theme', theme);
+  }, [theme]);
 
   // Extract unique countries and categories
   const countries = useMemo(() => {
@@ -23,7 +45,7 @@ function App() {
   // Reset visible count when search or filters change
   useEffect(() => {
     setVisibleCount(100);
-  }, [searchTerm, selectedCountry, selectedCategory]);
+  }, [searchTerm, selectedCountry, selectedCategory, activeTab]);
 
   // Filter and Sort channels
   const filteredChannels = useMemo(() => {
@@ -70,6 +92,21 @@ function App() {
     return results;
   }, [searchTerm, selectedCountry, selectedCategory]);
 
+  // Infinite Scroll Observer
+  useEffect(() => {
+    if (activeTab !== 'search') return;
+    const observer = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) {
+        setVisibleCount(prev => prev + 100);
+      }
+    }, { threshold: 0.1 });
+
+    if (loaderRef.current) {
+      observer.observe(loaderRef.current);
+    }
+    return () => observer.disconnect();
+  }, [filteredChannels, activeTab]);
+
   // Handle URL copy
   const handleCopy = () => {
     if (!selectedLogo) return;
@@ -93,129 +130,167 @@ function App() {
     <>
       <div className="app-container">
         <header className="header">
-          <h1 className="logo-title">Logo TV</h1>
+          <div className="header-top">
+            <h1 className="logo-title">Logo TV</h1>
+            <button 
+              className="theme-toggle" 
+              onClick={() => setTheme(t => t === 'dark' ? 'light' : 'dark')}
+              title={theme === 'dark' ? 'Prebaci na svijetlu temu' : 'Prebaci na tamnu temu'}
+            >
+              {theme === 'dark' ? '☀️' : '🌙'}
+            </button>
+          </div>
           <p className="logo-subtitle">Premium kolekcija visokokvalitetnih logotipa za IPTV aplikacije, uređaje i portale.</p>
+          
+          <div className="tabs">
+            <button className={`tab-btn ${activeTab === 'search' ? 'active' : ''}`} onClick={() => setActiveTab('search')}>
+              Tražilica
+            </button>
+            <button className={`tab-btn ${activeTab === 'favorites' ? 'active' : ''}`} onClick={() => setActiveTab('favorites')}>
+              Favoriti ({favorites.length})
+            </button>
+            <button className={`tab-btn ${activeTab === 'fixer' ? 'active' : ''}`} onClick={() => setActiveTab('fixer')}>
+              M3U Fixer
+            </button>
+          </div>
         </header>
 
-        <div className="controls-container">
-          <div className="search-box">
-            <svg className="search-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <circle cx="11" cy="11" r="8"></circle>
-              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-            </svg>
-            <input 
-              type="text" 
-              className="search-input" 
-              placeholder="Pretraži kanale..." 
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-            {searchTerm && (
-              <button className="clear-search-btn" onClick={() => setSearchTerm('')} title="Obriši pretragu">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <line x1="18" y1="6" x2="6" y2="18"></line>
-                  <line x1="6" y1="6" x2="18" y2="18"></line>
-                </svg>
-              </button>
-            )}
-          </div>
-
-          <div className="filters">
-            <select 
-              className="filter-select"
-              value={selectedCountry}
-              onChange={(e) => setSelectedCountry(e.target.value)}
-            >
-              {countries.map(c => (
-                <option key={c} value={c}>{c === 'All' ? 'Sve države' : c}</option>
-              ))}
-            </select>
-
-            <select 
-              className="filter-select"
-              value={selectedCategory}
-              onChange={(e) => setSelectedCategory(e.target.value)}
-            >
-              {categories.map(c => (
-                <option key={c} value={c}>{c === 'All' ? 'Sve kategorije' : c}</option>
-              ))}
-            </select>
-            
-            {(selectedCountry !== 'All' || selectedCategory !== 'All') && (
-              <button 
-                className="reset-filters-btn" 
-                onClick={() => {
-                  setSelectedCountry('All');
-                  setSelectedCategory('All');
-                }}
-                title="Poništi filtere"
-              >
-                Poništi filtere
-              </button>
-            )}
-          </div>
-        </div>
-
-        {filteredChannels.length === 0 ? (
-          <div className="empty-state">
-            <div className="empty-icon">📺</div>
-            <h2>Nema rezultata</h2>
-            <p>Pokušaj promijeniti pojam za pretragu ili filtere.</p>
-          </div>
-        ) : (
+        {activeTab === 'search' && (
           <>
-            <div className="logos-grid">
-              {filteredChannels.slice(0, visibleCount).map(channel => (
-                <div 
-                  key={channel.id} 
-                  className="logo-card"
-                  onClick={() => setSelectedLogo(channel)}
-                >
-                  <div className="image-container">
-                    <img src={channel.image} alt={channel.name} className="logo-img" loading="lazy" />
+            <div className="controls-container">
+              <div className="search-box">
+                <svg className="search-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                <input 
+                  type="text" 
+                  className="search-input" 
+                  placeholder="Pretraži kanale..." 
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+                {searchTerm && (
+                  <button className="clear-search-btn" onClick={() => setSearchTerm('')} title="Obriši pretragu">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <line x1="18" y1="6" x2="6" y2="18"></line>
+                      <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                  </button>
+                )}
+                
+                {/* Auto-suggest */}
+                {searchTerm && filteredChannels.length > 0 && (
+                  <div className="auto-suggest">
+                    {filteredChannels.slice(0, 5).map(ch => (
+                      <div key={ch.id} className="suggest-item" onClick={() => {
+                        setSelectedLogo(ch);
+                        setSearchTerm(ch.name);
+                      }}>
+                        <img src={ch.image} alt="" className="suggest-img" />
+                        <span>{ch.name}</span>
+                      </div>
+                    ))}
                   </div>
-                  <div className="logo-info">
-                    <h3 className="logo-name">{channel.name}</h3>
-                    <div className="tags">
-                      <span className="tag">{channel.country}</span>
-                      <span className="tag">{channel.category}</span>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-            
-            {visibleCount < filteredChannels.length && (
-              <div className="load-more-container" style={{ textAlign: 'center', marginTop: '3rem', marginBottom: '3rem' }}>
-                <button 
-                  onClick={() => setVisibleCount(prev => prev + 100)}
-                  style={{
-                    padding: '14px 28px',
-                    backgroundColor: '#1E1E1E',
-                    color: 'white',
-                    border: '1px solid #333',
-                    borderRadius: '12px',
-                    fontSize: '1rem',
-                    fontWeight: '600',
-                    cursor: 'pointer',
-                    boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
-                    transition: 'all 0.2s ease-in-out'
-                  }}
-                  onMouseOver={e => {
-                    e.target.style.backgroundColor = '#2D2D2D';
-                    e.target.style.transform = 'translateY(-2px)';
-                  }}
-                  onMouseOut={e => {
-                    e.target.style.backgroundColor = '#1E1E1E';
-                    e.target.style.transform = 'translateY(0)';
-                  }}
-                >
-                  Prikaži više ({filteredChannels.length - visibleCount} preostalo)
-                </button>
+                )}
               </div>
+
+              <div className="filters">
+                <select 
+                  className="filter-select"
+                  value={selectedCountry}
+                  onChange={(e) => setSelectedCountry(e.target.value)}
+                >
+                  {countries.map(c => (
+                    <option key={c} value={c}>{c === 'All' ? 'Sve države' : c}</option>
+                  ))}
+                </select>
+
+                <select 
+                  className="filter-select"
+                  value={selectedCategory}
+                  onChange={(e) => setSelectedCategory(e.target.value)}
+                >
+                  {categories.map(c => (
+                    <option key={c} value={c}>{c === 'All' ? 'Sve kategorije' : c}</option>
+                  ))}
+                </select>
+                
+                {(selectedCountry !== 'All' || selectedCategory !== 'All') && (
+                  <button 
+                    className="reset-filters-btn" 
+                    onClick={() => {
+                      setSelectedCountry('All');
+                      setSelectedCategory('All');
+                    }}
+                    title="Poništi filtere"
+                  >
+                    Poništi filtere
+                  </button>
+                )}
+              </div>
+            </div>
+
+            {filteredChannels.length === 0 ? (
+              <div className="empty-state">
+                <div className="empty-icon">📺</div>
+                <h2>Nema rezultata</h2>
+                <p>Pokušaj promijeniti pojam za pretragu ili filtere.</p>
+              </div>
+            ) : (
+              <>
+                <div className="logos-grid">
+                  {filteredChannels.slice(0, visibleCount).map(channel => (
+                    <div 
+                      key={channel.id} 
+                      className="logo-card"
+                      onClick={() => setSelectedLogo(channel)}
+                    >
+                      <button 
+                        className={`fav-btn ${isFavorite(channel.id) ? 'active' : ''}`}
+                        onClick={(e) => { e.stopPropagation(); toggleFavorite(channel.id); }}
+                        title={isFavorite(channel.id) ? "Ukloni iz favorita" : "Dodaj u favorite"}
+                      >
+                        {isFavorite(channel.id) ? '❤️' : '🤍'}
+                      </button>
+                      
+                      <div className="image-container">
+                        <img src={channel.image} alt={channel.name} className="logo-img" loading="lazy" />
+                      </div>
+                      <div className="logo-info">
+                        <h3 className="logo-name">{channel.name}</h3>
+                        <div className="tags">
+                          <span className="tag">{channel.country}</span>
+                          <span className="tag">{channel.category}</span>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                
+                {visibleCount < filteredChannels.length && (
+                  <div ref={loaderRef} className="scroll-loader">
+                    <div className="spinner"></div>
+                  </div>
+                )}
+              </>
             )}
           </>
         )}
+
+        {activeTab === 'favorites' && (
+          <Favorites 
+            favorites={favorites} 
+            channelsData={channelsData} 
+            setSelectedLogo={setSelectedLogo}
+            toggleFavorite={toggleFavorite}
+          />
+        )}
+
+        {activeTab === 'fixer' && (
+          <M3UFixer />
+        )}
+
       </div>
 
       {/* Modal */}
@@ -233,6 +308,13 @@ function App() {
           
           {selectedLogo && (
             <>
+              <button 
+                className={`modal-fav-btn ${isFavorite(selectedLogo.id) ? 'active' : ''}`}
+                onClick={() => toggleFavorite(selectedLogo.id)}
+              >
+                {isFavorite(selectedLogo.id) ? '❤️ Ukloni iz favorita' : '🤍 Dodaj u favorite'}
+              </button>
+              
               <h2 className="modal-title">{selectedLogo.name}</h2>
               <div className="modal-img-container">
                 <img src={selectedLogo.image} alt={selectedLogo.name} className="modal-img" />
@@ -273,6 +355,7 @@ function App() {
           )}
         </div>
       </div>
+      
       {/* Floating Scroll Buttons */}
       <div className="floating-actions">
         <button className="scroll-btn" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} title="Idi na vrh">
