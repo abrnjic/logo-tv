@@ -8,6 +8,7 @@ import './App.css'; // if any
 function App() {
   const [activeTab, setActiveTab] = useState('search'); // 'search', 'favorites', 'fixer'
   const [theme, setTheme] = useState(() => window.localStorage.getItem('logo-tv-theme') || 'dark');
+  const [gridSize, setGridSize] = useState(() => parseInt(window.localStorage.getItem('logo-tv-grid-size')) || 160);
   
   const [searchTerm, setSearchTerm] = useState('');
   const [isSearchFocused, setIsSearchFocused] = useState(false);
@@ -16,13 +17,14 @@ function App() {
   
   const [selectedLogo, setSelectedLogo] = useState(null);
   const [copied, setCopied] = useState(false);
+  const [copiedImg, setCopiedImg] = useState(false);
   
   const [visibleCount, setVisibleCount] = useState(100);
   const { favorites, toggleFavorite, isFavorite } = useFavorites();
   
   const loaderRef = useRef(null);
 
-  // Apply theme
+  // Apply theme and save grid size
   useEffect(() => {
     if (theme === 'light') {
       document.body.classList.add('light-theme');
@@ -31,6 +33,10 @@ function App() {
     }
     window.localStorage.setItem('logo-tv-theme', theme);
   }, [theme]);
+
+  useEffect(() => {
+    window.localStorage.setItem('logo-tv-grid-size', gridSize.toString());
+  }, [gridSize]);
 
   // Extract unique countries and categories
   const countries = useMemo(() => {
@@ -118,6 +124,23 @@ function App() {
     });
   };
 
+  // Handle Image copy
+  const handleCopyImage = async () => {
+    if (!selectedLogo) return;
+    try {
+      const response = await fetch(selectedLogo.image);
+      const blob = await response.blob();
+      await navigator.clipboard.write([
+        new ClipboardItem({ 'image/png': blob })
+      ]);
+      setCopiedImg(true);
+      setTimeout(() => setCopiedImg(false), 2000);
+    } catch (err) {
+      console.error('Failed to copy image', err);
+      alert('Nije moguće kopirati sliku. Pokušaj preuzeti umjesto toga.');
+    }
+  };
+
   // Close modal on Escape
   useEffect(() => {
     const handleEsc = (e) => {
@@ -133,13 +156,26 @@ function App() {
         <header className="header">
           <div className="header-top">
             <h1 className="logo-title">Logo TV</h1>
-            <button 
-              className="theme-toggle" 
-              onClick={() => setTheme(t => t === 'dark' ? 'light' : 'dark')}
-              title={theme === 'dark' ? 'Prebaci na svijetlu temu' : 'Prebaci na tamnu temu'}
-            >
-              {theme === 'dark' ? '☀️' : '🌙'}
-            </button>
+            <div className="header-actions">
+              <div className="zoom-control" title="Veličina logotipa">
+                <span>🔍</span>
+                <input 
+                  type="range" 
+                  min="100" 
+                  max="250" 
+                  value={gridSize}
+                  onChange={(e) => setGridSize(Number(e.target.value))}
+                  className="zoom-slider"
+                />
+              </div>
+              <button 
+                className="theme-toggle" 
+                onClick={() => setTheme(t => t === 'dark' ? 'light' : 'dark')}
+                title={theme === 'dark' ? 'Prebaci na svijetlu temu' : 'Prebaci na tamnu temu'}
+              >
+                {theme === 'dark' ? '☀️' : '🌙'}
+              </button>
+            </div>
           </div>
           <p className="logo-subtitle">Premium kolekcija visokokvalitetnih logotipa za IPTV aplikacije, uređaje i portale.</p>
           
@@ -239,10 +275,19 @@ function App() {
                 <div className="empty-icon">📺</div>
                 <h2>Nema rezultata</h2>
                 <p>Pokušaj promijeniti pojam za pretragu ili filtere.</p>
+                {searchTerm && (
+                  <a 
+                    href={`mailto:abrnjic@gmail.com?subject=Zahtjev za novi logo: ${searchTerm}`} 
+                    className="btn-primary" 
+                    style={{marginTop: '1.5rem', display: 'inline-block', textDecoration: 'none'}}
+                  >
+                    Nisi pronašao kanal? Zatraži ga ovdje!
+                  </a>
+                )}
               </div>
             ) : (
               <>
-                <div className="logos-grid">
+                <div className="logos-grid" style={{ '--card-size': `${gridSize}px` }}>
                   {filteredChannels.slice(0, visibleCount).map(channel => (
                     <div 
                       key={channel.id} 
@@ -332,28 +377,54 @@ function App() {
                 />
               </div>
               
-              <button 
-                className={`copy-btn ${copied ? 'copied' : ''}`}
-                onClick={handleCopy}
-                style={{ width: '100%', justifyContent: 'center' }}
-              >
-                {copied ? (
-                  <>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <polyline points="20 6 9 17 4 12"></polyline>
-                    </svg>
-                    Kopirano!
-                  </>
-                ) : (
-                  <>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                      <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                    </svg>
-                    Kopiraj Javni Link
-                  </>
-                )}
-              </button>
+              <div className="modal-actions-row" style={{ display: 'flex', gap: '1rem', marginTop: '1rem', width: '100%' }}>
+                <button 
+                  className={`copy-btn ${copied ? 'copied' : ''}`}
+                  onClick={handleCopy}
+                  style={{ flex: 1, justifyContent: 'center' }}
+                >
+                  {copied ? (
+                    <>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                      </svg>
+                      Link!
+                    </>
+                  ) : (
+                    <>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
+                      Kopiraj Link
+                    </>
+                  )}
+                </button>
+
+                <button 
+                  className={`copy-btn ${copiedImg ? 'copied' : ''}`}
+                  onClick={handleCopyImage}
+                  style={{ flex: 1, justifyContent: 'center', backgroundColor: copiedImg ? '#10b981' : 'var(--accent-color)', color: 'white', border: 'none' }}
+                >
+                  {copiedImg ? (
+                    <>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                      </svg>
+                      Slika!
+                    </>
+                  ) : (
+                    <>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                        <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                        <polyline points="21 15 16 10 5 21"></polyline>
+                      </svg>
+                      Kopiraj Sliku
+                    </>
+                  )}
+                </button>
+              </div>
             </>
           )}
         </div>

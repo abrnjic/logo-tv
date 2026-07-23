@@ -878,3 +878,51 @@ body.light-theme .search-input {
 body.light-theme .filter-select {
   background-color: rgba(255, 255, 255, 0.5);
 }
+
+/* Grid Size Zoom */
+.logos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(var(--card-size, 160px), 1fr)) !important;
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.zoom-control {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--glass-bg);
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  border: 1px solid var(--glass-border);
+}
+
+.zoom-slider {
+  -webkit-appearance: none;
+  width: 100px;
+  height: 4px;
+  background: var(--card-border);
+  border-radius: 2px;
+  outline: none;
+}
+
+.zoom-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--accent-color);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.zoom-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+}

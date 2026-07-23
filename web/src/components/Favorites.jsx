@@ -1,6 +1,9 @@
 import { useState } from 'react';
+import JSZip from 'jszip';
+import { saveAs } from 'file-saver';
 
 export default function Favorites({ favorites, channelsData, setSelectedLogo, toggleFavorite }) {
+  const [isZipping, setIsZipping] = useState(false);
   const favoriteChannels = channelsData.filter(ch => favorites.includes(ch.id));
 
   const copyM3U = () => {
@@ -21,6 +24,36 @@ export default function Favorites({ favorites, channelsData, setSelectedLogo, to
     navigator.clipboard.writeText(json).then(() => alert('JSON lista kopirana!'));
   };
 
+  const downloadZIP = async () => {
+    setIsZipping(true);
+    try {
+      const zip = new JSZip();
+      
+      const fetchPromises = favoriteChannels.map(async (ch) => {
+        try {
+          const response = await fetch(ch.image);
+          if (!response.ok) throw new Error(`Network response was not ok for ${ch.name}`);
+          const blob = await response.blob();
+          
+          const safeName = ch.name.replace(/[^a-z0-9]/gi, '_').toLowerCase();
+          const ext = ch.image.split('.').pop() || 'png';
+          zip.file(`${safeName}.${ext}`, blob);
+        } catch (err) {
+          console.error('Failed to fetch image for ZIP:', ch.name, err);
+        }
+      });
+      
+      await Promise.all(fetchPromises);
+      const content = await zip.generateAsync({ type: 'blob' });
+      saveAs(content, 'logo-tv-favorites.zip');
+    } catch (err) {
+      console.error('Error creating ZIP:', err);
+      alert('Dogodila se greška prilikom izrade ZIP arhive.');
+    } finally {
+      setIsZipping(false);
+    }
+  };
+
   if (favoriteChannels.length === 0) {
     return (
       <div className="empty-state">
@@ -36,6 +69,9 @@ export default function Favorites({ favorites, channelsData, setSelectedLogo, to
       <div className="favorites-header">
         <h2>Moji Favoriti ({favoriteChannels.length})</h2>
         <div className="favorites-actions">
+          <button className="btn-secondary" onClick={downloadZIP} disabled={isZipping}>
+            {isZipping ? 'Pripremam ZIP...' : 'Preuzmi ZIP'}
+          </button>
           <button className="btn-secondary" onClick={copyM3U}>Kopiraj kao M3U</button>
           <button className="btn-secondary" onClick={copyJSON}>Kopiraj kao JSON</button>
         </div>
