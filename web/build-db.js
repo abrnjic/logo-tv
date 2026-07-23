@@ -175,7 +175,13 @@ logoFiles.forEach(file => {
     channelSlug = path.basename(fileName, '.png');
   }
 
-  const mapped = prefixMap[prefix.toLowerCase()] || { country: 'Ostalo', category: 'General' };
+  let mapped = prefixMap[prefix.toLowerCase()];
+  if (!mapped) {
+    mapped = {
+      country: formatName(prefix),
+      category: 'General'
+    };
+  }
   
   // Copy to public/logos
   const destPath = path.join(PUBLIC_LOGOS_DIR, fileName);
