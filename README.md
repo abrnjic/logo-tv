@@ -1,6 +1,6 @@
 # Logo TV 📺
 
-Logo TV je premium web aplikacija i baza visokokvalitetnih (transparentnih) logotipa za TV kanale, namijenjena prvenstveno za IPTV liste, portale i set-top box uređaje. Baza trenutno sadrži preko 13,000 očišćenih i optimiziranih logotipa iz cijelog svijeta.
+Logo TV je premium web aplikacija i baza visokokvalitetnih (transparentnih) logotipa za TV kanale, namijenjena prvenstveno za medijske platforme, aplikacije, pametne televizore i medijske centre. Baza trenutno sadrži preko 13,000 očišćenih i optimiziranih logotipa iz cijelog svijeta.
 
 🌐 **Demo / Web Stranica:** [https://abrnjic.github.io/logo-tv/](https://abrnjic.github.io/logo-tv/)
 
@@ -9,7 +9,7 @@ Logo TV je premium web aplikacija i baza visokokvalitetnih (transparentnih) logo
 ## Glavne značajke (Features) ✨
 
 - **Preko 13,000 visokokvalitetnih logotipa:** Svi logotipi su strogo filtrirani kako bi imali prozirnu pozadinu (transparent PNG) i optimalnu rezoluciju.
-- **M3U Fixer (Popravljač IPTV listi):** Učitaj svoju `.m3u` listu, a aplikacija će automatski pronaći tvoje kanale i zamijeniti stare, potrgane logotipe novim premium poveznicama s Logo TV-a.
+- **M3U Fixer (Pametni popravljač listi):** Učitaj svoju `.m3u` listu, a aplikacija će automatski pronaći tvoje kanale i zamijeniti stare, potrgane logotipe novim premium poveznicama s Logo TV-a.
 - **Sustav Favorita (Favorites):** Klikom na ikonu "🤍" možeš spremiti željene kanale. Nakon toga možeš:
   - Preuzeti cijelu arhivu slika u `.zip` formatu!
   - Kopirati ih kao M3U kod.
@@ -61,4 +61,4 @@ Slobodno ga kloniraj, koristi u svojim aplikacijama, mijenjaj i dijeli! Za više
 
 ---
 
-*Napravljeno s ❤️ za IPTV zajednicu.*
+*Napravljeno s ❤️ za razvojnu i medijsku zajednicu.*

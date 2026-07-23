@@ -177,7 +177,7 @@ function App() {
               </button>
             </div>
           </div>
-          <p className="logo-subtitle">Premium kolekcija visokokvalitetnih logotipa za IPTV aplikacije, uređaje i portale.</p>
+          <p className="logo-subtitle">Premium kolekcija visokokvalitetnih logotipa za pametne televizore, medijske centre i portale.</p>
           
           <div className="tabs">
             <button className={`tab-btn ${activeTab === 'search' ? 'active' : ''}`} onClick={() => setActiveTab('search')}>
