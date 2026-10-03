@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import JSZip from 'jszip';
 import { saveAs } from 'file-saver';
+import { getLogoUrl } from '../lib/logoUrl';
 
 export default function Favorites({ favorites, channelsData, setSelectedLogo, toggleFavorite, setFavorites }) {
   const [isZipping, setIsZipping] = useState(false);
@@ -14,7 +15,7 @@ export default function Favorites({ favorites, channelsData, setSelectedLogo, to
   const copyM3U = () => {
     let m3u = "#EXTM3U\n";
     favoriteChannels.forEach(ch => {
-      const url = new URL(`/logo-tv/logos/${ch.image}`, 'https://abrnjic.github.io').href;
+      const url = getLogoUrl(ch.image);
       m3u += `#EXTINF:-1 tvg-id="${ch.id}" tvg-name="${ch.name}" tvg-logo="${url}" group-title="${ch.category}", ${ch.name}\n`;
       m3u += `http://stream.url\n`;
     });
@@ -24,7 +25,7 @@ export default function Favorites({ favorites, channelsData, setSelectedLogo, to
   const copyJSON = () => {
     const json = JSON.stringify(favoriteChannels.map(ch => ({
       name: ch.name,
-      logo: new URL(`/logo-tv/logos/${ch.image}`, 'https://abrnjic.github.io').href
+      logo: getLogoUrl(ch.image)
     })), null, 2);
     navigator.clipboard.writeText(json).then(() => alert('JSON lista kopirana!'));
   };

@@ -3,6 +3,7 @@ import channelsData from './data/channels.json';
 import { useFavorites } from './hooks/useFavorites';
 import Favorites from './components/Favorites';
 import M3UFixer from './components/M3UFixer';
+import { getLogoUrl } from './lib/logoUrl';
 import './App.css'; // if any
 
 function App() {
@@ -115,13 +116,16 @@ function App() {
   }, [filteredChannels, activeTab]);
 
   // Handle URL copy
-  const handleCopy = () => {
+  const handleCopy = async () => {
     if (!selectedLogo) return;
-    const url = new URL(selectedLogo.image, window.location.origin).href;
-    navigator.clipboard.writeText(url).then(() => {
+    try {
+      await navigator.clipboard.writeText(getLogoUrl(selectedLogo.image));
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
-    });
+    } catch (err) {
+      console.error('Failed to copy link', err);
+      alert('Nije moguće kopirati link. Označi i kopiraj adresu iz polja iznad gumba.');
+    }
   };
 
   // Handle Image copy
@@ -129,6 +133,7 @@ function App() {
     if (!selectedLogo) return;
     try {
       const response = await fetch(selectedLogo.image);
+      if (!response.ok) throw new Error(`Slika nije dostupna (${response.status}).`);
       const blob = await response.blob();
       await navigator.clipboard.write([
         new ClipboardItem({ 'image/png': blob })
@@ -374,7 +379,7 @@ function App() {
                   type="text" 
                   className="url-input" 
                   readOnly 
-                  value={new URL(selectedLogo.image, window.location.origin).href} 
+                  value={getLogoUrl(selectedLogo.image)} 
                 />
               </div>
               

@@ -1,6 +1,7 @@
 import { useState, useRef, useMemo } from 'react';
 import channelsData from '../data/channels.json';
 import Fuse from 'fuse.js';
+import { getLogoUrl } from '../lib/logoUrl';
 
 export default function M3UFixer() {
   const [fileContent, setFileContent] = useState('');
@@ -70,7 +71,7 @@ export default function M3UFixer() {
 
             if (match) {
               matchCount++;
-              const githubUrl = `https://abrnjic.github.io/logo-tv/logos/${match.id}.png`;
+              const githubUrl = getLogoUrl(match.image);
               
               // Replace or add tvg-logo
               let newLine = line;
