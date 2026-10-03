@@ -1,205 +1,308 @@
-import { useState } from 'react';
-import JSZip from 'jszip';
-import { saveAs } from 'file-saver';
-import { getLogoUrl } from '../lib/logoUrl';
+import { useState } from "react";
+import JSZip from "jszip";
+import { saveAs } from "file-saver";
+import { getLogoUrl } from "../lib/logoUrl";
+import { countryLabel, EX_YU_COUNTRIES } from "../lib/catalog";
+import LogoCard from "./LogoCard";
+import PreviewControls from "./PreviewControls";
+import Icon from "./Icon";
 
-export default function Favorites({ favorites, channelsData, setSelectedLogo, toggleFavorite, setFavorites }) {
+export default function Favorites({
+  favorites,
+  channelsData,
+  setSelectedLogo,
+  toggleFavorite,
+  setFavorites,
+  notify,
+  onCopy,
+  background,
+  setBackground,
+  gridSize,
+}) {
   const [isZipping, setIsZipping] = useState(false);
-  
-  // Studio State
-  const [bgColor, setBgColor] = useState('transparent');
+  const [bgColor, setBgColor] = useState("transparent");
   const [addShadow, setAddShadow] = useState(false);
+  const [confirmClear, setConfirmClear] = useState(false);
+  const favoriteChannels = channelsData.filter((channel) =>
+    favorites.includes(channel.id),
+  );
 
-  const favoriteChannels = channelsData.filter(ch => favorites.includes(ch.id));
-
-  const copyM3U = () => {
-    let m3u = "#EXTM3U\n";
-    favoriteChannels.forEach(ch => {
-      const url = getLogoUrl(ch.image);
-      m3u += `#EXTINF:-1 tvg-id="${ch.id}" tvg-name="${ch.name}" tvg-logo="${url}" group-title="${ch.category}", ${ch.name}\n`;
-      m3u += `http://stream.url\n`;
-    });
-    navigator.clipboard.writeText(m3u).then(() => alert('M3U lista kopirana u međuspremnik!'));
+  const copy = async (format) => {
+    const content =
+      format === "M3U"
+        ? "#EXTM3U\n" +
+          favoriteChannels
+            .map(
+              (ch) =>
+                `#EXTINF:-1 tvg-id="${ch.id}" tvg-name="${ch.name}" tvg-logo="${getLogoUrl(ch.image)}" group-title="${ch.category}", ${ch.name}\nhttp://stream.url\n`,
+            )
+            .join("")
+        : JSON.stringify(
+            favoriteChannels.map((ch) => ({
+              name: ch.name,
+              logo: getLogoUrl(ch.image),
+            })),
+            null,
+            2,
+          );
+    try {
+      await navigator.clipboard.writeText(content);
+      notify(`${format} popis kopiran.`);
+    } catch {
+      notify("Kopiranje popisa nije dostupno u ovom pregledniku.", "error");
+    }
   };
 
-  const copyJSON = () => {
-    const json = JSON.stringify(favoriteChannels.map(ch => ({
-      name: ch.name,
-      logo: getLogoUrl(ch.image)
-    })), null, 2);
-    navigator.clipboard.writeText(json).then(() => alert('JSON lista kopirana!'));
+  const addCollection = (collection) => {
+    const ids = channelsData
+      .filter((ch) =>
+        collection === "exyu"
+          ? EX_YU_COUNTRIES.includes(countryLabel(ch.country))
+          : collection === "sport"
+            ? ch.category.startsWith("Sport")
+            : ch.category === collection,
+      )
+      .map((ch) => ch.id);
+    setFavorites((previous) => [...new Set([...previous, ...ids])]);
+    notify("Kolekcija dodana u favorite.");
   };
 
-  // Smart Collections
-  const addCollection = (category) => {
-    const collectionIds = channelsData.filter(ch => ch.category === category).map(ch => ch.id);
-    setFavorites(prev => {
-      const newFavs = new Set([...prev, ...collectionIds]);
-      return Array.from(newFavs);
-    });
-  };
-
-  const addExYu = () => {
-    const exyu = ['Croatia', 'Serbia', 'Bosnia and Herzegovina', 'Slovenia', 'Montenegro', 'Macedonia'];
-    const collectionIds = channelsData.filter(ch => exyu.includes(ch.country)).map(ch => ch.id);
-    setFavorites(prev => {
-      const newFavs = new Set([...prev, ...collectionIds]);
-      return Array.from(newFavs);
-    });
-  };
-
-  const processImageWithCanvas = async (blob, chName) => {
-    if (bgColor === 'transparent' && !addShadow) return blob;
-    
+  const processImage = (blob) => {
+    if (bgColor === "transparent" && !addShadow) return Promise.resolve(blob);
     return new Promise((resolve, reject) => {
-      const img = new Image();
-      img.onload = () => {
-        const canvas = document.createElement('canvas');
-        // Add padding if shadow is enabled so it doesn't get cut off
-        const padding = addShadow ? 20 : 0;
-        canvas.width = img.width + (padding * 2);
-        canvas.height = img.height + (padding * 2);
-        const ctx = canvas.getContext('2d');
-        
-        if (bgColor !== 'transparent') {
-          ctx.fillStyle = bgColor;
-          ctx.fillRect(0, 0, canvas.width, canvas.height);
+      const image = new Image();
+      const objectUrl = URL.createObjectURL(blob);
+      image.onload = () => {
+        try {
+          const padding = addShadow ? 20 : 0;
+          const canvas = document.createElement("canvas");
+          canvas.width = image.width + padding * 2;
+          canvas.height = image.height + padding * 2;
+          const ctx = canvas.getContext("2d");
+          if (bgColor !== "transparent") {
+            ctx.fillStyle = bgColor;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+          }
+          if (addShadow) {
+            ctx.shadowColor = "rgba(0,0,0,0.6)";
+            ctx.shadowBlur = 15;
+            ctx.shadowOffsetX = 5;
+            ctx.shadowOffsetY = 5;
+          }
+          ctx.drawImage(image, padding, padding, image.width, image.height);
+          canvas.toBlob(
+            (result) =>
+              result
+                ? resolve(result)
+                : reject(new Error("PNG obrada nije uspjela")),
+            "image/png",
+          );
+        } catch (err) {
+          reject(err);
+        } finally {
+          URL.revokeObjectURL(objectUrl);
         }
-        
-        if (addShadow) {
-          ctx.shadowColor = 'rgba(0,0,0,0.6)';
-          ctx.shadowBlur = 15;
-          ctx.shadowOffsetX = 5;
-          ctx.shadowOffsetY = 5;
-        }
-        
-        ctx.drawImage(img, padding, padding, img.width, img.height);
-        canvas.toBlob((newBlob) => resolve(newBlob), 'image/png');
       };
-      img.onerror = () => reject(new Error('Canvas error on ' + chName));
-      img.src = URL.createObjectURL(blob);
+      image.onerror = () => {
+        URL.revokeObjectURL(objectUrl);
+        reject(new Error("Slika se nije učitala"));
+      };
+      image.src = objectUrl;
     });
   };
 
   const downloadZIP = async () => {
     setIsZipping(true);
+    let completed = 0;
     try {
       const zip = new JSZip();
-      
-      const fetchPromises = favoriteChannels.map(async (ch) => {
-        try {
-          const response = await fetch(ch.image);
-          if (!response.ok) throw new Error(`Network response was not ok for ${ch.name}`);
-          const originalBlob = await response.blob();
-          
-          const finalBlob = await processImageWithCanvas(originalBlob, ch.name);
-
-          const safeName = ch.name.replace(/[^a-z0-9]/gi, '_').toLowerCase();
-          const ext = 'png'; // Always output PNG to preserve canvas manipulation
-          zip.file(`${safeName}.${ext}`, finalBlob);
-        } catch (err) {
-          console.error('Failed to fetch image for ZIP:', ch.name, err);
+      // Limit simultaneous image work for large collections and mobile browsers.
+      let index = 0;
+      const worker = async () => {
+        while (index < favoriteChannels.length) {
+          const channel = favoriteChannels[index++];
+          try {
+            const response = await fetch(channel.image);
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+            const blob = await processImage(await response.blob());
+            zip.file(`${channel.id}.png`, blob);
+            completed++;
+          } catch (err) {
+            console.error("ZIP image failed:", channel.id, err);
+          }
         }
-      });
-      
-      await Promise.all(fetchPromises);
-      const content = await zip.generateAsync({ type: 'blob' });
-      saveAs(content, 'logo-tv-favorites.zip');
-    } catch (err) {
-      console.error('Error creating ZIP:', err);
-      alert('Dogodila se greška prilikom izrade ZIP arhive.');
+      };
+      await Promise.all(
+        Array.from({ length: Math.min(4, favoriteChannels.length) }, worker),
+      );
+      if (!completed) throw new Error("Nijedna slika nije dostupna");
+      saveAs(
+        await zip.generateAsync({ type: "blob" }),
+        "logo-tv-favorites.zip",
+      );
+      const missing = favoriteChannels.length - completed;
+      notify(
+        missing
+          ? `ZIP sadrži ${completed} logotipa. ${missing} slika nije dostupno.`
+          : `ZIP preuzimanje pokrenuto: ${completed} logotipa.`,
+        missing ? "error" : "success",
+      );
+    } catch {
+      notify("ZIP nije izrađen. Pokušaj ponovno.", "error");
     } finally {
       setIsZipping(false);
     }
   };
 
-  if (favoriteChannels.length === 0) {
-    return (
-      <div className="favorites-container">
-        <div className="smart-collections" style={{marginBottom: '2rem'}}>
-          <h3>Pametne Kolekcije</h3>
-          <p style={{color: 'var(--text-secondary)', marginBottom: '1rem'}}>Dodaj popularne pakete jednim klikom:</p>
-          <div style={{display: 'flex', gap: '1rem', flexWrap: 'wrap'}}>
-            <button className="btn-secondary" onClick={() => addCollection('Sports')}>⚽ Svi Sportski Kanali</button>
-            <button className="btn-secondary" onClick={() => addCollection('Movies')}>🎬 Svi Filmski Kanali</button>
-            <button className="btn-secondary" onClick={() => addCollection('Documentary')}>🌍 Svi Dokumentarni Kanali</button>
-            <button className="btn-secondary" onClick={addExYu}>🔥 Svi EX-YU Kanali</button>
-          </div>
-        </div>
-        <div className="empty-state">
-          <div className="empty-icon">🤍</div>
-          <h2>Nema favorita</h2>
-          <p>Klikni na ikonu srca na bilo kojem kanalu kako bi ga dodao u svoju kolekciju.</p>
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <div className="favorites-container">
-      <div className="favorites-header" style={{flexDirection: 'column', alignItems: 'flex-start', gap: '1.5rem'}}>
-        <div style={{display: 'flex', justifyContent: 'space-between', width: '100%', alignItems: 'center'}}>
-          <h2>Moji Favoriti ({favoriteChannels.length})</h2>
-          <button className="btn-secondary" onClick={() => setFavorites([])}>Isprazni sve</button>
+    <section className="favorites-container">
+      <div className="section-heading">
+        <div>
+          <span className="eyebrow">TVOJ ODABIR</span>
+          <h2>
+            Moji favoriti{" "}
+            <span className="count-badge">{favoriteChannels.length}</span>
+          </h2>
+          <p>Spremi kanale koje često koristiš i preuzmi ih zajedno.</p>
         </div>
-        
-        <div className="studio-panel" style={{background: 'var(--glass-bg)', padding: '1rem', borderRadius: '12px', border: '1px solid var(--glass-border)', width: '100%'}}>
-          <h3 style={{marginBottom: '1rem', fontSize: '1.1rem'}}>🎨 Mini Studio za Preuzimanje</h3>
-          <div style={{display: 'flex', gap: '2rem', flexWrap: 'wrap', alignItems: 'center'}}>
-            <div style={{display: 'flex', gap: '0.5rem', alignItems: 'center'}}>
-              <label>Boja Pozadine:</label>
-              <select className="select-input" value={bgColor} onChange={(e) => setBgColor(e.target.value)} style={{padding: '0.5rem'}}>
-                <option value="transparent">Bez (Transparentno)</option>
-                <option value="#ffffff">Bijela</option>
-                <option value="#000000">Crna</option>
-                <option value="#222222">Siva (Dark)</option>
-              </select>
-            </div>
-            <div style={{display: 'flex', gap: '0.5rem', alignItems: 'center'}}>
-              <label style={{display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer'}}>
-                <input type="checkbox" checked={addShadow} onChange={(e) => setAddShadow(e.target.checked)} />
-                Dodaj Sjenu (Drop-shadow)
-              </label>
-            </div>
-            <button className="btn-primary" onClick={downloadZIP} disabled={isZipping} style={{marginLeft: 'auto'}}>
-              {isZipping ? 'Pripremam ZIP...' : 'Preuzmi ZIP'}
+        {favoriteChannels.length > 0 && (
+          <button
+            className="text-button muted"
+            onClick={() => setConfirmClear(true)}
+          >
+            Isprazni favorite
+          </button>
+        )}
+      </div>
+      {confirmClear && (
+        <div className="confirmation-bar" role="alert">
+          <span>Ukloniti sve kanale iz favorita?</span>
+          <div>
+            <button
+              className="button secondary"
+              onClick={() => setConfirmClear(false)}
+            >
+              Odustani
+            </button>
+            <button
+              className="button danger"
+              onClick={() => {
+                setFavorites([]);
+                setConfirmClear(false);
+                notify("Favoriti su ispražnjeni.");
+              }}
+            >
+              Ukloni sve
             </button>
           </div>
         </div>
-
-        <div className="favorites-actions" style={{width: '100%', justifyContent: 'flex-start'}}>
-          <button className="btn-secondary" onClick={copyM3U}>Kopiraj kao M3U</button>
-          <button className="btn-secondary" onClick={copyJSON}>Kopiraj kao JSON</button>
+      )}
+      <div className="collections-row">
+        <span>Brzo dodaj kolekciju</span>
+        <div>
+          {[
+            ["sport", "Sport"],
+            ["Filmski", "Filmovi"],
+            ["Dokumentarni", "Dokumentarni"],
+            ["exyu", "EX-YU"],
+          ].map(([key, label]) => (
+            <button
+              className="collection-button"
+              key={key}
+              onClick={() => addCollection(key)}
+            >
+              + {label}
+            </button>
+          ))}
         </div>
       </div>
-
-      <div className="logos-grid">
-        {favoriteChannels.map(channel => (
-          <div 
-            key={channel.id} 
-            className="logo-card"
-            onClick={() => setSelectedLogo(channel)}
-          >
-            <button 
-              className="fav-btn active"
-              onClick={(e) => { e.stopPropagation(); toggleFavorite(channel.id); }}
-              title="Ukloni iz favorita"
-            >
-              ❤️
-            </button>
-            <div className="image-container">
-              <img src={channel.image} alt={channel.name} className="logo-img" loading="lazy" />
-            </div>
-            <div className="logo-info">
-              <h3 className="logo-name">{channel.name}</h3>
-              <div className="tags">
-                <span className="tag">{channel.country}</span>
-                <span className="tag">{channel.category}</span>
+      {favoriteChannels.length === 0 ? (
+        <div className="empty-state">
+          <Icon name="heart" size={34} />
+          <h3>Tvoja kolekcija počinje ovdje</h3>
+          <p>Klikni na srce uz logotip da ga spremiš za kasnije.</p>
+        </div>
+      ) : (
+        <>
+          <div className="export-panel">
+            <div className="export-panel-heading">
+              <div>
+                <h3>Preuzmi svoju kolekciju</h3>
+                <p>PNG slike u ZIP arhivi ili popis javnih linkova.</p>
+              </div>
+              <div className="export-actions">
+                <button
+                  className="button secondary"
+                  onClick={() => copy("M3U")}
+                >
+                  <Icon name="file" />
+                  Kopiraj M3U
+                </button>
+                <button
+                  className="button secondary"
+                  onClick={() => copy("JSON")}
+                >
+                  <Icon name="copy" />
+                  Kopiraj JSON
+                </button>
               </div>
             </div>
+            <div className="studio-options">
+              <label className="filter-field">
+                <span>Pozadina preuzetih slika</span>
+                <select
+                  value={bgColor}
+                  onChange={(e) => setBgColor(e.target.value)}
+                >
+                  <option value="transparent">Izvorna (bez promjene)</option>
+                  <option value="#ffffff">Bijela</option>
+                  <option value="#000000">Crna</option>
+                  <option value="#222222">Tamnosiva</option>
+                </select>
+              </label>
+              <label className="checkbox-label">
+                <input
+                  type="checkbox"
+                  checked={addShadow}
+                  onChange={(e) => setAddShadow(e.target.checked)}
+                />
+                Dodaj sjenu
+              </label>
+              <button
+                className="button primary"
+                onClick={downloadZIP}
+                disabled={isZipping}
+              >
+                <Icon name="download" />
+                {isZipping ? "Pripremam ZIP…" : "Preuzmi ZIP"}
+              </button>
+            </div>
           </div>
-        ))}
-      </div>
-    </div>
+          <div className="results-toolbar">
+            <p>
+              <strong>{favoriteChannels.length.toLocaleString("hr")}</strong>{" "}
+              spremljenih logotipa
+            </p>
+            <PreviewControls value={background} onChange={setBackground} />
+          </div>
+          <div
+            className="logos-grid"
+            style={{ "--card-size": `${gridSize}px` }}
+          >
+            {favoriteChannels.map((channel) => (
+              <LogoCard
+                key={channel.id}
+                channel={channel}
+                favorite
+                onFavorite={toggleFavorite}
+                onOpen={setSelectedLogo}
+                onCopy={onCopy}
+                background={background}
+              />
+            ))}
+          </div>
+        </>
+      )}
+    </section>
   );
 }

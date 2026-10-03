@@ -1,456 +1,420 @@
-import { useState, useMemo, useEffect, useRef } from 'react';
-import channelsData from './data/channels.json';
-import { useFavorites } from './hooks/useFavorites';
-import Favorites from './components/Favorites';
-import M3UFixer from './components/M3UFixer';
-import { getLogoUrl } from './lib/logoUrl';
-import './App.css'; // if any
+import { useState, useMemo, useEffect, useRef, useCallback } from "react";
+import channelsData from "./data/channels.json";
+import { useFavorites } from "./hooks/useFavorites";
+import Favorites from "./components/Favorites";
+import M3UFixer from "./components/M3UFixer";
+import Icon from "./components/Icon";
+import LogoCard from "./components/LogoCard";
+import LogoDialog from "./components/LogoDialog";
+import PreviewControls from "./components/PreviewControls";
+import { getLogoUrl } from "./lib/logoUrl";
+import { countryLabel, categoryLabel, filterChannels } from "./lib/catalog";
 
-function App() {
-  const [activeTab, setActiveTab] = useState('search'); // 'search', 'favorites', 'fixer'
-  const [theme, setTheme] = useState(() => window.localStorage.getItem('logo-tv-theme') || 'dark');
-  const [gridSize, setGridSize] = useState(() => parseInt(window.localStorage.getItem('logo-tv-grid-size')) || 160);
-  
-  const [searchTerm, setSearchTerm] = useState('');
-  const [isSearchFocused, setIsSearchFocused] = useState(false);
-  const [selectedCountry, setSelectedCountry] = useState('All');
-  const [selectedCategory, setSelectedCategory] = useState('All');
-  
+const formatCount = (value) => value.toLocaleString("hr");
+const quickFilters = [
+  ["all", "Svi kanali"],
+  ["hr", "Hrvatska"],
+  ["exyu", "EX-YU"],
+  ["sport", "Sport"],
+  ["radio", "Radio"],
+];
+
+export default function App() {
+  const [activeTab, setActiveTab] = useState("search");
+  const [theme, setTheme] = useState(
+    () => localStorage.getItem("logo-tv-theme") || "dark",
+  );
+  const [gridSize, setGridSize] = useState(() =>
+    Math.min(
+      250,
+      Math.max(140, Number(localStorage.getItem("logo-tv-grid-size")) || 180),
+    ),
+  );
+  const [searchTerm, setSearchTerm] = useState("");
+  const [country, setCountry] = useState("All");
+  const [category, setCategory] = useState("All");
+  const [quick, setQuick] = useState("all");
+  const [background, setBackground] = useState("checker");
   const [selectedLogo, setSelectedLogo] = useState(null);
-  const [copied, setCopied] = useState(false);
-  const [copiedImg, setCopiedImg] = useState(false);
-  
-  const [visibleCount, setVisibleCount] = useState(100);
-  const { favorites, toggleFavorite, isFavorite, setFavorites } = useFavorites();
-  
+  const [visibleCount, setVisibleCount] = useState(80);
+  const [toast, setToast] = useState(null);
+  const toastTimer = useRef(null);
   const loaderRef = useRef(null);
+  const { favorites, toggleFavorite, isFavorite, setFavorites } =
+    useFavorites();
 
-  // Apply theme and save grid size
+  const notify = useCallback((message, tone = "success") => {
+    clearTimeout(toastTimer.current);
+    setToast({ message, tone });
+    toastTimer.current = setTimeout(() => setToast(null), 4000);
+  }, []);
+  useEffect(() => () => clearTimeout(toastTimer.current), []);
   useEffect(() => {
-    if (theme === 'light') {
-      document.body.classList.add('light-theme');
-    } else {
-      document.body.classList.remove('light-theme');
-    }
-    window.localStorage.setItem('logo-tv-theme', theme);
+    document.body.classList.toggle("light-theme", theme === "light");
+    localStorage.setItem("logo-tv-theme", theme);
   }, [theme]);
-
   useEffect(() => {
-    window.localStorage.setItem('logo-tv-grid-size', gridSize.toString());
+    localStorage.setItem("logo-tv-grid-size", String(gridSize));
   }, [gridSize]);
-
-  // Extract unique countries and categories
-  const countries = useMemo(() => {
-    const c = new Set(channelsData.map(ch => ch.country));
-    return ['All', ...Array.from(c)].sort();
-  }, []);
-
-  const categories = useMemo(() => {
-    const c = new Set(channelsData.map(ch => ch.category));
-    return ['All', ...Array.from(c)].sort();
-  }, []);
-
-  // Reset visible count when search or filters change
   useEffect(() => {
-    setVisibleCount(100);
-  }, [searchTerm, selectedCountry, selectedCategory, activeTab]);
+    setVisibleCount(80);
+  }, [searchTerm, country, category, quick]);
 
-  // Filter and Sort channels
-  const filteredChannels = useMemo(() => {
-    const isGlobalSearch = searchTerm.trim().length > 0;
-    const searchString = searchTerm.toLowerCase();
-    const searchJoined = searchString.replace(/[-_.\s]/g, '');
-    const searchWords = searchString.replace(/[-_.]/g, ' ').split(/\s+/).filter(w => w.length > 0);
+  const countries = useMemo(
+    () =>
+      [...new Set(channelsData.map((ch) => countryLabel(ch.country)))].sort(
+        (a, b) => a.localeCompare(b, "hr"),
+      ),
+    [],
+  );
+  const categories = useMemo(
+    () =>
+      [...new Set(channelsData.map((ch) => ch.category))].sort((a, b) =>
+        categoryLabel(a).localeCompare(categoryLabel(b), "hr"),
+      ),
+    [],
+  );
+  const filtered = useMemo(
+    () =>
+      filterChannels(channelsData, {
+        search: searchTerm,
+        country,
+        category,
+        quick,
+      }),
+    [searchTerm, country, category, quick],
+  );
+  const hasFilters =
+    searchTerm || country !== "All" || category !== "All" || quick !== "all";
+  const resetFilters = () => {
+    setSearchTerm("");
+    setCountry("All");
+    setCategory("All");
+    setQuick("all");
+  };
 
-    let results = channelsData.filter(ch => {
-      const matchesCountry = isGlobalSearch || selectedCountry === 'All' || ch.country === selectedCountry;
-      const matchesCategory = isGlobalSearch || selectedCategory === 'All' || ch.category === selectedCategory;
-      if (!matchesCountry || !matchesCategory) return false;
-
-      if (!isGlobalSearch) return true;
-
-      // Smart Matching
-      const cleanName = ch.name.toLowerCase().replace(/[-_.]/g, ' ');
-      const joinedName = ch.name.toLowerCase().replace(/[-_.\s]/g, '');
-
-      const matchesJoined = joinedName.includes(searchJoined);
-      const matchesWords = searchWords.every(word => cleanName.includes(word));
-
-      return matchesJoined || matchesWords;
-    });
-
-    // Relevance Sorting
-    if (isGlobalSearch) {
-      results.sort((a, b) => {
-        const nameA = a.name.toLowerCase().replace(/[-_.\s]/g, '');
-        const nameB = b.name.toLowerCase().replace(/[-_.\s]/g, '');
-        
-        const exactA = nameA === searchJoined ? 1 : 0;
-        const exactB = nameB === searchJoined ? 1 : 0;
-        if (exactA !== exactB) return exactB - exactA;
-        
-        const startsA = nameA.startsWith(searchJoined) ? 1 : 0;
-        const startsB = nameB.startsWith(searchJoined) ? 1 : 0;
-        if (startsA !== startsB) return startsB - startsA;
-
-        return 0; 
-      });
-    }
-
-    return results;
-  }, [searchTerm, selectedCountry, selectedCategory]);
-
-  // Infinite Scroll Observer
   useEffect(() => {
-    if (activeTab !== 'search') return;
-    const observer = new IntersectionObserver((entries) => {
-      if (entries[0].isIntersecting) {
-        setVisibleCount(prev => prev + 100);
-      }
-    }, { threshold: 0.1 });
-
-    if (loaderRef.current) {
-      observer.observe(loaderRef.current);
-    }
+    if (activeTab !== "search" || !loaderRef.current) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) setVisibleCount((count) => count + 80);
+      },
+      { rootMargin: "160px" },
+    );
+    observer.observe(loaderRef.current);
     return () => observer.disconnect();
-  }, [filteredChannels, activeTab]);
+  }, [activeTab, filtered, visibleCount]);
 
-  // Handle URL copy
-  const handleCopy = async () => {
-    if (!selectedLogo) return;
+  const copyLink = async (channel) => {
     try {
-      await navigator.clipboard.writeText(getLogoUrl(selectedLogo.image));
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch (err) {
-      console.error('Failed to copy link', err);
-      alert('Nije moguće kopirati link. Označi i kopiraj adresu iz polja iznad gumba.');
+      await navigator.clipboard.writeText(getLogoUrl(channel.image));
+      notify(`PNG link kopiran: ${channel.name}`);
+    } catch {
+      notify(
+        "Kopiranje nije dostupno. Otvori pregled i kopiraj adresu iz polja.",
+        "error",
+      );
     }
   };
 
-  // Handle Image copy
-  const handleCopyImage = async () => {
-    if (!selectedLogo) return;
-    try {
-      const response = await fetch(selectedLogo.image);
-      if (!response.ok) throw new Error(`Slika nije dostupna (${response.status}).`);
-      const blob = await response.blob();
-      await navigator.clipboard.write([
-        new ClipboardItem({ 'image/png': blob })
-      ]);
-      setCopiedImg(true);
-      setTimeout(() => setCopiedImg(false), 2000);
-    } catch (err) {
-      console.error('Failed to copy image', err);
-      alert('Nije moguće kopirati sliku. Pokušaj preuzeti umjesto toga.');
-    }
+  const openLogo = (channel) => {
+    setToast(null);
+    setSelectedLogo(channel);
   };
-
-  // Close modal on Escape
-  useEffect(() => {
-    const handleEsc = (e) => {
-      if (e.key === 'Escape') setSelectedLogo(null);
-    };
-    window.addEventListener('keydown', handleEsc);
-    return () => window.removeEventListener('keydown', handleEsc);
-  }, []);
 
   return (
-    <>
-      <div className="app-container">
-        <header className="header">
-          <div className="header-top">
-            <h1 className="logo-title">Logo TV</h1>
-            <div className="header-actions">
-              <div className="zoom-control" title="Veličina logotipa">
-                <span>🔍</span>
-                <input 
-                  type="range" 
-                  min="100" 
-                  max="250" 
-                  value={gridSize}
-                  onChange={(e) => setGridSize(Number(e.target.value))}
-                  className="zoom-slider"
-                />
-              </div>
-              <button 
-                className="theme-toggle" 
-                onClick={() => setTheme(t => t === 'dark' ? 'light' : 'dark')}
-                title={theme === 'dark' ? 'Prebaci na svijetlu temu' : 'Prebaci na tamnu temu'}
-              >
-                {theme === 'dark' ? '☀️' : '🌙'}
-              </button>
-            </div>
+    <div className="app-shell">
+      <header className="site-header">
+        <a
+          className="brand"
+          href={import.meta.env.BASE_URL}
+          aria-label="Logo TV početna"
+        >
+          <span className="brand-symbol">
+            <Icon name="tv" size={22} />
+          </span>
+          <span>
+            Logo <strong>TV</strong>
+          </span>
+          <span className="brand-label">BIBLIOTEKA</span>
+        </a>
+        <div className="header-right">
+          <span className="catalogue-count">
+            {formatCount(channelsData.length)} logotipa
+          </span>
+          <button
+            className="icon-button"
+            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+            aria-label={
+              theme === "dark" ? "Uključi svijetlu temu" : "Uključi tamnu temu"
+            }
+            title={theme === "dark" ? "Svijetla tema" : "Tamna tema"}
+          >
+            <Icon name={theme === "dark" ? "sun" : "moon"} />
+          </button>
+        </div>
+      </header>
+      <main>
+        <div className="page-intro">
+          <div>
+            <span className="eyebrow">TVOJA KOLEKCIJA TV LOGOTIPA</span>
+            <h1>Pravi logo za svaki kanal.</h1>
+            <p>Pronađi kanal, kopiraj PNG link i dodaj ga u svoj panel.</p>
           </div>
-          <p className="logo-subtitle">Premium kolekcija visokokvalitetnih logotipa za pametne televizore, medijske centre i portale.</p>
-          
-          <div className="tabs">
-            <button className={`tab-btn ${activeTab === 'search' ? 'active' : ''}`} onClick={() => setActiveTab('search')}>
-              Tražilica
-            </button>
-            <button className={`tab-btn ${activeTab === 'favorites' ? 'active' : ''}`} onClick={() => setActiveTab('favorites')}>
-              Favoriti ({favorites.length})
-            </button>
-            <button className={`tab-btn ${activeTab === 'fixer' ? 'active' : ''}`} onClick={() => setActiveTab('fixer')}>
-              M3U Fixer
-            </button>
+          <div className="intro-note">
+            <span className="availability-dot" />
+            <span>
+              Javni PNG linkovi
+              <br />
+              <strong>Spremni za tvoj panel</strong>
+            </span>
           </div>
-        </header>
-
-        {activeTab === 'search' && (
+        </div>
+        <nav className="tabs" aria-label="Glavna navigacija">
+          <button
+            className={activeTab === "search" ? "active" : ""}
+            onClick={() => setActiveTab("search")}
+            aria-current={activeTab === "search" ? "page" : undefined}
+          >
+            <Icon name="search" />
+            Tražilica
+          </button>
+          <button
+            className={activeTab === "favorites" ? "active" : ""}
+            onClick={() => setActiveTab("favorites")}
+            aria-current={activeTab === "favorites" ? "page" : undefined}
+          >
+            <Icon name="heart" />
+            Favoriti<span className="count-badge">{favorites.length}</span>
+          </button>
+          <button
+            className={activeTab === "fixer" ? "active" : ""}
+            onClick={() => setActiveTab("fixer")}
+            aria-current={activeTab === "fixer" ? "page" : undefined}
+          >
+            <Icon name="file" />
+            M3U Fixer
+          </button>
+        </nav>
+        {activeTab === "search" && (
           <>
-            <div className="controls-container">
-              <div className="search-box">
-                <svg className="search-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <circle cx="11" cy="11" r="8"></circle>
-                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                </svg>
-                <input 
-                  type="text" 
-                  className="search-input" 
-                  placeholder="Pretraži kanale..." 
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  onFocus={() => setIsSearchFocused(true)}
-                  onBlur={() => setTimeout(() => setIsSearchFocused(false), 200)}
-                />
-                {searchTerm && (
-                  <button className="clear-search-btn" onClick={() => setSearchTerm('')} title="Obriši pretragu">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <line x1="18" y1="6" x2="6" y2="18"></line>
-                      <line x1="6" y1="6" x2="18" y2="18"></line>
-                    </svg>
-                  </button>
-                )}
-                
-                {/* Auto-suggest */}
-                {isSearchFocused && searchTerm && filteredChannels.length > 0 && (
-                  <div className="auto-suggest">
-                    {filteredChannels.slice(0, 5).map(ch => (
-                      <div key={ch.id} className="suggest-item" onClick={() => {
-                        setSelectedLogo(ch);
-                        setSearchTerm(ch.name);
-                      }}>
-                        <img src={ch.image} alt="" className="suggest-img" />
-                        <span>{ch.name}</span>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-
-              <div className="filters">
-                <select 
-                  className="filter-select"
-                  value={selectedCountry}
-                  onChange={(e) => setSelectedCountry(e.target.value)}
-                >
-                  {countries.map(c => (
-                    <option key={c} value={c}>{c === 'All' ? 'Sve države' : c}</option>
-                  ))}
-                </select>
-
-                <select 
-                  className="filter-select"
-                  value={selectedCategory}
-                  onChange={(e) => setSelectedCategory(e.target.value)}
-                >
-                  {categories.map(c => (
-                    <option key={c} value={c}>{c === 'All' ? 'Sve kategorije' : c}</option>
-                  ))}
-                </select>
-                
-                {(selectedCountry !== 'All' || selectedCategory !== 'All') && (
-                  <button 
-                    className="reset-filters-btn" 
-                    onClick={() => {
-                      setSelectedCountry('All');
-                      setSelectedCategory('All');
-                    }}
-                    title="Poništi filtere"
-                  >
-                    Poništi filtere
-                  </button>
-                )}
-              </div>
-            </div>
-
-            {filteredChannels.length === 0 ? (
-              <div className="empty-state">
-                <div className="empty-icon">📺</div>
-                <h2>Nema rezultata</h2>
-                <p>Pokušaj promijeniti pojam za pretragu ili filtere.</p>
-                {searchTerm && (
-                  <a 
-                    href={`mailto:abrnjic@gmail.com?subject=Zahtjev za novi logo: ${searchTerm}`} 
-                    className="btn-primary" 
-                    style={{marginTop: '1.5rem', display: 'inline-block', textDecoration: 'none'}}
-                  >
-                    Nisi pronašao kanal? Zatraži ga ovdje!
-                  </a>
-                )}
-              </div>
-            ) : (
-              <>
-                <div className="logos-grid" style={{ '--card-size': `${gridSize}px` }}>
-                  {filteredChannels.slice(0, visibleCount).map(channel => (
-                    <div 
-                      key={channel.id} 
-                      className="logo-card"
-                      onClick={() => setSelectedLogo(channel)}
+            <section className="search-panel" aria-label="Pretraga i filtri">
+              <div className="search-row">
+                <div className="search-field">
+                  <Icon name="search" size={21} />
+                  <input
+                    type="search"
+                    aria-label="Pretraži kanale"
+                    placeholder="Pretraži kanale..."
+                    value={searchTerm}
+                    onChange={(event) => setSearchTerm(event.target.value)}
+                  />
+                  {searchTerm && (
+                    <button
+                      className="icon-button"
+                      onClick={() => setSearchTerm("")}
+                      aria-label="Obriši pretragu"
                     >
-                      <button 
-                        className={`fav-btn ${isFavorite(channel.id) ? 'active' : ''}`}
-                        onClick={(e) => { e.stopPropagation(); toggleFavorite(channel.id); }}
-                        title={isFavorite(channel.id) ? "Ukloni iz favorita" : "Dodaj u favorite"}
-                      >
-                        {isFavorite(channel.id) ? '❤️' : '🤍'}
-                      </button>
-                      
-                      <div className="image-container">
-                        <img src={channel.image} alt={channel.name} className="logo-img" loading="lazy" />
-                      </div>
-                      <div className="logo-info">
-                        <h3 className="logo-name">{channel.name}</h3>
-                        <div className="tags">
-                          <span className="tag">{channel.country}</span>
-                          <span className="tag">{channel.category}</span>
-                        </div>
-                      </div>
-                    </div>
+                      <Icon name="close" size={17} />
+                    </button>
+                  )}
+                </div>
+                <label className="filter-field">
+                  <span>Država</span>
+                  <select
+                    value={country}
+                    onChange={(event) => {
+                      setCountry(event.target.value);
+                      setQuick("all");
+                    }}
+                  >
+                    <option value="All">Sve države</option>
+                    {countries.map((value) => (
+                      <option key={value}>{value}</option>
+                    ))}
+                  </select>
+                </label>
+                <label className="filter-field">
+                  <span>Kategorija</span>
+                  <select
+                    value={category}
+                    onChange={(event) => setCategory(event.target.value)}
+                  >
+                    <option value="All">Sve kategorije</option>
+                    {categories.map((value) => (
+                      <option key={value} value={value}>
+                        {categoryLabel(value)}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+              </div>
+              <div className="quick-filter-row">
+                <div className="quick-filters" aria-label="Brzi filtri">
+                  {quickFilters.map(([key, label]) => (
+                    <button
+                      key={key}
+                      className={quick === key ? "active" : ""}
+                      aria-pressed={quick === key}
+                      onClick={() => {
+                        setQuick(key);
+                        setCountry("All");
+                        setCategory("All");
+                      }}
+                    >
+                      {label}
+                    </button>
                   ))}
                 </div>
-                
-                {visibleCount < filteredChannels.length && (
-                  <div ref={loaderRef} className="scroll-loader">
-                    <div className="spinner"></div>
+                {hasFilters && (
+                  <button
+                    className="text-button reset-filters"
+                    onClick={resetFilters}
+                  >
+                    Poništi filtre
+                    <Icon name="close" size={14} />
+                  </button>
+                )}
+              </div>
+            </section>
+            <div className="results-toolbar">
+              <p>
+                <strong>{formatCount(filtered.length)}</strong>{" "}
+                {hasFilters ? "rezultata" : "logotipa u biblioteci"}
+                <span className="toolbar-hint">Klikni na logo za detalje</span>
+              </p>
+              <div className="view-options">
+                <PreviewControls value={background} onChange={setBackground} />
+                <label className="density-control">
+                  <span>Veličina</span>
+                  <input
+                    aria-label="Veličina kartica"
+                    type="range"
+                    min="140"
+                    max="250"
+                    step="10"
+                    value={gridSize}
+                    onChange={(event) =>
+                      setGridSize(Number(event.target.value))
+                    }
+                  />
+                </label>
+              </div>
+            </div>
+            {filtered.length ? (
+              <>
+                <div
+                  className="logos-grid"
+                  style={{ "--card-size": `${gridSize}px` }}
+                >
+                  {filtered.slice(0, visibleCount).map((channel) => (
+                    <LogoCard
+                      key={channel.id}
+                      channel={channel}
+                      favorite={isFavorite(channel.id)}
+                      onFavorite={toggleFavorite}
+                    onOpen={openLogo}
+                      onCopy={copyLink}
+                      background={background}
+                    />
+                  ))}
+                </div>
+                {visibleCount < filtered.length && (
+                  <div className="load-more" ref={loaderRef}>
+                    <button
+                      className="button secondary"
+                      onClick={() => setVisibleCount((count) => count + 80)}
+                    >
+                      Prikaži još logotipa
+                      <Icon name="arrow" />
+                    </button>
+                    <span>
+                      Prikazano{" "}
+                      {formatCount(Math.min(visibleCount, filtered.length))} od{" "}
+                      {formatCount(filtered.length)}
+                    </span>
                   </div>
                 )}
               </>
+            ) : (
+              <div className="empty-state">
+                <Icon name="search" size={32} />
+                <h2>Nismo pronašli taj kanal</h2>
+                <p>Pokušaj kraći naziv ili promijeni odabrane filtre.</p>
+                <button className="button secondary" onClick={resetFilters}>
+                  Poništi pretragu i filtre
+                </button>
+                <a
+                  className="text-button"
+                  href={`mailto:abrnjic@gmail.com?subject=${encodeURIComponent(`Zahtjev za novi logo: ${searchTerm}`)}`}
+                >
+                  Zatraži novi logotip
+                  <Icon name="external" size={15} />
+                </a>
+              </div>
             )}
           </>
         )}
-
-        {activeTab === 'favorites' && (
-          <Favorites 
-            favorites={favorites} 
-            channelsData={channelsData} 
-            setSelectedLogo={setSelectedLogo} 
-            toggleFavorite={toggleFavorite} 
+        {activeTab === "favorites" && (
+          <Favorites
+            favorites={favorites}
+            channelsData={channelsData}
+            setSelectedLogo={openLogo}
+            toggleFavorite={toggleFavorite}
             setFavorites={setFavorites}
+            notify={notify}
+            onCopy={copyLink}
+            background={background}
+            setBackground={setBackground}
+            gridSize={gridSize}
           />
         )}
-
-        {activeTab === 'fixer' && (
-          <M3UFixer />
-        )}
-
-      </div>
-
-      {/* Modal */}
-      <div 
-        className={`modal-overlay ${selectedLogo ? 'open' : ''}`}
-        onClick={() => setSelectedLogo(null)}
-      >
-        <div className="modal-content" onClick={e => e.stopPropagation()}>
-          <button className="close-btn" onClick={() => setSelectedLogo(null)}>
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <line x1="18" y1="6" x2="6" y2="18"></line>
-              <line x1="6" y1="6" x2="18" y2="18"></line>
-            </svg>
+        {activeTab === "fixer" && <M3UFixer />}
+      </main>
+      <footer className="site-footer">
+        <span>
+          Logo TV<span className="footer-dot">·</span>
+          {formatCount(channelsData.length)} logotipa na jednom mjestu
+        </span>
+        <a
+          href="https://github.com/abrnjic/logo-tv"
+          target="_blank"
+          rel="noreferrer"
+        >
+          GitHub
+          <Icon name="external" size={14} />
+        </a>
+      </footer>
+      {selectedLogo && (
+        <LogoDialog
+          key={selectedLogo.id}
+          channel={selectedLogo}
+          favorite={isFavorite(selectedLogo.id)}
+          onFavorite={toggleFavorite}
+          onCopy={copyLink}
+          onClose={() => setSelectedLogo(null)}
+          notify={notify}
+          message={toast}
+        />
+      )}
+      {toast && !selectedLogo && (
+        <div
+          className={`toast ${toast.tone}`}
+          role={toast.tone === "error" ? "alert" : "status"}
+        >
+          <span className="toast-icon">
+            <Icon name={toast.tone === "error" ? "close" : "check"} size={17} />
+          </span>
+          <span>{toast.message}</span>
+          <button
+            className="icon-button"
+            onClick={() => setToast(null)}
+            aria-label="Zatvori obavijest"
+          >
+            <Icon name="close" size={15} />
           </button>
-          
-          {selectedLogo && (
-            <>
-              <button 
-                className={`modal-fav-btn ${isFavorite(selectedLogo.id) ? 'active' : ''}`}
-                onClick={() => toggleFavorite(selectedLogo.id)}
-              >
-                {isFavorite(selectedLogo.id) ? '❤️ Ukloni iz favorita' : '🤍 Dodaj u favorite'}
-              </button>
-              
-              <h2 className="modal-title">{selectedLogo.name}</h2>
-              <div className="modal-img-container">
-                <img src={selectedLogo.image} alt={selectedLogo.name} className="modal-img" />
-              </div>
-              
-              <div className="url-box">
-                <input 
-                  type="text" 
-                  className="url-input" 
-                  readOnly 
-                  value={getLogoUrl(selectedLogo.image)} 
-                />
-              </div>
-              
-              <div className="modal-actions-row" style={{ display: 'flex', gap: '1rem', marginTop: '1rem', width: '100%' }}>
-                <button 
-                  className={`copy-btn ${copied ? 'copied' : ''}`}
-                  onClick={handleCopy}
-                  style={{ flex: 1, justifyContent: 'center' }}
-                >
-                  {copied ? (
-                    <>
-                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <polyline points="20 6 9 17 4 12"></polyline>
-                      </svg>
-                      Link!
-                    </>
-                  ) : (
-                    <>
-                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                      </svg>
-                      Kopiraj Link
-                    </>
-                  )}
-                </button>
-
-                <button 
-                  className={`copy-btn ${copiedImg ? 'copied' : ''}`}
-                  onClick={handleCopyImage}
-                  style={{ flex: 1, justifyContent: 'center', backgroundColor: copiedImg ? '#10b981' : 'var(--accent-color)', color: 'white', border: 'none' }}
-                >
-                  {copiedImg ? (
-                    <>
-                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <polyline points="20 6 9 17 4 12"></polyline>
-                      </svg>
-                      Slika!
-                    </>
-                  ) : (
-                    <>
-                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-                        <circle cx="8.5" cy="8.5" r="1.5"></circle>
-                        <polyline points="21 15 16 10 5 21"></polyline>
-                      </svg>
-                      Kopiraj Sliku
-                    </>
-                  )}
-                </button>
-              </div>
-            </>
-          )}
         </div>
-      </div>
-      
-      {/* Floating Scroll Buttons */}
-      <div className="floating-actions">
-        <button className="scroll-btn" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} title="Idi na vrh">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <polyline points="18 15 12 9 6 15"></polyline>
-          </svg>
-        </button>
-        <button className="scroll-btn" onClick={() => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })} title="Idi na dno">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <polyline points="6 9 12 15 18 9"></polyline>
-          </svg>
-        </button>
-      </div>
-    </>
+      )}
+    </div>
   );
 }
-
-export default App;
