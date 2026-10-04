@@ -89,6 +89,13 @@
       "preferred": false,
       "added": true,
       "sourcePath": "logos/custom/san-snova-hrvatska.png"
+    },
+    "247livetvscoobydoo": {
+      "name": "247 Livetvscoobydoo",
+      "country": "Međunarodni",
+      "category": "24/7",
+      "hidden": false,
+      "preferred": true
     }
   }
 }
