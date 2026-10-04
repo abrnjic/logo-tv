@@ -18,6 +18,20 @@
       "preferred": true,
       "added": true,
       "sourcePath": "logos/custom/lud-zbunjen-normalan-hrvatska.png"
+    },
+    "novafamily": {
+      "name": "Novafamily",
+      "country": "Hrvatska",
+      "category": "General",
+      "hidden": false,
+      "preferred": true
+    },
+    "nova-family-hr": {
+      "name": "Novafamily",
+      "country": "Hrvatska",
+      "category": "General",
+      "hidden": false,
+      "preferred": false
     }
   }
 }
