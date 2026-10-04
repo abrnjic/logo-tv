@@ -112,6 +112,15 @@
       "preferred": false,
       "added": true,
       "sourcePath": "logos/custom/andrija-an-elka-hrvatska.png"
+    },
+    "formula-1-tv-hrvatska": {
+      "name": "Formula 1 TV",
+      "country": "Hrvatska",
+      "category": "General",
+      "hidden": false,
+      "preferred": false,
+      "added": true,
+      "sourcePath": "logos/custom/formula-1-tv-hrvatska.png"
     }
   }
 }
