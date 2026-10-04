@@ -71,6 +71,15 @@
       "category": "24/7",
       "hidden": false,
       "preferred": true
+    },
+    "married-with-children-me-unarodni": {
+      "name": "Married… with Children",
+      "country": "Međunarodni",
+      "category": "General",
+      "hidden": false,
+      "preferred": false,
+      "added": true,
+      "sourcePath": "logos/custom/married-with-children-me-unarodni.png"
     }
   }
 }
