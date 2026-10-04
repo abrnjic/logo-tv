@@ -48,6 +48,15 @@
       "preferred": true,
       "added": true,
       "sourcePath": "logos/custom/mucke-hrvatska.png"
+    },
+    "friends-hrvatska": {
+      "name": "Friends",
+      "country": "Hrvatska",
+      "category": "General",
+      "hidden": false,
+      "preferred": false,
+      "added": true,
+      "sourcePath": "logos/custom/friends-hrvatska.png"
     }
   }
 }
