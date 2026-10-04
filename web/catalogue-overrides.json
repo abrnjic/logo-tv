@@ -45,7 +45,7 @@
       "country": "Hrvatska",
       "category": "General",
       "hidden": false,
-      "preferred": false,
+      "preferred": true,
       "added": true,
       "sourcePath": "logos/custom/mucke-hrvatska.png"
     }
