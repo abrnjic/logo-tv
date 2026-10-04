@@ -8,6 +8,10 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
+      workbox: {
+        // The catalogue contains 13k records and owner-editable source paths.
+        maximumFileSizeToCacheInBytes: 4 * 1024 * 1024,
+      },
       devOptions: {
         enabled: true
       },
