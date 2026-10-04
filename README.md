@@ -62,3 +62,15 @@ Slobodno ga kloniraj, koristi u svojim aplikacijama, mijenjaj i dijeli! Za više
 ---
 
 *Napravljeno s ❤️ za razvojnu i medijsku zajednicu.*
+
+## Nazivi i duplikati
+
+Katalog čisti tehničke dodatke iz naziva datoteka i koristi postojeće TVProfil nazive gdje je moguće. Varijante se grupiraju po nazivu **i državi**. Svaka originalna PNG datoteka i adresa ostaju dostupne; spremljeni favoriti rade preko starih oznaka. Nacionalne verzije istog kanala ostaju zasebne.
+
+## Privatno upravljanje
+
+U aplikaciji odaberi **Upravljanje**. Pristup provjerava GitHub račun `abrnjic` (ID `6376177`); PNG i metapodaci spremaju se u repozitorij preko GitHub API-ja. GitHub provjerava ovlasti pisanja. Nema javnog tokena ili zajedničke lozinke u kodu.
+
+Za prvu prijavu vlasnik izrađuje **fine-grained personal access token** za samo repozitorij `logo-tv`, s ovlasti **Contents: Read and write** i rokom trajanja. Token se unosi u polje u aplikaciji i ostaje isključivo u memoriji kartice do odjave, zatvaranja ili osvježavanja. Nemoj ga spremati u repozitorij ili slati u razgovor.
+
+Moguće je dodati PNG, urediti naziv/državu/kategoriju, zamijeniti sliku, odabrati glavnu varijantu ili sakriti kanal. Skriveni kanali mogu se ponovno prikazati u administraciji. Ručne izmjene čuva `web/catalogue-overrides.json`, tako da ih izgradnja baze ne prepisuje. PNG i metapodaci spremaju se jednim commitom; promjena javne stranice vidljiva je tek nakon uspješne GitHub Pages objave. Promjene na udaljenom repozitoriju prekidaju spremanje umjesto prepisivanja tuđih izmjena.

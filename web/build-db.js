@@ -192,7 +192,8 @@ logoFiles.forEach(file => {
     name: formatName(channelSlug),
     country: mapped.country,
     category: mapped.category,
-    image: `logos/${fileName}`
+    image: `logos/${fileName}`,
+    sourcePath: `logos/${relPath.split(path.sep).join("/")}`
   });
 });
 

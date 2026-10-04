@@ -1,5 +1,9 @@
 import { useState, useMemo, useEffect, useRef, useCallback } from "react";
-import channelsData from "./data/channels.json";
+import rawChannels from "./data/channels.json";
+import metadata from "../catalogue-overrides.json";
+import { prepareCatalogue } from "./lib/channelNames";
+import Admin from "./components/Admin";
+const channelsData = prepareCatalogue(rawChannels, metadata);
 import { useFavorites } from "./hooks/useFavorites";
 import Favorites from "./components/Favorites";
 import M3UFixer from "./components/M3UFixer";
@@ -40,8 +44,26 @@ export default function App() {
   const [toast, setToast] = useState(null);
   const toastTimer = useRef(null);
   const loaderRef = useRef(null);
-  const { favorites, toggleFavorite, isFavorite, setFavorites } =
-    useFavorites();
+  const {
+    favorites,
+    toggleFavorite: toggleStoredFavorite,
+    setFavorites,
+  } = useFavorites();
+
+  const isFavorite = (id) => {
+    const channel = channelsData.find((channel) => channel.id === id);
+    return (channel?.aliases || [id]).some((alias) =>
+      favorites.includes(alias),
+    );
+  };
+  const toggleFavorite = (id) => {
+    const channel = channelsData.find((channel) => channel.id === id);
+    if (isFavorite(id))
+      setFavorites((previous) =>
+        previous.filter((alias) => !(channel?.aliases || [id]).includes(alias)),
+      );
+    else toggleStoredFavorite(id);
+  };
 
   const notify = useCallback((message, tone = "success") => {
     clearTimeout(toastTimer.current);
@@ -125,6 +147,12 @@ export default function App() {
   return (
     <div className="app-shell">
       <header className="site-header">
+        <button
+          className="text-button admin-entry"
+          onClick={() => setActiveTab("admin")}
+        >
+          Upravljanje
+        </button>
         <a
           className="brand"
           href={import.meta.env.BASE_URL}
@@ -196,6 +224,9 @@ export default function App() {
             M3U Fixer
           </button>
         </nav>
+        {activeTab === "admin" && (
+          <Admin rawChannels={rawChannels} channels={channelsData} />
+        )}
         {activeTab === "search" && (
           <>
             <section className="search-panel" aria-label="Pretraga i filtri">
@@ -313,7 +344,7 @@ export default function App() {
                       channel={channel}
                       favorite={isFavorite(channel.id)}
                       onFavorite={toggleFavorite}
-                    onOpen={openLogo}
+                      onOpen={openLogo}
                       onCopy={copyLink}
                       background={background}
                     />

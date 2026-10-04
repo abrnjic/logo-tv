@@ -1,5 +1,9 @@
 import { useState, useRef, useMemo } from "react";
-import channelsData from "../data/channels.json";
+import rawChannels from "../data/channels.json";
+import metadata from "../../catalogue-overrides.json";
+import { prepareCatalogue, normalizeChannel } from "../lib/channelNames";
+const channelsData = prepareCatalogue(rawChannels, metadata);
+const allLogoChannels = rawChannels.map(normalizeChannel);
 import Fuse from "fuse.js";
 import { repairPlaylist } from "../lib/playlist";
 import Icon from "./Icon";
@@ -50,13 +54,19 @@ export default function M3UFixer() {
     setIsProcessing(true);
 
     setTimeout(() => {
-      const repaired = repairPlaylist(fileContent, channelsData, (rawName) => {
-        const searchJoined = rawName.toLowerCase().replace(/[-_.\s]/g, "");
-        const exact = channelsData.find(
-          (channel) => channel.name.toLowerCase().replace(/[-_.\s]/g, "") === searchJoined,
-        );
-        return exact || fuse.search(cleanChannelName(rawName))[0]?.item;
-      });
+      const repaired = repairPlaylist(
+        fileContent,
+        allLogoChannels,
+        (rawName) => {
+          const searchJoined = rawName.toLowerCase().replace(/[-_.\s]/g, "");
+          const exact = channelsData.find(
+            (channel) =>
+              channel.name.toLowerCase().replace(/[-_.\s]/g, "") ===
+              searchJoined,
+          );
+          return exact || fuse.search(cleanChannelName(rawName))[0]?.item;
+        },
+      );
       setResult(repaired);
       setIsProcessing(false);
     }, 100);
@@ -81,7 +91,8 @@ export default function M3UFixer() {
           <h2>Novi logotipi za tvoju M3U listu.</h2>
           <p>
             Učitaj listu ili zalijepi tekst. Pronaći ćemo kanale i dodati
-            njihove javne PNG linkove. Stare Logo TV linkove popravljamo prema nazivu datoteke, čak i kad je kanal drugačije nazvan.
+            njihove javne PNG linkove. Stare Logo TV linkove popravljamo prema
+            nazivu datoteke, čak i kad je kanal drugačije nazvan.
           </p>
           <ol className="fixer-steps">
             <li>Dodaj svoju listu</li>

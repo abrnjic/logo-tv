@@ -24,7 +24,7 @@ export default function Favorites({
   const [addShadow, setAddShadow] = useState(false);
   const [confirmClear, setConfirmClear] = useState(false);
   const favoriteChannels = channelsData.filter((channel) =>
-    favorites.includes(channel.id),
+    (channel.aliases || [channel.id]).some((id) => favorites.includes(id)),
   );
 
   const copy = async (format) => {
