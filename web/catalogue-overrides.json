@@ -80,6 +80,15 @@
       "preferred": false,
       "added": true,
       "sourcePath": "logos/custom/married-with-children-me-unarodni.png"
+    },
+    "san-snova-hrvatska": {
+      "name": "San Snova",
+      "country": "Hrvatska",
+      "category": "General",
+      "hidden": false,
+      "preferred": false,
+      "added": true,
+      "sourcePath": "logos/custom/san-snova-hrvatska.png"
     }
   }
 }
