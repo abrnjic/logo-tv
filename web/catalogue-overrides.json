@@ -64,6 +64,13 @@
       "category": "24/7",
       "hidden": false,
       "preferred": true
+    },
+    "247livetvdvaipolmukarca": {
+      "name": "247 Livetvdvaipolmukarca",
+      "country": "Međunarodni",
+      "category": "24/7",
+      "hidden": false,
+      "preferred": true
     }
   }
 }
