@@ -143,6 +143,16 @@
       "updatedAt": "2026-10-04T21:43:05.136Z",
       "hidden": false,
       "preferred": false
+    },
+    "bayern-tv-me-unarodni": {
+      "name": "Bayern tv",
+      "country": "Međunarodni",
+      "category": "General",
+      "updatedAt": "2026-10-04T21:55:06.107Z",
+      "hidden": false,
+      "preferred": false,
+      "added": true,
+      "sourcePath": "logos/custom/bayern-tv-me-unarodni.png"
     }
   }
 }
