@@ -131,7 +131,7 @@ export default function Admin({ rawChannels, channels }) {
         fields,
         imageBytes,
         sourcePath,
-        hidden,
+        hidden: selected ? hidden : false,
         preferred,
         ids: selected?.aliases || [id],
         isNew: !selected,
@@ -142,11 +142,17 @@ export default function Admin({ rawChannels, channels }) {
             ...rawChannels,
             { id, ...fields, image: `logos/${id}.png`, sourcePath },
           ];
-      setRecords(
-        prepareCatalogue(updatedRaw, result.metadata, { includeHidden: true }),
-      );
+      const nextRecords = prepareCatalogue(updatedRaw, result.metadata, {
+        includeHidden: true,
+      });
+      setRecords(nextRecords);
+      select(nextRecords.find((channel) => channel.aliases.includes(id)));
+      setShowHidden(Boolean(result.metadata.channels[id]?.hidden));
+      setSearch(fields.name.trim());
       setNotice(
-        "Spremljeno na GitHub. Automatska objava je pokrenuta; promjena će biti javna nakon završetka objave.",
+        result.metadata.channels[id]?.hidden
+          ? "Kanal je spremljen kao skriven. Za vraćanje u katalog isključi opciju Sakrij i ponovno spremi."
+          : "Kanal je spremljen kao vidljiv. Automatska objava je pokrenuta; javni katalog će se ažurirati nakon završetka objave.",
       );
     });
   const logout = () => {
@@ -192,8 +198,9 @@ export default function Admin({ rawChannels, channels }) {
             spellCheck={false}
           />
           <p className="field-hint">
-            Token ostaje samo u memoriji ove kartice. Odjava ili zatvaranje
-            kartice prekida pristup.
+            Prijavi se jednom za ovu karticu. Možeš prelaziti između tražilice
+            i uređivanja bez ponovnog unosa tokena. Osvježavanje, odjava ili
+            zatvaranje kartice prekida pristup.
           </p>
           <button className="button primary" disabled={busy}>
             {busy ? "Provjeravam…" : "Prijavi se kao vlasnik"}
@@ -268,13 +275,13 @@ export default function Admin({ rawChannels, channels }) {
                 checked={showHidden}
                 onChange={(event) => setShowHidden(event.target.checked)}
               />
-              Prikaži skrivene kanale
+              Samo skriveni kanali
             </label>
             <div className="admin-list">
               {records
                 .filter(
                   (channel) =>
-                    (showHidden || !channel.hidden) &&
+                    Boolean(channel.hidden) === showHidden &&
                     `${channel.name} ${channel.country}`
                       .toLowerCase()
                       .includes(search.toLowerCase()),

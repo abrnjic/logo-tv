@@ -143,11 +143,13 @@ test("a new PNG and its metadata are written in one atomic tree and commit", asy
     imageBytes: bytes,
     sourcePath: "logos/custom/test-new-hr.png",
     isNew: true,
+    hidden: true, // A stale editor flag must never hide a new upload.
   });
   assert.equal(api.tree.tree.length, 2);
   assert.equal(api.tree.tree[0].path, "logos/custom/test-new-hr.png");
   const payload = JSON.parse(api.tree.tree[1].content);
   assert.equal(payload.channels["test-new-hr"].added, true);
+  assert.equal(payload.channels["test-new-hr"].hidden, false);
   assert.equal(
     payload.channels["test-new-hr"].sourcePath,
     "logos/custom/test-new-hr.png",

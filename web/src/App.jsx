@@ -224,9 +224,9 @@ export default function App() {
             M3U Fixer
           </button>
         </nav>
-        {activeTab === "admin" && (
+        <div style={{ display: activeTab === "admin" ? "block" : "none" }}>
           <Admin rawChannels={rawChannels} channels={channelsData} />
-        )}
+        </div>
         {activeTab === "search" && (
           <>
             <section className="search-panel" aria-label="Pretraga i filtri">

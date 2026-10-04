@@ -143,6 +143,8 @@ export function createAdminSession(token, fetcher = fetch) {
         )
       )
         throw new Error("Neispravne oznake varijanti kanala.");
+      // New uploads always enter the visible catalogue. Hiding is a later edit.
+      if (isNew) hidden = false;
       const values = validateFields(fields);
       if (imageBytes) {
         validatePng(imageBytes);
