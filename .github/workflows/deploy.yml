@@ -39,6 +39,10 @@ jobs:
         run: node build-db.js
         working-directory: web
         
+      - name: Validate all catalogue links
+        run: npm run test:links
+        working-directory: web
+
       - name: Build Project
         run: npm run build
         working-directory: web

@@ -1,4 +1,5 @@
 import Icon from "./Icon";
+import { getLogoUrl } from "../lib/logoUrl";
 import { countryLabel, categoryLabel } from "../lib/catalog";
 
 export default function LogoCard({
@@ -18,7 +19,7 @@ export default function LogoCard({
           aria-label={`Pregledaj ${channel.name}`}
         >
           <img
-            src={channel.image}
+            src={getLogoUrl(channel.image)}
             alt={channel.name}
             loading="lazy"
             decoding="async"

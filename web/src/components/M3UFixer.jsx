@@ -1,7 +1,7 @@
 import { useState, useRef, useMemo } from "react";
 import channelsData from "../data/channels.json";
 import Fuse from "fuse.js";
-import { getLogoUrl } from "../lib/logoUrl";
+import { repairPlaylist } from "../lib/playlist";
 import Icon from "./Icon";
 
 export default function M3UFixer() {
@@ -50,71 +50,14 @@ export default function M3UFixer() {
     setIsProcessing(true);
 
     setTimeout(() => {
-      const lines = fileContent.split("\n");
-      let newLines = [];
-      let matchCount = 0;
-      let totalChannels = 0;
-
-      for (let i = 0; i < lines.length; i++) {
-        const line = lines[i];
-        if (line.startsWith("#EXTINF:")) {
-          totalChannels++;
-          const commaIndex = line.lastIndexOf(",");
-          if (commaIndex !== -1) {
-            const rawName = line.substring(commaIndex + 1).trim();
-            const searchJoined = rawName.toLowerCase().replace(/[-_.\s]/g, "");
-
-            // Prvo probamo naći savršeno poklapanje (stari način za brzinu i točnost)
-            let match = channelsData.find(
-              (ch) =>
-                ch.name.toLowerCase().replace(/[-_.\s]/g, "") === searchJoined,
-            );
-
-            // Ako nema savršenog poklapanja, koristimo Fuzzy (umjetnu inteligenciju)
-            if (!match) {
-              const cleanedName = cleanChannelName(rawName);
-              const fuzzyResults = fuse.search(cleanedName);
-              if (fuzzyResults.length > 0) {
-                // Uzimamo najbolji rezultat (najmanji score)
-                match = fuzzyResults[0].item;
-              }
-            }
-
-            if (match) {
-              matchCount++;
-              const githubUrl = getLogoUrl(match.image);
-
-              // Replace or add tvg-logo
-              let newLine = line;
-              if (newLine.includes('tvg-logo="')) {
-                newLine = newLine.replace(
-                  /tvg-logo="[^"]*"/,
-                  `tvg-logo="${githubUrl}"`,
-                );
-              } else {
-                // Insert tvg-logo after #EXTINF: or after the duration
-                newLine = newLine.replace(
-                  /#EXTINF:([^,]+),/,
-                  `#EXTINF:$1 tvg-logo="${githubUrl}",`,
-                );
-              }
-              newLines.push(newLine);
-            } else {
-              newLines.push(line);
-            }
-          } else {
-            newLines.push(line);
-          }
-        } else {
-          newLines.push(line);
-        }
-      }
-
-      setResult({
-        content: newLines.join("\n"),
-        matchCount,
-        totalChannels,
+      const repaired = repairPlaylist(fileContent, channelsData, (rawName) => {
+        const searchJoined = rawName.toLowerCase().replace(/[-_.\s]/g, "");
+        const exact = channelsData.find(
+          (channel) => channel.name.toLowerCase().replace(/[-_.\s]/g, "") === searchJoined,
+        );
+        return exact || fuse.search(cleanChannelName(rawName))[0]?.item;
       });
+      setResult(repaired);
       setIsProcessing(false);
     }, 100);
   };
@@ -138,7 +81,7 @@ export default function M3UFixer() {
           <h2>Novi logotipi za tvoju M3U listu.</h2>
           <p>
             Učitaj listu ili zalijepi tekst. Pronaći ćemo kanale i dodati
-            njihove javne PNG linkove.
+            njihove javne PNG linkove. Stare Logo TV linkove popravljamo prema nazivu datoteke, čak i kad je kanal drugačije nazvan.
           </p>
           <ol className="fixer-steps">
             <li>Dodaj svoju listu</li>

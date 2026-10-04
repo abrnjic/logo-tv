@@ -25,7 +25,7 @@ export default function LogoDialog({
     const element = dialog.current;
     element.showModal();
     const abort = new AbortController();
-    fetch(channel.image, { signal: abort.signal })
+    fetch(getLogoUrl(channel.image), { signal: abort.signal })
       .then((response) => {
         if (!response.ok) throw new Error("Slika nije dostupna");
         return response.blob();
@@ -84,7 +84,7 @@ export default function LogoDialog({
       <div className="dialog-preview-panel">
         <div className={`dialog-preview preview-${background}`}>
           <img
-            src={channel.image}
+            src={getLogoUrl(channel.image)}
             alt={channel.name}
             onLoad={(event) =>
               setDimensions([

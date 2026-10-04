@@ -122,7 +122,7 @@ export default function Favorites({
         while (index < favoriteChannels.length) {
           const channel = favoriteChannels[index++];
           try {
-            const response = await fetch(channel.image);
+            const response = await fetch(getLogoUrl(channel.image));
             if (!response.ok) throw new Error(`HTTP ${response.status}`);
             const blob = await processImage(await response.blob());
             zip.file(`${channel.id}.png`, blob);
