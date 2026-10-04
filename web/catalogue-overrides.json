@@ -96,6 +96,13 @@
       "category": "24/7",
       "hidden": false,
       "preferred": true
+    },
+    "247livetvkursadzije": {
+      "name": "247 Livetvkursadzije",
+      "country": "Međunarodni",
+      "category": "24/7",
+      "hidden": false,
+      "preferred": true
     }
   }
 }
