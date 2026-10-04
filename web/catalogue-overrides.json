@@ -57,6 +57,13 @@
       "preferred": false,
       "added": true,
       "sourcePath": "logos/custom/friends-hrvatska.png"
+    },
+    "247livetvfrasier": {
+      "name": "247 Livetvfrasier",
+      "country": "Međunarodni",
+      "category": "24/7",
+      "hidden": false,
+      "preferred": true
     }
   }
 }
