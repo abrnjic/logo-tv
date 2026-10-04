@@ -135,6 +135,14 @@
       "category": "General",
       "hidden": false,
       "preferred": true
+    },
+    "pinkwestern": {
+      "name": "Pink Western",
+      "country": "Regionalni",
+      "category": "Filmski",
+      "updatedAt": "2026-10-04T21:43:05.136Z",
+      "hidden": false,
+      "preferred": false
     }
   }
 }
