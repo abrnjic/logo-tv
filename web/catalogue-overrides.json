@@ -32,6 +32,13 @@
       "category": "General",
       "hidden": false,
       "preferred": false
+    },
+    "nova-cinema-hr": {
+      "name": "Nova Cinema",
+      "country": "Hrvatska",
+      "category": "General",
+      "hidden": false,
+      "preferred": true
     }
   }
 }
