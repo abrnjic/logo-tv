@@ -98,7 +98,7 @@ export function filterChannels(
     if (quick === "sport" && !channel.category.startsWith("Sport"))
       return false;
     if (quick === "radio" && channel.category !== "Radio") return false;
-    const name = cleanName(channel.name);
+    const name = cleanName([channel.displayName || channel.name, channel.name, channel.id, ...(channel.aliases || [])].join(" "));
     return (
       !query ||
       name.includes(query) ||
@@ -108,9 +108,9 @@ export function filterChannels(
   if (query)
     results.sort((a, b) => {
       const rank = (channel) =>
-        cleanName(channel.name) === query
+        cleanName(channel.displayName || channel.name) === query
           ? 0
-          : cleanName(channel.name).startsWith(query)
+          : cleanName(channel.displayName || channel.name).startsWith(query)
             ? 1
             : 2;
       return rank(a) - rank(b);

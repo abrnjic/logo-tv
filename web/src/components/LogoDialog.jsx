@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import { saveAs } from "file-saver";
 import Icon from "./Icon";
 import PreviewControls from "./PreviewControls";
+import LogoHistory from "./LogoHistory";
+import { getSourceLogoUrl } from "../lib/liveCatalogue";
 import { getLogoUrl } from "../lib/logoUrl";
 import { countryLabel, categoryLabel } from "../lib/catalog";
 
@@ -11,6 +13,8 @@ export default function LogoDialog({
   onFavorite,
   onCopy,
   onEdit,
+  onRestore,
+  onVariant,
   onClose,
   notify,
   message,
@@ -21,6 +25,7 @@ export default function LogoDialog({
   const [blob, setBlob] = useState(null);
   const [error, setError] = useState(false);
   const [busy, setBusy] = useState(false);
+  const [tab, setTab] = useState("details");
   const imageUrl = channel.previewUrl || getLogoUrl(channel);
 
   useEffect(() => {
@@ -87,7 +92,7 @@ export default function LogoDialog({
         <div className={`dialog-preview preview-${background}`}>
           <img
             src={imageUrl}
-            alt={channel.name}
+            alt={(channel.displayName || channel.name)}
             onLoad={(event) =>
               setDimensions([
                 event.currentTarget.naturalWidth,
@@ -101,10 +106,13 @@ export default function LogoDialog({
       </div>
       <div className="dialog-details">
         <span className="eyebrow">LOGOTIP KANALA</span>
-        <h2 id="logo-dialog-title">{channel.name}</h2>
+        <h2 id="logo-dialog-title">{(channel.displayName || channel.name)}</h2>
         <p className="muted">
           {countryLabel(channel.country)} · {categoryLabel(channel.category)}
         </p>
+        <div className="detail-tabs" aria-label="Prikaz logotipa"><button className={tab === 'details' ? 'active' : ''} aria-pressed={tab === 'details'} onClick={() => setTab('details')}>Detalji i varijante</button><button className={tab === 'history' ? 'active' : ''} aria-pressed={tab === 'history'} onClick={() => setTab('history')}>Povijest logotipa</button></div>
+        {tab === 'history' ? <LogoHistory key={channel.id} channel={channel} onRestore={onRestore} /> : <>
+        {channel.variants?.length > 1 && <section className="variant-panel" aria-label="Varijante logotipa"><span className="field-label">Varijante · {channel.variants.length}</span><div className="variant-list">{channel.variants.map(variant => <button key={variant.id} className={`variant-button ${channel.id === variant.id ? 'active' : ''}`} aria-label={`Odaberi varijantu ${variant.id}`} aria-pressed={channel.id === variant.id} onClick={() => onVariant({ ...variant, displayName: channel.displayName, mainId: channel.mainId, aliases: channel.aliases, variants: channel.variants, catalogueRevision: channel.catalogueRevision, previewUrl: getSourceLogoUrl(variant, channel.catalogueRevision), publicUrl: getSourceLogoUrl(variant, channel.catalogueRevision) })}><img src={getSourceLogoUrl(variant, channel.catalogueRevision)} alt={variant.id} loading="lazy" /><span>{variant.id === channel.mainId ? 'Glavni logo' : 'Varijanta'}</span></button>)}</div></section>}
         <div className="file-details">
           <div>
             <span>Format</span>
@@ -175,6 +183,7 @@ export default function LogoDialog({
             Slika se nije učitala. Pokušaj ponovno otvoriti pregled.
           </p>
         )}
+        </>}
         {message && (
           <p
             className={`dialog-feedback ${message.tone}`}

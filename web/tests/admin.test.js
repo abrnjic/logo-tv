@@ -97,6 +97,8 @@ test("owner saves group metadata atomically, preserves unrelated data and logs o
   const payload = JSON.parse(api.tree.tree[0].content);
   assert.equal(payload.channels.unrelated.name, "Keep this");
   assert.equal(payload.channels.hrt1.name, fields.name);
+  assert.ok(Number.isFinite(Date.parse(payload.channels.hrt1.updatedAt)));
+  assert.equal(payload.channels.unrelated.updatedAt, undefined);
   assert.equal(payload.channels.hrt1hr.name, fields.name);
   assert.equal(payload.channels.hrt1.preferred, true);
   assert.equal(payload.channels.hrt1hr.preferred, false);

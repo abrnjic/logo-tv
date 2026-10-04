@@ -65,6 +65,8 @@ export function prepareLiveCatalogue(raw, metadata, previews = {}, published = {
       Boolean(metadata.channels?.[channel.id]) && sourceUrl.startsWith(`${RAW}/`);
     return {
       ...channel,
+      catalogueRevision: revision,
+      mainId: channel.id,
       publicUrl: confirmedSource ? sourceUrl : getLogoUrl(channel.image),
       previewUrl: previews[channel.id] || (channel.added || metadata.channels?.[channel.id] ? sourceUrl : getLogoUrl(channel.image)),
       pendingPublication: Boolean(channel.added && !confirmedSource && !published[channel.id]),

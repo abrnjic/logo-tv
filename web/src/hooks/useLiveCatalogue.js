@@ -90,5 +90,5 @@ export function useLiveCatalogue(raw, initialMetadata) {
     const timer = setInterval(check, 10000);
     return () => { abort.abort(); clearInterval(timer); };
   }, [channels]);
-  return { channels, updateCatalogue };
+  return { channels, updateCatalogue, revision: snapshot.revision };
 }

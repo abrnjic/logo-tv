@@ -3,6 +3,8 @@ import rawChannels from "./data/channels.json";
 import metadata from "../catalogue-overrides.json";
 import { useLiveCatalogue } from "./hooks/useLiveCatalogue";
 import Admin from "./components/Admin";
+import LogoAvailability from "./components/LogoAvailability";
+import { loadCommits, recentChannels } from "./lib/logoHistory";
 
 import { useFavorites } from "./hooks/useFavorites";
 import Favorites from "./components/Favorites";
@@ -24,7 +26,7 @@ const quickFilters = [
 ];
 
 export default function App() {
-  const { channels: channelsData, updateCatalogue } = useLiveCatalogue(rawChannels, metadata);
+  const { channels: channelsData, updateCatalogue, revision } = useLiveCatalogue(rawChannels, metadata);
   const adminRef = useRef(null);
   const [ownerAccess, setOwnerAccess] = useState(false);
   const [recentEdits, setRecentEdits] = useState(() => {
@@ -34,6 +36,19 @@ export default function App() {
   });
   const editLogo = channel => { setSelectedLogo(null); adminRef.current?.edit(channel); };
   const [activeTab, setActiveTab] = useState("search");
+  const [sharedCommits, setSharedCommits] = useState([]);
+  const [recentStatus, setRecentStatus] = useState({ busy: false, error: '', hasMore: false });
+  const [recentRefresh, setRecentRefresh] = useState(0);
+  useEffect(() => {
+    if (activeTab !== 'recent') return;
+    const abort = new AbortController();
+    setRecentStatus(old => ({ ...old, busy: true, error: '' }));
+    loadCommits('web/catalogue-overrides.json', revision?.sha, 1, abort.signal, fetch, 100).then(result => {
+      if (!abort.signal.aborted) { setSharedCommits(result.items); setRecentStatus({ busy: false, error: '', hasMore: result.hasMore }); }
+    }).catch(err => { if (!abort.signal.aborted) setRecentStatus(old => ({ ...old, busy: false, error: err.message })); });
+    return () => abort.abort();
+  }, [activeTab, revision?.sha, recentRefresh]);
+  const recentList = useMemo(() => recentChannels(channelsData, sharedCommits, recentEdits), [channelsData, sharedCommits, recentEdits]);
   const [theme, setTheme] = useState(
     () => localStorage.getItem("logo-tv-theme") || "dark",
   );
@@ -60,13 +75,13 @@ export default function App() {
   } = useFavorites();
 
   const isFavorite = (id) => {
-    const channel = channelsData.find((channel) => channel.id === id);
+    const channel = channelsData.find((channel) => (channel.aliases || [channel.id]).includes(id));
     return (channel?.aliases || [id]).some((alias) =>
       favorites.includes(alias),
     );
   };
   const toggleFavorite = (id) => {
-    const channel = channelsData.find((channel) => channel.id === id);
+    const channel = channelsData.find((channel) => (channel.aliases || [channel.id]).includes(id));
     if (isFavorite(id))
       setFavorites((previous) =>
         previous.filter((alias) => !(channel?.aliases || [id]).includes(alias)),
@@ -107,13 +122,13 @@ export default function App() {
   );
   const filtered = useMemo(
     () =>
-      filterChannels(activeTab === "recent" ? recentEdits.map(edit => channelsData.find(ch => (ch.aliases || [ch.id]).includes(edit.id))).filter(Boolean) : channelsData, {
+      filterChannels(activeTab === "recent" ? recentList : channelsData, {
         search: searchTerm,
         country,
         category,
         quick,
       }),
-    [channelsData, searchTerm, country, category, quick, activeTab, recentEdits],
+    [channelsData, searchTerm, country, category, quick, activeTab, recentList],
   );
   const hasFilters =
     searchTerm || country !== "All" || category !== "All" || quick !== "all";
@@ -220,7 +235,8 @@ export default function App() {
             <Icon name="file" />
             M3U alati
           </button>
-          <button className={activeTab === "recent" ? "active" : ""} onClick={() => { resetFilters(); setActiveTab("recent"); }} aria-current={activeTab === "recent" ? "page" : undefined}><Icon name="clock" />Nedavno uređeno<span className="count-badge">{recentEdits.length}</span></button>
+          <button className={activeTab === "recent" ? "active" : ""} onClick={() => { resetFilters(); setActiveTab("recent"); }} aria-current={activeTab === "recent" ? "page" : undefined}><Icon name="clock" />Nedavno uređeno<span className="count-badge">{recentList.length}</span></button>
+          <button className={activeTab === "availability" ? "active" : ""} onClick={() => setActiveTab("availability")} aria-current={activeTab === "availability" ? "page" : undefined}><Icon name="check" />Provjera slika</button>
         </nav>
         <div>
           <Admin ref={adminRef} visible={activeTab === "admin"} onAuthChange={setOwnerAccess} rawChannels={rawChannels} channels={channelsData}
@@ -240,7 +256,7 @@ export default function App() {
         </div>
         {["search", "recent"].includes(activeTab) && (
           <>
-            {activeTab === "recent" && <p className="recent-note">Posljednje promjene spremljene iz ovog preglednika. Za sve kanale otvori Katalog.</p>}
+            {activeTab === "recent" && <div className="recent-note"><p>Promjene iz zajedničkog kataloga, dostupne na svim uređajima. {recentStatus.hasMore ? 'Pregled obuhvaća posljednjih 100 spremanja i datume novijih izmjena.' : 'Spremljene izmjene poredane su po datumu.'}</p><button className="button secondary" disabled={recentStatus.busy} onClick={() => setRecentRefresh(x => x + 1)}>{recentStatus.busy ? 'Učitavam…' : 'Osvježi promjene'}</button>{recentStatus.error && <p className="inline-error" role="alert">{recentStatus.error} Prikazane su dostupne spremljene promjene.</p>}</div>}
             <section className="search-panel" aria-label="Pretraga i filtri">
               <div className="search-row">
                 <div className="search-field">
@@ -383,8 +399,8 @@ export default function App() {
             ) : (
               <div className="empty-state">
                 <Icon name="search" size={32} />
-                <h2>{activeTab === "recent" && !recentEdits.length ? "Tvoje sljedeće izmjene bit će ovdje" : "Nismo pronašli taj kanal"}</h2>
-                <p>{activeTab === "recent" && !recentEdits.length ? "Nakon spremanja kanal će se pojaviti u ovom pregledu." : "Pokušaj kraći naziv ili promijeni odabrane filtre."}</p>
+                <h2>{activeTab === "recent" && !recentList.length ? "Tvoje sljedeće izmjene bit će ovdje" : "Nismo pronašli taj kanal"}</h2>
+                <p>{activeTab === "recent" && !recentList.length ? "Nakon spremanja kanal će se pojaviti u ovom pregledu." : "Pokušaj kraći naziv ili promijeni odabrane filtre."}</p>
                 <button className="button secondary" onClick={resetFilters}>
                   Poništi pretragu i filtre
                 </button>
@@ -413,6 +429,7 @@ export default function App() {
             gridSize={gridSize}
           />
         )}
+        {activeTab === "availability" && <LogoAvailability channels={channelsData} onEdit={editLogo} />}
         {activeTab === "fixer" && <M3UFixer channelsData={channelsData} />}
       </main>
       <footer className="site-footer">
@@ -437,6 +454,8 @@ export default function App() {
           onFavorite={toggleFavorite}
           onCopy={copyLink}
           onEdit={editLogo}
+          onRestore={(channel, version) => { setSelectedLogo(null); adminRef.current?.restore(channel, version); }}
+          onVariant={openLogo}
           onClose={() => setSelectedLogo(null)}
           notify={notify}
           message={toast}

@@ -166,6 +166,7 @@ export function createAdminSession(token, fetcher = fetch) {
         next.channels[variantId] = {
           ...next.channels[variantId],
           ...values,
+          updatedAt: new Date().toISOString(),
           hidden: Boolean(hidden),
           preferred: variantId === id && Boolean(preferred),
         };

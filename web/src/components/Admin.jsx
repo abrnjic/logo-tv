@@ -3,6 +3,7 @@ import { createAdminSession, validatePng } from "../lib/adminApi";
 import { prepareCatalogue } from "../lib/channelNames";
 import { getLogoUrl } from "../lib/logoUrl";
 import Icon from "./Icon";
+import { loadHistoricalPng, formatEditDate } from "../lib/logoHistory";
 import { getSourceLogoUrl } from "../lib/liveCatalogue";
 
 export default function Admin({ rawChannels, channels, onCatalogueChange, onSaved, ref, visible, onAuthChange }) {
@@ -29,6 +30,7 @@ export default function Admin({ rawChannels, channels, onCatalogueChange, onSave
     category: "General",
   });
   const [file, setFile] = useState(null);
+  const [restoreVersion, setRestoreVersion] = useState(null);
   const [preview, setPreview] = useState("");
   const [hidden, setHidden] = useState(false);
   const [preferred, setPreferred] = useState(false);
@@ -52,6 +54,7 @@ export default function Admin({ rawChannels, channels, onCatalogueChange, onSave
       category: channel?.category || "General",
     });
     setFile(null);
+    setRestoreVersion(null);
     if (fileInput.current) fileInput.current.value = "";
     setHidden(Boolean(channel?.hidden));
     setPreferred(Boolean(channel?.preferred));
@@ -61,6 +64,11 @@ export default function Admin({ rawChannels, channels, onCatalogueChange, onSave
   useImperativeHandle(ref, () => ({
     edit(channel) { select(channel); setDirectOpen(true); },
     add() { select(null); setDirectOpen(true); },
+    restore(channel, version) {
+      if (operation.current) return;
+      select(channel); setDirectOpen(true);
+      run(async () => { const image = await loadHistoricalPng(channel, version); setFile(image); setRestoreVersion(version); });
+    },
   }));
   const run = async (action) => {
     if (operation.current) return;
@@ -87,7 +95,12 @@ export default function Admin({ rawChannels, channels, onCatalogueChange, onSave
           prepareCatalogue(rawChannels, data, { includeHidden: true }),
         );
         onCatalogueChange(data, candidate.getRevision());
-        if (selected) select(prepareCatalogue(rawChannels, data, { includeHidden: true }).find(ch => (ch.aliases || [ch.id]).includes(selected.id)) || selected);
+        if (selected) {
+          const group = prepareCatalogue(rawChannels, data, { includeHidden: true }).find(ch => (ch.aliases || [ch.id]).includes(selected.id));
+          const variant = group?.variants.find(v => v.id === selected.id);
+          select(variant ? { ...variant, aliases: group.aliases, variants: group.variants } : selected);
+          if (restoreVersion) { setFile(file); setRestoreVersion(restoreVersion); }
+        }
         setLoggedIn(true);
         onAuthChange(true);
         setToken("");
@@ -361,9 +374,10 @@ export default function Admin({ rawChannels, channels, onCatalogueChange, onSave
             }}
           >
             {!directOpen && <h3>{selected ? "Uredi kanal" : "Novi kanal"}</h3>}
+            {restoreVersion && <p className="restore-note" role="status">Vraćaš sliku od {formatEditDate(restoreVersion.at)}. Spremanje stvara novu verziju i novi link za panel.</p>}
             {selected && <div className="logo-comparison">
               <figure><figcaption>Trenutni logo</figcaption><div className="preview-checker"><img src={getSourceLogoUrl(selected, session.current?.getRevision().sha || 'main')} alt="Trenutni logo" /></div></figure>
-              <figure><figcaption>{preview ? "Novi logo" : "Zamjena logotipa"}</figcaption><div className="preview-checker">{preview ? <img src={preview} alt="Novi logo" /> : <span>Odaberi PNG ispod za usporedbu.</span>}</div></figure>
+              <figure><figcaption>{restoreVersion ? "Verzija za vraćanje" : preview ? "Novi logo" : "Zamjena logotipa"}</figcaption><div className="preview-checker">{preview ? <img src={preview} alt="Novi logo" /> : <span>Odaberi PNG ispod za usporedbu.</span>}</div></figure>
             </div>}
             <label className="admin-field">
               {selected ? "Zamijeni logotip (neobavezno)" : "PNG logotip"}
@@ -373,7 +387,7 @@ export default function Admin({ rawChannels, channels, onCatalogueChange, onSave
                 type="file"
                 accept="image/png,.png"
                 required={!selected}
-                onChange={(event) => setFile(event.target.files[0] || null)}
+                onChange={(event) => { setFile(event.target.files[0] || null); setRestoreVersion(null); }}
               />
             </label>
             <div className="editor-details">
@@ -440,6 +454,7 @@ export default function Admin({ rawChannels, channels, onCatalogueChange, onSave
                     });
                     setPreferred(Boolean(variant.preferred));
                     setFile(null);
+                    setRestoreVersion(null);
                     if (fileInput.current) fileInput.current.value = "";
                   }}
                 >
@@ -477,7 +492,7 @@ export default function Admin({ rawChannels, channels, onCatalogueChange, onSave
               </>
             )}
             <button className="button primary" disabled={busy}>
-              {busy ? "Spremam…" : "Spremi i objavi"}
+              {busy ? "Spremam…" : restoreVersion ? "Vrati i objavi" : "Spremi i objavi"}
             </button>
           </form>
         </div>

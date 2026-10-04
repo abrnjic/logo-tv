@@ -221,6 +221,17 @@ export function normalizeChannel(channel) {
   return { ...channel, name, country, category };
 }
 
+const friendlyNames = {
+  '247livetvkursadzije': 'Kursadžije', '247livetvfrasier': 'Frasier',
+  '247livetvdvaipolmukarca': 'Dva i pol muškarca', '247livetvalf': 'ALF',
+  '247livetvludzbunjennormalan': 'Lud, zbunjen, normalan',
+  '247livetvonlyfoolsandhorses': 'Mućke', '247livetvfriends': 'Prijatelji',
+};
+export function displayChannelName(channel) {
+  const compact = value => value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]/g, '');
+  const technicalName = compact(channel.name).startsWith('247livetv');
+  return technicalName ? friendlyNames[compact(channel.id)] || channel.name.replace(/^247\s*livetv\s*/i, '24/7 · ') : channel.name;
+}
 const identity = (value) =>
   value
     .toLowerCase()
@@ -257,6 +268,7 @@ export function prepareCatalogue(
       image: original.image,
       sourcePath: original.sourcePath,
     };
+    channel.displayName = displayChannelName(channel);
     const key = `${identity(channel.country)}:${identity(channel.name)}`;
     if (!groups.has(key)) groups.set(key, []);
     groups.get(key).push(channel);
