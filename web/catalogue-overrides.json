@@ -103,6 +103,15 @@
       "category": "24/7",
       "hidden": false,
       "preferred": true
+    },
+    "andrija-an-elka-hrvatska": {
+      "name": "Andrija&Anđelka",
+      "country": "Hrvatska",
+      "category": "General",
+      "hidden": false,
+      "preferred": false,
+      "added": true,
+      "sourcePath": "logos/custom/andrija-an-elka-hrvatska.png"
     }
   }
 }
