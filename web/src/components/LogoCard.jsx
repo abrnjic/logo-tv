@@ -8,6 +8,7 @@ export default function LogoCard({
   onFavorite,
   onOpen,
   onCopy,
+  onEdit,
   background,
 }) {
   return (
@@ -54,6 +55,7 @@ export default function LogoCard({
           {countryLabel(channel.country)} <span>·</span>{" "}
           {categoryLabel(channel.category)}
         </p>
+        <div className="card-actions">
         <button
           className="card-copy"
           onClick={() => onCopy(channel)}
@@ -63,6 +65,8 @@ export default function LogoCard({
           <Icon name="copy" size={15} />
           {channel.pendingPublication ? "PNG link se objavljuje…" : "Kopiraj PNG link"}
         </button>
+        {onEdit && <button className="card-edit" aria-label={`Uredi ${channel.name}`} onClick={() => onEdit(channel)}><Icon name="edit" size={15} />Uredi</button>}
+        </div>
       </div>
     </article>
   );

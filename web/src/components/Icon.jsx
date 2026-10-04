@@ -1,4 +1,6 @@
 const paths = {
+  edit: <><path d="m16 3 5 5-12 12-6 1 1-6Z" /><path d="m14 5 5 5" /></>,
+  clock: <><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" /></>,
   search: (
     <>
       <circle cx="10.5" cy="10.5" r="6.5" />

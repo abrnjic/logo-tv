@@ -10,6 +10,7 @@ export default function LogoDialog({
   favorite,
   onFavorite,
   onCopy,
+  onEdit,
   onClose,
   notify,
   message,
@@ -147,6 +148,7 @@ export default function LogoDialog({
           <Icon name="copy" />
           Kopiraj PNG link
         </button>
+        {onEdit && <button className="button secondary full-width edit-channel-button" onClick={() => onEdit(channel)}><Icon name="edit" />Uredi ovaj kanal</button>}
         <div className="dialog-action-pair">
           <button
             className="button secondary"

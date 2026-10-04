@@ -25,6 +25,14 @@ const quickFilters = [
 
 export default function App() {
   const { channels: channelsData, updateCatalogue } = useLiveCatalogue(rawChannels, metadata);
+  const adminRef = useRef(null);
+  const [ownerAccess, setOwnerAccess] = useState(false);
+  const [recentEdits, setRecentEdits] = useState(() => {
+    try { const saved = JSON.parse(localStorage.getItem("logo-tv-recent-edits-v1") || "[]");
+      return Array.isArray(saved) ? saved.filter(x => typeof x.id === "string" && Number.isFinite(x.at)).slice(0, 50) : [];
+    } catch { return []; }
+  });
+  const editLogo = channel => { setSelectedLogo(null); adminRef.current?.edit(channel); };
   const [activeTab, setActiveTab] = useState("search");
   const [theme, setTheme] = useState(
     () => localStorage.getItem("logo-tv-theme") || "dark",
@@ -99,13 +107,13 @@ export default function App() {
   );
   const filtered = useMemo(
     () =>
-      filterChannels(channelsData, {
+      filterChannels(activeTab === "recent" ? recentEdits.map(edit => channelsData.find(ch => (ch.aliases || [ch.id]).includes(edit.id))).filter(Boolean) : channelsData, {
         search: searchTerm,
         country,
         category,
         quick,
       }),
-    [channelsData, searchTerm, country, category, quick],
+    [channelsData, searchTerm, country, category, quick, activeTab, recentEdits],
   );
   const hasFilters =
     searchTerm || country !== "All" || category !== "All" || quick !== "all";
@@ -117,7 +125,7 @@ export default function App() {
   };
 
   useEffect(() => {
-    if (activeTab !== "search" || !loaderRef.current) return;
+    if (!["search", "recent"].includes(activeTab) || !loaderRef.current) return;
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting) setVisibleCount((count) => count + 80);
@@ -152,12 +160,6 @@ export default function App() {
   return (
     <div className="app-shell">
       <header className="site-header">
-        <button
-          className="text-button admin-entry"
-          onClick={() => setActiveTab("admin")}
-        >
-          Upravljanje
-        </button>
         <a
           className="brand"
           href={import.meta.env.BASE_URL}
@@ -169,9 +171,10 @@ export default function App() {
           <span>
             Logo <strong>TV</strong>
           </span>
-          <span className="brand-label">BIBLIOTEKA</span>
+          <span className="brand-label">RADNI PROSTOR</span>
         </a>
         <div className="header-right">
+          <button className="button secondary owner-entry" onClick={() => setActiveTab("admin")}>{ownerAccess ? "Upravljanje" : "Prijava vlasnika"}</button>
           <span className="catalogue-count">
             {formatCount(channelsData.length)} logotipa
           </span>
@@ -188,20 +191,9 @@ export default function App() {
         </div>
       </header>
       <main>
-        <div className="page-intro">
-          <div>
-            <span className="eyebrow">TVOJA KOLEKCIJA TV LOGOTIPA</span>
-            <h1>Pravi logo za svaki kanal.</h1>
-            <p>Pronađi kanal, kopiraj PNG link i dodaj ga u svoj panel.</p>
-          </div>
-          <div className="intro-note">
-            <span className="availability-dot" />
-            <span>
-              Javni PNG linkovi
-              <br />
-              <strong>Spremni za tvoj panel</strong>
-            </span>
-          </div>
+        <div className="page-intro workspace-intro">
+          <div><span className="eyebrow">LOGO TV / KATALOG</span><h1>Katalog logotipa</h1><p>Pronađi kanal. Uredi sliku. Kopiraj link za panel.</p></div>
+          {ownerAccess ? <button className="button primary" onClick={() => adminRef.current?.add()}>+ Dodaj kanal</button> : <span className="workspace-status"><span className="availability-dot" />{formatCount(channelsData.length)} dostupnih logotipa</span>}
         </div>
         <nav className="tabs" aria-label="Glavna navigacija">
           <button
@@ -210,7 +202,7 @@ export default function App() {
             aria-current={activeTab === "search" ? "page" : undefined}
           >
             <Icon name="search" />
-            Tražilica
+            Katalog
           </button>
           <button
             className={activeTab === "favorites" ? "active" : ""}
@@ -226,22 +218,29 @@ export default function App() {
             aria-current={activeTab === "fixer" ? "page" : undefined}
           >
             <Icon name="file" />
-            M3U Fixer
+            M3U alati
           </button>
+          <button className={activeTab === "recent" ? "active" : ""} onClick={() => { resetFilters(); setActiveTab("recent"); }} aria-current={activeTab === "recent" ? "page" : undefined}><Icon name="clock" />Nedavno uređeno<span className="count-badge">{recentEdits.length}</span></button>
         </nav>
-        <div style={{ display: activeTab === "admin" ? "block" : "none" }}>
-          <Admin rawChannels={rawChannels} channels={channelsData}
+        <div>
+          <Admin ref={adminRef} visible={activeTab === "admin"} onAuthChange={setOwnerAccess} rawChannels={rawChannels} channels={channelsData}
             onCatalogueChange={updateCatalogue}
             onSaved={(data, upload) => {
               updateCatalogue(data, upload);
+              setRecentEdits(previous => {
+                const next = [{id: upload.id, at: Date.now()}, ...previous.filter(x => x.id !== upload.id)].slice(0, 50);
+                try { localStorage.setItem("logo-tv-recent-edits-v1", JSON.stringify(next)); } catch { /* Local history is optional. */ }
+                return next;
+              });
               setCountry("All"); setCategory("All"); setQuick("all");
               setSearchTerm(data.channels[upload.id].name);
               setVisibleCount(80); setActiveTab("search");
               notify("Logotip je spremljen i odmah prikazan u katalogu.");
             }} />
         </div>
-        {activeTab === "search" && (
+        {["search", "recent"].includes(activeTab) && (
           <>
+            {activeTab === "recent" && <p className="recent-note">Posljednje promjene spremljene iz ovog preglednika. Za sve kanale otvori Katalog.</p>}
             <section className="search-panel" aria-label="Pretraga i filtri">
               <div className="search-row">
                 <div className="search-field">
@@ -359,6 +358,7 @@ export default function App() {
                       onFavorite={toggleFavorite}
                       onOpen={openLogo}
                       onCopy={copyLink}
+                      onEdit={ownerAccess ? editLogo : undefined}
                       background={background}
                     />
                   ))}
@@ -383,8 +383,8 @@ export default function App() {
             ) : (
               <div className="empty-state">
                 <Icon name="search" size={32} />
-                <h2>Nismo pronašli taj kanal</h2>
-                <p>Pokušaj kraći naziv ili promijeni odabrane filtre.</p>
+                <h2>{activeTab === "recent" && !recentEdits.length ? "Tvoje sljedeće izmjene bit će ovdje" : "Nismo pronašli taj kanal"}</h2>
+                <p>{activeTab === "recent" && !recentEdits.length ? "Nakon spremanja kanal će se pojaviti u ovom pregledu." : "Pokušaj kraći naziv ili promijeni odabrane filtre."}</p>
                 <button className="button secondary" onClick={resetFilters}>
                   Poništi pretragu i filtre
                 </button>
@@ -436,6 +436,7 @@ export default function App() {
           favorite={isFavorite(selectedLogo.id)}
           onFavorite={toggleFavorite}
           onCopy={copyLink}
+          onEdit={editLogo}
           onClose={() => setSelectedLogo(null)}
           notify={notify}
           message={toast}

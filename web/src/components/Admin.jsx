@@ -1,10 +1,18 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useImperativeHandle } from "react";
 import { createAdminSession, validatePng } from "../lib/adminApi";
 import { prepareCatalogue } from "../lib/channelNames";
+import { getLogoUrl } from "../lib/logoUrl";
+import Icon from "./Icon";
 import { getSourceLogoUrl } from "../lib/liveCatalogue";
 
-export default function Admin({ rawChannels, channels, onCatalogueChange, onSaved }) {
+export default function Admin({ rawChannels, channels, onCatalogueChange, onSaved, ref, visible, onAuthChange }) {
   const session = useRef(null);
+  const dialog = useRef(null);
+  const [directOpen, setDirectOpen] = useState(false);
+  const [savedChannel, setSavedChannel] = useState(null);
+  useEffect(() => {
+    if (directOpen && dialog.current && !dialog.current.open) dialog.current.showModal();
+  }, [directOpen]);
   const operation = useRef(false);
   const [token, setToken] = useState("");
   const [loggedIn, setLoggedIn] = useState(false);
@@ -36,6 +44,7 @@ export default function Admin({ rawChannels, channels, onCatalogueChange, onSave
     return () => URL.revokeObjectURL(url);
   }, [file]);
   const select = (channel) => {
+    setSavedChannel(null);
     setSelected(channel);
     setFields({
       name: channel?.name || "",
@@ -49,6 +58,10 @@ export default function Admin({ rawChannels, channels, onCatalogueChange, onSave
     setError("");
     setNotice("");
   };
+  useImperativeHandle(ref, () => ({
+    edit(channel) { select(channel); setDirectOpen(true); },
+    add() { select(null); setDirectOpen(true); },
+  }));
   const run = async (action) => {
     if (operation.current) return;
     operation.current = true;
@@ -74,7 +87,9 @@ export default function Admin({ rawChannels, channels, onCatalogueChange, onSave
           prepareCatalogue(rawChannels, data, { includeHidden: true }),
         );
         onCatalogueChange(data, candidate.getRevision());
+        if (selected) select(prepareCatalogue(rawChannels, data, { includeHidden: true }).find(ch => (ch.aliases || [ch.id]).includes(selected.id)) || selected);
         setLoggedIn(true);
+        onAuthChange(true);
         setToken("");
       } catch (error) {
         candidate.logout();
@@ -155,26 +170,32 @@ export default function Admin({ rawChannels, channels, onCatalogueChange, onSave
       } else {
         onCatalogueChange(result.metadata, { sha: result.sha, committedAt: result.committedAt });
       }
+      setSavedChannel({ id, name: fields.name.trim(), image: `logos/${id}.png`,
+        publicUrl: getSourceLogoUrl({sourcePath, image: `logos/${id}.png`}, result.sha),
+        hidden: Boolean(result.metadata.channels[id]?.hidden) });
+      setDirectOpen(true);
       setNotice(
         result.metadata.channels[id]?.hidden
           ? "Kanal je spremljen kao skriven. Za vraćanje u katalog isključi opciju Sakrij i ponovno spremi."
-          : "Kanal je spremljen i odmah vidljiv u tražilici. Javni PNG link objavljuje se automatski.",
+          : "Kanal je spremljen. Novi PNG link je spreman za kopiranje.",
       );
     });
   const logout = () => {
     session.current?.logout();
     session.current = null;
     setLoggedIn(false);
+    onAuthChange(false);
     setToken("");
     select(null);
   };
-  return (
-    <section className="admin-panel">
+  const closeEditor = () => { if (busy) return; setDirectOpen(false); setSavedChannel(null); };
+  const content = (
+    <section className={`admin-panel ${directOpen ? "direct-editor" : ""}`}>
       <div className="section-heading">
         <div>
           <span className="eyebrow">VLASNIČKI PRISTUP</span>
-          <h2>Upravljanje logotipima</h2>
-          <p>Dodavanje i uređivanje dopušteno je samo GitHub računu abrnjic.</p>
+          <h2>{savedChannel ? "Promjena je spremljena" : directOpen ? (selected ? `Uredi ${selected.name}` : "Dodaj novi kanal") : "Upravljanje logotipima"}</h2>
+          <p>{directOpen && selected ? "Provjeri sliku, spremi promjenu i kopiraj novi link za panel." : "Dodavanje i uređivanje dostupno je vlasniku kataloga."}</p>
         </div>
         {loggedIn && (
           <button className="button secondary" onClick={logout} disabled={busy}>
@@ -182,7 +203,23 @@ export default function Admin({ rawChannels, channels, onCatalogueChange, onSave
           </button>
         )}
       </div>
-      {!loggedIn ? (
+      {savedChannel ? (
+        <div className="save-complete">
+          <span className="save-check"><Icon name="check" size={28} /></span>
+          <h3>{savedChannel.name}</h3>
+          <p>{savedChannel.hidden ? "Kanal je skriven iz kataloga." : "Novi link je spreman. Zamijeni adresu logotipa u svom panelu i spremi promjenu."}</p>
+          {!savedChannel.hidden && <>
+            <img className="admin-preview" src={getLogoUrl(savedChannel)} alt={`Spremljeni logo: ${savedChannel.name}`} />
+            <label className="field-label" htmlFor="saved-logo-url">Novi PNG link za panel</label>
+            <input id="saved-logo-url" className="url-input" readOnly value={getLogoUrl(savedChannel)} onFocus={e => e.target.select()} />
+            <button className="button primary" onClick={() => run(async () => {
+              await navigator.clipboard.writeText(getLogoUrl(savedChannel));
+              setNotice("Novi PNG link je kopiran. Zalijepi ga u panel.");
+            })}><Icon name="copy" />Kopiraj novi link za panel</button>
+          </>}
+          <button className="button secondary" onClick={() => directOpen ? closeEditor() : setSavedChannel(null)}>Gotovo</button>
+        </div>
+      ) : !loggedIn ? (
         <form
           className="admin-login"
           onSubmit={(event) => {
@@ -240,8 +277,8 @@ export default function Admin({ rawChannels, channels, onCatalogueChange, onSave
           </details>
         </form>
       ) : (
-        <div className="admin-workspace">
-          <aside>
+        <div className={`admin-workspace ${directOpen ? "direct-workspace" : ""}`}>
+          {!directOpen && <aside>
             <div className="admin-toolbar">
               <button
                 className="button primary"
@@ -315,7 +352,7 @@ export default function Admin({ rawChannels, channels, onCatalogueChange, onSave
             <p className="field-hint">
               Prikazano najviše 100 zapisa. Suzi pretragu za ostale kanale.
             </p>
-          </aside>
+          </aside>}
           <form
             className="admin-editor"
             onSubmit={(event) => {
@@ -323,12 +360,29 @@ export default function Admin({ rawChannels, channels, onCatalogueChange, onSave
               save();
             }}
           >
-            <h3>{selected ? "Uredi kanal" : "Novi kanal"}</h3>
+            {!directOpen && <h3>{selected ? "Uredi kanal" : "Novi kanal"}</h3>}
+            {selected && <div className="logo-comparison">
+              <figure><figcaption>Trenutni logo</figcaption><div className="preview-checker"><img src={getSourceLogoUrl(selected, session.current?.getRevision().sha || 'main')} alt="Trenutni logo" /></div></figure>
+              <figure><figcaption>{preview ? "Novi logo" : "Zamjena logotipa"}</figcaption><div className="preview-checker">{preview ? <img src={preview} alt="Novi logo" /> : <span>Odaberi PNG ispod za usporedbu.</span>}</div></figure>
+            </div>}
+            <label className="admin-field">
+              {selected ? "Zamijeni logotip (neobavezno)" : "PNG logotip"}
+              <input
+                ref={fileInput}
+                disabled={busy}
+                type="file"
+                accept="image/png,.png"
+                required={!selected}
+                onChange={(event) => setFile(event.target.files[0] || null)}
+              />
+            </label>
+            <div className="editor-details">
             {["name", "country", "category"].map((key, index) => (
               <label className="admin-field" key={key}>
                 {["Naziv kanala", "Država", "Kategorija"][index]}
                 <input
                   className="url-input"
+                  disabled={busy}
                   value={fields[key]}
                   required
                   maxLength={120}
@@ -345,6 +399,7 @@ export default function Admin({ rawChannels, channels, onCatalogueChange, onSave
                 />
               </label>
             ))}
+            </div>
             <datalist id="admin-countries">
               {[...new Set(channels.map((channel) => channel.country))]
                 .sort()
@@ -367,21 +422,12 @@ export default function Admin({ rawChannels, channels, onCatalogueChange, onSave
                 <option key={category} value={category} />
               ))}
             </datalist>
-            <label className="admin-field">
-              {selected ? "Zamijeni logotip (neobavezno)" : "PNG logotip"}
-              <input
-                ref={fileInput}
-                type="file"
-                accept="image/png,.png"
-                required={!selected}
-                onChange={(event) => setFile(event.target.files[0] || null)}
-              />
-            </label>
             {selected?.variants?.length > 1 && (
               <label className="admin-field">
                 Varijanta logotipa
                 <select
                   className="url-input"
+                  disabled={busy}
                   value={selected.id}
                   onChange={(event) => {
                     const variant = selected.variants.find(
@@ -405,13 +451,7 @@ export default function Admin({ rawChannels, channels, onCatalogueChange, onSave
                 </select>
               </label>
             )}
-            {(preview || selected) && (
-              <img
-                className="admin-preview"
-                src={preview || getSourceLogoUrl(selected, session.current?.getRevision().sha || 'main')}
-                alt="Pregled logotipa"
-              />
-            )}
+            {!selected && preview && <img className="admin-preview" src={preview} alt="Novi logo" />}
             <p className="field-hint">
               PNG do 5 MB i 4096 × 4096 px. Isti naziv u drugoj državi može
               ostati zaseban kanal.
@@ -454,4 +494,11 @@ export default function Admin({ rawChannels, channels, onCatalogueChange, onSave
       )}
     </section>
   );
+  return directOpen ? (
+    <dialog ref={dialog} className="edit-dialog" aria-label={selected ? `Uredi ${selected.name}` : "Dodaj novi kanal"}
+      onCancel={event => { event.preventDefault(); if (!busy) closeEditor(); }}>
+      <button className="dialog-close icon-button" aria-label="Zatvori uređivanje" disabled={busy} onClick={closeEditor}><Icon name="close" /></button>
+      {content}
+    </dialog>
+  ) : <div hidden={!visible}>{content}</div>;
 }
