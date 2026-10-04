@@ -15,7 +15,7 @@
       "country": "Hrvatska",
       "category": "General",
       "hidden": false,
-      "preferred": false,
+      "preferred": true,
       "added": true,
       "sourcePath": "logos/custom/lud-zbunjen-normalan-hrvatska.png"
     }
