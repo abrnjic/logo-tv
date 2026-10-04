@@ -134,7 +134,7 @@ export default function App() {
       return;
     }
     try {
-      await navigator.clipboard.writeText(getLogoUrl(channel.image));
+      await navigator.clipboard.writeText(getLogoUrl(channel));
       notify(`PNG link kopiran: ${channel.name}`);
     } catch {
       notify(

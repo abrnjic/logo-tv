@@ -3,6 +3,8 @@ const LOGO_BASE_URL = 'https://abrnjic.github.io/logo-tv/';
 const LOGO_HOST = 'abrnjic.github.io';
 
 export function getLogoUrl(image) {
+  // A confirmed source URL changes after a save, so panels fetch the new PNG.
+  if (image && typeof image === 'object') return getLogoUrl(image.publicUrl || image.image);
   const url = new URL(image, LOGO_BASE_URL);
   // Older app versions and root-relative paths omitted the repository name.
   if (url.hostname === LOGO_HOST && /^\/(?:logo-tv\/)?logos\//.test(url.pathname)) {

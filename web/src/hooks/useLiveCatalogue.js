@@ -77,7 +77,7 @@ export function useLiveCatalogue(raw, initialMetadata) {
       running = true;
       await Promise.all(pending.map(async channel => {
         try {
-          const url = new URL(getLogoUrl(channel.image));
+          const url = new URL(getLogoUrl(channel));
           url.searchParams.set('publication', Date.now());
           const response = await fetch(url, { method: 'HEAD', cache: 'no-store', signal: abort.signal });
           if (response.ok && response.headers.get('content-type')?.includes('image/png') && !abort.signal.aborted)

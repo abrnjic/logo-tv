@@ -2,7 +2,9 @@ import { getLogoUrl, repairLegacyLogoLinks } from './logoUrl.js';
 
 // Keep stream lines, unknown URLs and existing channel identifiers untouched.
 export function repairPlaylist(content, channels, findMatch) {
-  const byUrl = new Map(channels.map(channel => [getLogoUrl(channel.image), channel]));
+  const byUrl = new Map(channels.flatMap(channel => [
+    [getLogoUrl(channel.image), channel], [getLogoUrl(channel), channel],
+  ]));
   const validUrls = new Set(byUrl.keys());
   let matchCount = 0;
   let totalChannels = 0;
@@ -22,14 +24,14 @@ export function repairPlaylist(content, channels, findMatch) {
     }
     if (knownLogo) {
       matchCount++;
-      return repaired.replace(/tvg-logo\s*=\s*(["']).*?\1/i, `tvg-logo="${getLogoUrl(knownLogo.image)}"`);
+      return repaired.replace(/tvg-logo\s*=\s*(["']).*?\1/i, `tvg-logo="${getLogoUrl(knownLogo)}"`);
     }
     const commaIndex = repaired.lastIndexOf(',');
     if (commaIndex === -1) return repaired;
     const match = findMatch(repaired.substring(commaIndex + 1).trim());
     if (!match) return repaired;
     matchCount++;
-    const attribute = `tvg-logo="${getLogoUrl(match.image)}"`;
+    const attribute = `tvg-logo="${getLogoUrl(match)}"`;
     if (existingLogo) return repaired.replace(/tvg-logo\s*=\s*(["']).*?\1/i, attribute);
     return `${repaired.substring(0, commaIndex)} ${attribute}${repaired.substring(commaIndex)}`;
   });

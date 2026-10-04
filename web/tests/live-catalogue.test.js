@@ -73,3 +73,20 @@ test('replacing an existing logo uses the confirmed commit after reload, not the
  assert.equal(prepareLiveCatalogue(raw,metadata,{'247livetvfrasier':'blob:replacement'}, {},'b'.repeat(40))[0].previewUrl,'blob:replacement');
  assert.equal(prepareLiveCatalogue(raw,{version:1,channels:{}}, {}, {},'b'.repeat(40))[0].previewUrl,getLogoUrl(raw[0].image));
 });
+
+test('panel links and playlist replacements use the new confirmed PNG after a save and reload', async () => {
+ const { repairPlaylist } = await import('../src/lib/playlist.js');
+ const raw = [{id:'247livetvkursadzije',name:'Kursadzije',country:'International',category:'24/7',image:'logos/247livetvkursadzije.png',sourcePath:'logos/247-kanali/247livetvkursadzije.png'}];
+ const metadata = {version:1,channels:{'247livetvkursadzije':{preferred:true}}};
+ const before = prepareLiveCatalogue(raw,metadata,{}, {},'a'.repeat(40))[0];
+ const after = prepareLiveCatalogue(raw,JSON.parse(JSON.stringify(metadata)),{'247livetvkursadzije':'blob:upload'}, {},'b'.repeat(40))[0];
+ assert.notEqual(getLogoUrl(before),getLogoUrl(after));
+ assert.equal(getLogoUrl(after),`https://raw.githubusercontent.com/abrnjic/logo-tv/${'b'.repeat(40)}/${raw[0].sourcePath}`);
+ assert.ok(!getLogoUrl(after).startsWith('blob:'));
+ const input = `#EXTM3U\n#EXTINF:-1 tvg-id="keep" tvg-logo="${getLogoUrl(raw[0].image)}",Custom name\nhttps://stream.example/play`;
+ const result = repairPlaylist(input,[after],()=>{throw Error('Exact link should match');});
+ assert.equal(result.content,input.replace(getLogoUrl(raw[0].image),getLogoUrl(after)));
+ const [added] = prepareLiveCatalogue([],data,{}, {},'b'.repeat(40));
+ assert.equal(added.pendingPublication,false);
+ assert.match(getLogoUrl(added),/raw.githubusercontent.com/);
+});

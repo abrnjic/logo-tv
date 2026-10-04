@@ -20,12 +20,13 @@ export default function LogoDialog({
   const [blob, setBlob] = useState(null);
   const [error, setError] = useState(false);
   const [busy, setBusy] = useState(false);
+  const imageUrl = channel.previewUrl || getLogoUrl(channel);
 
   useEffect(() => {
     const element = dialog.current;
     element.showModal();
     const abort = new AbortController();
-    fetch(channel.previewUrl || getLogoUrl(channel.image), { signal: abort.signal })
+    fetch(imageUrl, { signal: abort.signal })
       .then((response) => {
         if (!response.ok) throw new Error("Slika nije dostupna");
         return response.blob();
@@ -38,7 +39,7 @@ export default function LogoDialog({
       abort.abort();
       element.close();
     };
-  }, [channel.image, channel.previewUrl]);
+  }, [imageUrl]);
 
   const copyImage = async () => {
     if (!blob) return;
@@ -84,7 +85,7 @@ export default function LogoDialog({
       <div className="dialog-preview-panel">
         <div className={`dialog-preview preview-${background}`}>
           <img
-            src={channel.previewUrl || getLogoUrl(channel.image)}
+            src={imageUrl}
             alt={channel.name}
             onLoad={(event) =>
               setDimensions([
@@ -131,12 +132,12 @@ export default function LogoDialog({
         <input
           id="public-logo-url"
           className="url-input"
-          value={getLogoUrl(channel.image)}
+          value={getLogoUrl(channel)}
           readOnly
           onFocus={(event) => event.target.select()}
         />
         <p className="field-hint">
-          {channel.pendingPublication ? "Logotip je vidljiv. Javni PNG link se objavljuje i bit će dostupan automatski." : "Kopiraj adresu i zalijepi je u svoj TV panel."}
+          {channel.pendingPublication ? "Logotip je vidljiv. Javni PNG link se objavljuje i bit će dostupan automatski." : "Kopiraj adresu i zalijepi je u svoj TV panel. Nakon zamjene logotipa ponovno kopiraj link i spremi ga u panelu."}
         </p>
         <button
           className="button primary full-width"
@@ -191,7 +192,7 @@ export default function LogoDialog({
           </button>
           <a
             className="text-button"
-            href={channel.previewUrl || getLogoUrl(channel.image)}
+            href={imageUrl}
             target="_blank"
             rel="noreferrer"
           >

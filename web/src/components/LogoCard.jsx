@@ -19,7 +19,7 @@ export default function LogoCard({
           aria-label={`Pregledaj ${channel.name}`}
         >
           <img
-            src={channel.previewUrl || getLogoUrl(channel.image)}
+            src={channel.previewUrl || getLogoUrl(channel)}
             alt={channel.name}
             loading="lazy"
             decoding="async"

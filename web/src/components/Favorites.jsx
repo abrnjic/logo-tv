@@ -38,13 +38,13 @@ export default function Favorites({
           favoriteChannels
             .map(
               (ch) =>
-                `#EXTINF:-1 tvg-id="${ch.id}" tvg-name="${ch.name}" tvg-logo="${getLogoUrl(ch.image)}" group-title="${ch.category}", ${ch.name}\nhttp://stream.url\n`,
+                `#EXTINF:-1 tvg-id="${ch.id}" tvg-name="${ch.name}" tvg-logo="${getLogoUrl(ch)}" group-title="${ch.category}", ${ch.name}\nhttp://stream.url\n`,
             )
             .join("")
         : JSON.stringify(
             favoriteChannels.map((ch) => ({
               name: ch.name,
-              logo: getLogoUrl(ch.image),
+              logo: getLogoUrl(ch),
             })),
             null,
             2,
@@ -126,7 +126,7 @@ export default function Favorites({
         while (index < favoriteChannels.length) {
           const channel = favoriteChannels[index++];
           try {
-            const response = await fetch(channel.previewUrl || getLogoUrl(channel.image));
+            const response = await fetch(channel.previewUrl || getLogoUrl(channel));
             if (!response.ok) throw new Error(`HTTP ${response.status}`);
             const blob = await processImage(await response.blob());
             zip.file(`${channel.id}.png`, blob);

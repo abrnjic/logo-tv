@@ -59,9 +59,15 @@ export function getSourceLogoUrl(channel, revision = 'main') {
 }
 
 export function prepareLiveCatalogue(raw, metadata, previews = {}, published = {}, revision = 'main') {
-  return prepareCatalogue(raw, metadata).map(channel => ({
-    ...channel,
-    previewUrl: previews[channel.id] || (channel.added || metadata.channels?.[channel.id] ? getSourceLogoUrl(channel, revision) : getLogoUrl(channel.image)),
-    pendingPublication: Boolean(channel.added && !published[channel.id]),
-  }));
+  return prepareCatalogue(raw, metadata).map(channel => {
+    const sourceUrl = getSourceLogoUrl(channel, revision);
+    const confirmedSource = /^[a-f0-9]{40}$/.test(revision) &&
+      Boolean(metadata.channels?.[channel.id]) && sourceUrl.startsWith(`${RAW}/`);
+    return {
+      ...channel,
+      publicUrl: confirmedSource ? sourceUrl : getLogoUrl(channel.image),
+      previewUrl: previews[channel.id] || (channel.added || metadata.channels?.[channel.id] ? sourceUrl : getLogoUrl(channel.image)),
+      pendingPublication: Boolean(channel.added && !confirmedSource && !published[channel.id]),
+    };
+  });
 }
