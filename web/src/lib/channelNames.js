@@ -143,15 +143,35 @@ export function normalizeChannel(channel) {
     country = countryFromCode(suffix[1].toLowerCase());
     slug = slug.slice(0, -suffix[0].length);
   } else if (!slug.includes("-")) {
-    const prefix = slug.slice(0, 2).toLowerCase();
-    if (countryCodes[prefix] && brandPattern.test(slug.slice(2))) {
-      country = countryCodes[prefix];
-      slug = slug.slice(2);
+    const legacyCodes = {
+      bih: "BiH",
+      srb: "Srbija",
+      sr: "Srbija",
+      cro: "Hrvatska",
+      slo: "Slovenija",
+      mkd: "Makedonija",
+      ...countryCodes,
+    };
+    const codes = Object.keys(legacyCodes).sort((a, b) => b.length - a.length);
+    for (const code of codes) {
+      if (
+        slug.toLowerCase().startsWith(code) &&
+        brandPattern.test(slug.slice(code.length))
+      ) {
+        country = legacyCodes[code];
+        slug = slug.slice(code.length);
+        break;
+      }
     }
-    const end = slug.slice(-2).toLowerCase();
-    if (countryCodes[end] && brandPattern.test(slug.slice(0, -2))) {
-      country = countryCodes[end];
-      slug = slug.slice(0, -2);
+    for (const code of codes) {
+      if (
+        slug.toLowerCase().endsWith(code) &&
+        brandPattern.test(slug.slice(0, -code.length))
+      ) {
+        country = legacyCodes[code];
+        slug = slug.slice(0, -code.length);
+        break;
+      }
     }
   }
   if (
@@ -186,11 +206,13 @@ export function normalizeChannel(channel) {
   name = name.replace(/\s+/g, " ").trim() || channel.name;
   const labelKey = name.toLowerCase().replace(/[^a-z0-9]/g, "");
   name = officialLabels[labelKey] || name;
-  const labelSuffix = name.match(/\s+([A-Z]{2})$/);
-  if (labelSuffix && countryFromCode(labelSuffix[1].toLowerCase())) {
-    country = countryFromCode(labelSuffix[1].toLowerCase());
-    name = name.slice(0, -labelSuffix[0].length);
-  }
+  // Only remove a catalogue locale tag when it agrees with the known country.
+  // Brand initials such as Bloomberg HT, Nova BH and the word TV remain intact.
+  const localeTag = name.match(/\s+([A-Z]{2})$/);
+  if (localeTag && countryCodes[localeTag[1].toLowerCase()] === country)
+    name = name.slice(0, -localeTag[0].length);
+  if (/^(Nova|Pink|PRVA) BH$/.test(name)) country = "BiH";
+  name = name.replace(/^Arena(?: Sport)? (\d+) Premium$/i, "Arena Premium $1");
   const category = /^(Arena|Sport Klub|Eurosport|Sky Sport)\b/.test(name)
     ? "Sport"
     : /^Disney\b|^Cartoon Network\b|^Nick(?:elodeon| Jr)/.test(name)

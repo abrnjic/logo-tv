@@ -115,3 +115,28 @@ test("TV and FM are channel names, not inferred country codes", () => {
     "Hrvatska",
   );
 });
+
+test("legacy BiH and Serbian arena markers are country metadata, while BH and HT brands are preserved", () => {
+  for (const [id, country] of [
+    ["biharenasport7", "BiH"],
+    ["biharenasport1bih", "BiH"],
+    ["srarenasport7", "Srbija"],
+  ]) {
+    const channel = normalizeChannel({
+      id,
+      name: id,
+      country: "Regional",
+      category: "Sport",
+    });
+    assert.equal(channel.country, country);
+    assert.match(channel.name, /^Arena Sport [17]$/);
+  }
+  const bloomberg = normalizeChannel(
+    raw.find((channel) => channel.id === "bloomberg-ht-tr"),
+  );
+  assert.equal(bloomberg.country, "Turska");
+  assert.equal(bloomberg.name, "Bloomberg HT");
+  const nova = normalizeChannel(raw.find((channel) => channel.id === "novabh"));
+  assert.equal(nova.country, "BiH");
+  assert.equal(nova.name, "Nova BH");
+});
