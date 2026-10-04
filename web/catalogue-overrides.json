@@ -39,6 +39,15 @@
       "category": "General",
       "hidden": false,
       "preferred": true
+    },
+    "mucke-hrvatska": {
+      "name": "Mućke",
+      "country": "Hrvatska",
+      "category": "General",
+      "hidden": false,
+      "preferred": false,
+      "added": true,
+      "sourcePath": "logos/custom/mucke-hrvatska.png"
     }
   }
 }
