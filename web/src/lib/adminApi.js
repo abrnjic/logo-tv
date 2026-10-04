@@ -48,6 +48,7 @@ export function createAdminSession(token, fetcher = fetch) {
   let authorized = false;
   let expectedHead;
   let treeSha;
+  let committedAt;
   let metadata;
   const request = async (path, method = "GET", body) => {
     const response = await fetcher(`${API}${path}`, {
@@ -112,6 +113,7 @@ export function createAdminSession(token, fetcher = fetch) {
         throw new Error("Nepoznat oblik kataloga. Spremanje je zaustavljeno.");
       expectedHead = head;
       treeSha = commit.tree.sha;
+      committedAt = commit.committer?.date || new Date().toISOString();
       metadata = incoming;
       return structuredClone(metadata);
     },
@@ -217,9 +219,18 @@ export function createAdminSession(token, fetcher = fetch) {
       metadata = next;
       expectedHead = commit.sha;
       treeSha = tree.sha;
-      return { metadata: structuredClone(next), sha: commit.sha };
+      committedAt = commit.committer?.date || new Date().toISOString();
+      return {
+        metadata: structuredClone(next), sha: commit.sha,
+        committedAt,
+      };
+    },
+    getRevision() {
+      requireOwner();
+      return { sha: expectedHead, committedAt };
     },
     logout() {
+      committedAt = null;
       authorized = false;
       token = "";
       metadata = null;

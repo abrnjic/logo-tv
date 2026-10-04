@@ -1,9 +1,19 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
+import { execFileSync } from 'node:child_process'
+
+let catalogueRevision = {};
+if (process.env.GITHUB_SHA) {
+  catalogueRevision = {
+    sha: process.env.GITHUB_SHA,
+    committedAt: execFileSync('git', ['show', '-s', '--format=%cI', 'HEAD'], { encoding: 'utf8' }).trim(),
+  };
+}
 
 // https://vite.dev/config/
 export default defineConfig({
+  define: { __CATALOGUE_REVISION__: JSON.stringify(catalogueRevision) },
   plugins: [
     react(),
     VitePWA({

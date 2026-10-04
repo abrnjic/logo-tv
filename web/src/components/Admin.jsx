@@ -74,7 +74,7 @@ export default function Admin({ rawChannels, channels, onCatalogueChange, onSave
         setRecords(
           prepareCatalogue(rawChannels, data, { includeHidden: true }),
         );
-        onCatalogueChange(data);
+        onCatalogueChange(data, candidate.getRevision());
         setLoggedIn(true);
         setToken("");
       } catch (error) {
@@ -152,9 +152,9 @@ export default function Admin({ rawChannels, channels, onCatalogueChange, onSave
       setShowHidden(Boolean(result.metadata.channels[id]?.hidden));
       setSearch(fields.name.trim());
       if (!result.metadata.channels[id]?.hidden) {
-        onSaved(result.metadata, { id, file, sha: result.sha });
+        onSaved(result.metadata, { id, file, sha: result.sha, committedAt: result.committedAt });
       } else {
-        onCatalogueChange(result.metadata);
+        onCatalogueChange(result.metadata, { sha: result.sha, committedAt: result.committedAt });
       }
       setNotice(
         result.metadata.channels[id]?.hidden
@@ -262,7 +262,7 @@ export default function Admin({ rawChannels, channels, onCatalogueChange, onSave
                         includeHidden: true,
                       }),
                     );
-                    onCatalogueChange(data);
+                    onCatalogueChange(data, session.current.getRevision());
                     select(null);
                   })
                 }

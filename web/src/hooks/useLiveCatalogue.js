@@ -1,9 +1,23 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { loadLiveMetadata, prepareLiveCatalogue } from '../lib/liveCatalogue';
+import { CATALOGUE_CACHE_KEY, latestSnapshot, loadLiveSnapshot, prepareLiveCatalogue, validSnapshot } from '../lib/liveCatalogue';
 import { getLogoUrl } from '../lib/logoUrl';
 
 export function useLiveCatalogue(raw, initialMetadata) {
-  const [metadata, setMetadata] = useState(initialMetadata);
+  const [snapshot, setSnapshot] = useState(() => {
+    const bundled = { metadata: initialMetadata, revision: __CATALOGUE_REVISION__ };
+    try { return latestSnapshot(bundled, JSON.parse(localStorage.getItem(CATALOGUE_CACHE_KEY))); }
+    catch { return bundled; }
+  });
+  const snapshotRef = useRef(snapshot);
+  const metadata = snapshot.metadata;
+  const persist = useCallback(next => {
+    snapshotRef.current = next;
+    setSnapshot(next);
+    if (validSnapshot(next)) {
+      try { localStorage.setItem(CATALOGUE_CACHE_KEY, JSON.stringify(next)); }
+      catch { /* A blocked/full browser store must not prevent saving to GitHub. */ }
+    }
+  }, []);
   const [previews, setPreviews] = useState({});
   const [published, setPublished] = useState({});
   const localVersion = useRef(0);
@@ -11,7 +25,9 @@ export function useLiveCatalogue(raw, initialMetadata) {
   const updateCatalogue = useCallback((data, upload) => {
     // An in-flight public read must never undo a successful owner save.
     localVersion.current++;
-    setMetadata(data);
+    persist({ metadata: data, revision: upload?.sha
+      ? { sha: upload.sha, committedAt: upload.committedAt }
+      : snapshotRef.current.revision });
     if (upload?.file) {
       const previous = previewUrls.current.get(upload.id);
       if (previous) URL.revokeObjectURL(previous);
@@ -19,25 +35,31 @@ export function useLiveCatalogue(raw, initialMetadata) {
       previewUrls.current.set(upload.id, url);
       setPreviews(previous => ({ ...previous, [upload.id]: url }));
     }
-  }, []);
+  }, [persist]);
   useEffect(() => {
     const abort = new AbortController();
+    let running = false;
+    let lastCheck = 0;
     const refresh = async () => {
+      if (running || Date.now() - lastCheck < 15000) return;
       // Owner reads/saves are authoritative for the rest of this session.
       if (localVersion.current) return;
+      running = true;
+      lastCheck = Date.now();
       try {
-        const data = await loadLiveMetadata(abort.signal);
-        if (!abort.signal.aborted && !localVersion.current) setMetadata(data);
-      } catch { /* Keep the bundled catalogue available offline. */ }
+        const next = await loadLiveSnapshot(abort.signal, snapshotRef.current.revision);
+        if (next && !abort.signal.aborted && !localVersion.current) persist(next);
+      } catch { /* Keep the newest confirmed catalogue available offline. */ }
+      finally { running = false; }
     };
     refresh();
-    const timer = setInterval(refresh, 60000);
+    const timer = setInterval(refresh, 300000);
     window.addEventListener('focus', refresh);
     return () => {
       abort.abort(); clearInterval(timer);
       window.removeEventListener('focus', refresh);
     };
-  }, []);
+  }, [persist]);
   useEffect(() => () => {
     for (const url of previewUrls.current.values()) URL.revokeObjectURL(url);
   }, []);
