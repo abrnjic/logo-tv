@@ -121,6 +121,13 @@
       "preferred": false,
       "added": true,
       "sourcePath": "logos/custom/formula-1-tv-hrvatska.png"
+    },
+    "bht1": {
+      "name": "Bht 1",
+      "country": "BiH",
+      "category": "General",
+      "hidden": false,
+      "preferred": true
     }
   }
 }
