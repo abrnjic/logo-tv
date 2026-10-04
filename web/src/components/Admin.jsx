@@ -2,8 +2,9 @@ import { useState, useRef, useEffect } from "react";
 import { createAdminSession, validatePng } from "../lib/adminApi";
 import { prepareCatalogue } from "../lib/channelNames";
 import { getLogoUrl } from "../lib/logoUrl";
+import { getSourceLogoUrl } from "../lib/liveCatalogue";
 
-export default function Admin({ rawChannels, channels }) {
+export default function Admin({ rawChannels, channels, onCatalogueChange, onSaved }) {
   const session = useRef(null);
   const operation = useRef(false);
   const [token, setToken] = useState("");
@@ -73,6 +74,7 @@ export default function Admin({ rawChannels, channels }) {
         setRecords(
           prepareCatalogue(rawChannels, data, { includeHidden: true }),
         );
+        onCatalogueChange(data);
         setLoggedIn(true);
         setToken("");
       } catch (error) {
@@ -149,10 +151,15 @@ export default function Admin({ rawChannels, channels }) {
       select(nextRecords.find((channel) => channel.aliases.includes(id)));
       setShowHidden(Boolean(result.metadata.channels[id]?.hidden));
       setSearch(fields.name.trim());
+      if (!result.metadata.channels[id]?.hidden) {
+        onSaved(result.metadata, { id, file, sha: result.sha });
+      } else {
+        onCatalogueChange(result.metadata);
+      }
       setNotice(
         result.metadata.channels[id]?.hidden
           ? "Kanal je spremljen kao skriven. Za vraćanje u katalog isključi opciju Sakrij i ponovno spremi."
-          : "Kanal je spremljen kao vidljiv. Automatska objava je pokrenuta; javni katalog će se ažurirati nakon završetka objave.",
+          : "Kanal je spremljen i odmah vidljiv u tražilici. Javni PNG link objavljuje se automatski.",
       );
     });
   const logout = () => {
@@ -255,6 +262,7 @@ export default function Admin({ rawChannels, channels }) {
                         includeHidden: true,
                       }),
                     );
+                    onCatalogueChange(data);
                     select(null);
                   })
                 }
@@ -401,7 +409,7 @@ export default function Admin({ rawChannels, channels }) {
             {(preview || selected) && (
               <img
                 className="admin-preview"
-                src={preview || getLogoUrl(selected.image)}
+                src={preview || (selected.added ? getSourceLogoUrl(selected) : getLogoUrl(selected.image))}
                 alt="Pregled logotipa"
               />
             )}

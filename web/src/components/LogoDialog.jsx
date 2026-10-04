@@ -25,7 +25,7 @@ export default function LogoDialog({
     const element = dialog.current;
     element.showModal();
     const abort = new AbortController();
-    fetch(getLogoUrl(channel.image), { signal: abort.signal })
+    fetch(channel.previewUrl || getLogoUrl(channel.image), { signal: abort.signal })
       .then((response) => {
         if (!response.ok) throw new Error("Slika nije dostupna");
         return response.blob();
@@ -38,7 +38,7 @@ export default function LogoDialog({
       abort.abort();
       element.close();
     };
-  }, [channel.image]);
+  }, [channel.image, channel.previewUrl]);
 
   const copyImage = async () => {
     if (!blob) return;
@@ -84,7 +84,7 @@ export default function LogoDialog({
       <div className="dialog-preview-panel">
         <div className={`dialog-preview preview-${background}`}>
           <img
-            src={getLogoUrl(channel.image)}
+            src={channel.previewUrl || getLogoUrl(channel.image)}
             alt={channel.name}
             onLoad={(event) =>
               setDimensions([
@@ -136,11 +136,12 @@ export default function LogoDialog({
           onFocus={(event) => event.target.select()}
         />
         <p className="field-hint">
-          Kopiraj adresu i zalijepi je u svoj TV panel.
+          {channel.pendingPublication ? "Logotip je vidljiv. Javni PNG link se objavljuje i bit će dostupan automatski." : "Kopiraj adresu i zalijepi je u svoj TV panel."}
         </p>
         <button
           className="button primary full-width"
           onClick={() => onCopy(channel)}
+          disabled={channel.pendingPublication}
         >
           <Icon name="copy" />
           Kopiraj PNG link
@@ -190,7 +191,7 @@ export default function LogoDialog({
           </button>
           <a
             className="text-button"
-            href={getLogoUrl(channel.image)}
+            href={channel.previewUrl || getLogoUrl(channel.image)}
             target="_blank"
             rel="noreferrer"
           >

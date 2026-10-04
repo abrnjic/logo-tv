@@ -1,14 +1,12 @@
 import { useState, useRef, useMemo } from "react";
 import rawChannels from "../data/channels.json";
-import metadata from "../../catalogue-overrides.json";
-import { prepareCatalogue, normalizeChannel } from "../lib/channelNames";
-const channelsData = prepareCatalogue(rawChannels, metadata);
+import { normalizeChannel } from "../lib/channelNames";
 const allLogoChannels = rawChannels.map(normalizeChannel);
 import Fuse from "fuse.js";
 import { repairPlaylist } from "../lib/playlist";
 import Icon from "./Icon";
 
-export default function M3UFixer() {
+export default function M3UFixer({ channelsData }) {
   const [fileContent, setFileContent] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
   const [result, setResult] = useState(null);
@@ -22,7 +20,7 @@ export default function M3UFixer() {
         threshold: 0.3,
         distance: 100,
       }),
-    [],
+    [channelsData],
   );
 
   const cleanChannelName = (name) => {
@@ -56,15 +54,16 @@ export default function M3UFixer() {
     setTimeout(() => {
       const repaired = repairPlaylist(
         fileContent,
-        allLogoChannels,
+        [...allLogoChannels, ...channelsData.filter(channel => !channel.pendingPublication)],
         (rawName) => {
           const searchJoined = rawName.toLowerCase().replace(/[-_.\s]/g, "");
-          const exact = channelsData.find(
+          const available = channelsData.filter(channel => !channel.pendingPublication);
+          const exact = available.find(
             (channel) =>
               channel.name.toLowerCase().replace(/[-_.\s]/g, "") ===
               searchJoined,
           );
-          return exact || fuse.search(cleanChannelName(rawName))[0]?.item;
+          return exact || fuse.search(cleanChannelName(rawName)).find(result => !result.item.pendingPublication)?.item;
         },
       );
       setResult(repaired);

@@ -19,7 +19,7 @@ export default function LogoCard({
           aria-label={`Pregledaj ${channel.name}`}
         >
           <img
-            src={getLogoUrl(channel.image)}
+            src={channel.previewUrl || getLogoUrl(channel.image)}
             alt={channel.name}
             loading="lazy"
             decoding="async"
@@ -57,10 +57,11 @@ export default function LogoCard({
         <button
           className="card-copy"
           onClick={() => onCopy(channel)}
+          disabled={channel.pendingPublication}
           aria-label={`Kopiraj PNG link: ${channel.name}`}
         >
           <Icon name="copy" size={15} />
-          Kopiraj PNG link
+          {channel.pendingPublication ? "PNG link se objavljuje…" : "Kopiraj PNG link"}
         </button>
       </div>
     </article>

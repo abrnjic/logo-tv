@@ -28,6 +28,10 @@ export default function Favorites({
   );
 
   const copy = async (format) => {
+    if (favoriteChannels.some(channel => channel.pendingPublication)) {
+      notify("Pri novih logotipima pričekaj objavu PNG linka prije izvoza popisa.");
+      return;
+    }
     const content =
       format === "M3U"
         ? "#EXTM3U\n" +
@@ -122,7 +126,7 @@ export default function Favorites({
         while (index < favoriteChannels.length) {
           const channel = favoriteChannels[index++];
           try {
-            const response = await fetch(getLogoUrl(channel.image));
+            const response = await fetch(channel.previewUrl || getLogoUrl(channel.image));
             if (!response.ok) throw new Error(`HTTP ${response.status}`);
             const blob = await processImage(await response.blob());
             zip.file(`${channel.id}.png`, blob);

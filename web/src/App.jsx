@@ -1,9 +1,9 @@
 import { useState, useMemo, useEffect, useRef, useCallback } from "react";
 import rawChannels from "./data/channels.json";
 import metadata from "../catalogue-overrides.json";
-import { prepareCatalogue } from "./lib/channelNames";
+import { useLiveCatalogue } from "./hooks/useLiveCatalogue";
 import Admin from "./components/Admin";
-const channelsData = prepareCatalogue(rawChannels, metadata);
+
 import { useFavorites } from "./hooks/useFavorites";
 import Favorites from "./components/Favorites";
 import M3UFixer from "./components/M3UFixer";
@@ -24,6 +24,7 @@ const quickFilters = [
 ];
 
 export default function App() {
+  const { channels: channelsData, updateCatalogue } = useLiveCatalogue(rawChannels, metadata);
   const [activeTab, setActiveTab] = useState("search");
   const [theme, setTheme] = useState(
     () => localStorage.getItem("logo-tv-theme") || "dark",
@@ -87,14 +88,14 @@ export default function App() {
       [...new Set(channelsData.map((ch) => countryLabel(ch.country)))].sort(
         (a, b) => a.localeCompare(b, "hr"),
       ),
-    [],
+    [channelsData],
   );
   const categories = useMemo(
     () =>
       [...new Set(channelsData.map((ch) => ch.category))].sort((a, b) =>
         categoryLabel(a).localeCompare(categoryLabel(b), "hr"),
       ),
-    [],
+    [channelsData],
   );
   const filtered = useMemo(
     () =>
@@ -104,7 +105,7 @@ export default function App() {
         category,
         quick,
       }),
-    [searchTerm, country, category, quick],
+    [channelsData, searchTerm, country, category, quick],
   );
   const hasFilters =
     searchTerm || country !== "All" || category !== "All" || quick !== "all";
@@ -128,6 +129,10 @@ export default function App() {
   }, [activeTab, filtered, visibleCount]);
 
   const copyLink = async (channel) => {
+    if (channel.pendingPublication) {
+      notify("Logotip je vidljiv. Javni PNG link se još objavljuje.");
+      return;
+    }
     try {
       await navigator.clipboard.writeText(getLogoUrl(channel.image));
       notify(`PNG link kopiran: ${channel.name}`);
@@ -225,7 +230,15 @@ export default function App() {
           </button>
         </nav>
         <div style={{ display: activeTab === "admin" ? "block" : "none" }}>
-          <Admin rawChannels={rawChannels} channels={channelsData} />
+          <Admin rawChannels={rawChannels} channels={channelsData}
+            onCatalogueChange={updateCatalogue}
+            onSaved={(data, upload) => {
+              updateCatalogue(data, upload);
+              setCountry("All"); setCategory("All"); setQuick("all");
+              setSearchTerm(data.channels[upload.id].name);
+              setVisibleCount(80); setActiveTab("search");
+              notify("Logotip je spremljen i odmah prikazan u katalogu.");
+            }} />
         </div>
         {activeTab === "search" && (
           <>
@@ -400,7 +413,7 @@ export default function App() {
             gridSize={gridSize}
           />
         )}
-        {activeTab === "fixer" && <M3UFixer />}
+        {activeTab === "fixer" && <M3UFixer channelsData={channelsData} />}
       </main>
       <footer className="site-footer">
         <span>
@@ -419,7 +432,7 @@ export default function App() {
       {selectedLogo && (
         <LogoDialog
           key={selectedLogo.id}
-          channel={selectedLogo}
+          channel={channelsData.find(channel => channel.id === selectedLogo.id) || selectedLogo}
           favorite={isFavorite(selectedLogo.id)}
           onFavorite={toggleFavorite}
           onCopy={copyLink}
