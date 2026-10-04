@@ -128,6 +128,13 @@
       "category": "General",
       "hidden": false,
       "preferred": true
+    },
+    "bn2hd": {
+      "name": "BN 2 HD",
+      "country": "BiH",
+      "category": "General",
+      "hidden": false,
+      "preferred": true
     }
   }
 }
