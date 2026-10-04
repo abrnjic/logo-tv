@@ -60,3 +60,16 @@ test('invalid snapshots and unavailable live reads do not overwrite a confirmed 
  await assert.rejects(loadLiveMetadata(undefined,async(url)=>({ok:true,json:async()=>
    url.includes('/commits/main')?{sha,commit:{committer:{date:revision.committedAt}}}:{version:1,channels:[]}})),/oblik/);
 });
+
+test('replacing an existing logo uses the confirmed commit after reload, not the cached Pages image', () => {
+ const raw = [{id:'247livetvfrasier',name:'Frasier',country:'International',category:'24/7',image:'logos/247livetvfrasier.png',sourcePath:'logos/247-kanali/247livetvfrasier.png'}];
+ const metadata = {version:1,channels:{'247livetvfrasier':{name:'Frasier',preferred:true}}};
+ const first = prepareLiveCatalogue(raw,metadata,{}, {},'a'.repeat(40))[0];
+ const reloaded = prepareLiveCatalogue(raw,metadata,{}, {},'b'.repeat(40))[0];
+ assert.equal(reloaded.previewUrl,'https://raw.githubusercontent.com/abrnjic/logo-tv/'+'b'.repeat(40)+'/logos/247-kanali/247livetvfrasier.png');
+ assert.notEqual(first.previewUrl,reloaded.previewUrl);
+ assert.equal(getLogoUrl(first.image),getLogoUrl(reloaded.image));
+ assert.equal(reloaded.pendingPublication,false);
+ assert.equal(prepareLiveCatalogue(raw,metadata,{'247livetvfrasier':'blob:replacement'}, {},'b'.repeat(40))[0].previewUrl,'blob:replacement');
+ assert.equal(prepareLiveCatalogue(raw,{version:1,channels:{}}, {}, {},'b'.repeat(40))[0].previewUrl,getLogoUrl(raw[0].image));
+});

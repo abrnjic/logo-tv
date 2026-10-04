@@ -58,10 +58,10 @@ export function getSourceLogoUrl(channel, revision = 'main') {
   return `https://raw.githubusercontent.com/abrnjic/logo-tv/${revision}/${path}`;
 }
 
-export function prepareLiveCatalogue(raw, metadata, previews = {}, published = {}) {
+export function prepareLiveCatalogue(raw, metadata, previews = {}, published = {}, revision = 'main') {
   return prepareCatalogue(raw, metadata).map(channel => ({
     ...channel,
-    previewUrl: previews[channel.id] || (channel.added ? getSourceLogoUrl(channel) : getLogoUrl(channel.image)),
+    previewUrl: previews[channel.id] || (channel.added || metadata.channels?.[channel.id] ? getSourceLogoUrl(channel, revision) : getLogoUrl(channel.image)),
     pendingPublication: Boolean(channel.added && !published[channel.id]),
   }));
 }

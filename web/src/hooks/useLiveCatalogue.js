@@ -64,8 +64,8 @@ export function useLiveCatalogue(raw, initialMetadata) {
     for (const url of previewUrls.current.values()) URL.revokeObjectURL(url);
   }, []);
   const channels = useMemo(
-    () => prepareLiveCatalogue(raw, metadata, previews, published),
-    [raw, metadata, previews, published],
+    () => prepareLiveCatalogue(raw, metadata, previews, published, snapshot.revision?.sha || 'main'),
+    [raw, metadata, previews, published, snapshot.revision?.sha],
   );
   useEffect(() => {
     const pending = channels.filter(channel => channel.pendingPublication);

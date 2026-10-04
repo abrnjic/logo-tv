@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { createAdminSession, validatePng } from "../lib/adminApi";
 import { prepareCatalogue } from "../lib/channelNames";
-import { getLogoUrl } from "../lib/logoUrl";
 import { getSourceLogoUrl } from "../lib/liveCatalogue";
 
 export default function Admin({ rawChannels, channels, onCatalogueChange, onSaved }) {
@@ -409,7 +408,7 @@ export default function Admin({ rawChannels, channels, onCatalogueChange, onSave
             {(preview || selected) && (
               <img
                 className="admin-preview"
-                src={preview || (selected.added ? getSourceLogoUrl(selected) : getLogoUrl(selected.image))}
+                src={preview || getSourceLogoUrl(selected, session.current?.getRevision().sha || 'main')}
                 alt="Pregled logotipa"
               />
             )}
